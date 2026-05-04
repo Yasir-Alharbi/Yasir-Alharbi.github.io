@@ -3,11 +3,8 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Yasir Alharbi cybersecurity, DFIR, and AI portfolio.">
-    <title>Yasir Alharbi | Cybersecurity and AI Portfolio</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <meta name="description" content="Yasir Alharbi cybersecurity, DFIR, and AI security portfolio.">
+    <title>Yasir Alharbi | Cybersecurity Portfolio</title>
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
@@ -20,7 +17,8 @@
         </span>
       </a>
       <nav class="nav-links" aria-label="Main navigation">
-        <a href="#work">Projects</a>
+        <a href="#profile">Profile</a>
+        <a href="#projects">Projects</a>
         <a href="#research">Research</a>
         <a href="#skills">Skills</a>
         <a href="#contact">Contact</a>
@@ -28,61 +26,40 @@
     </header>
 
     <main id="top">
-      <section class="hero-section">
+      <section id="profile" class="hero-section">
         <div class="hero-copy">
           <p class="eyebrow">Cybersecurity portfolio</p>
-          <h1>SOC analyst focused on DFIR and AI security research.</h1>
+          <h1>Yasir Alharbi</h1>
+          <p class="subtitle">SOC Analyst developing toward DFIR and AI security research.</p>
           <p class="lead">
-            I work in security operations, study AI at master's level, and turn academic research into practical investigation workflows, case studies, and defensive security projects.
+            I work in Security Operations, study Artificial Intelligence at master's level, and organize my academic projects into practical, evidence-based cybersecurity work.
           </p>
           <div class="hero-actions" aria-label="Primary links">
-            <a class="button primary" href="#work">View Projects</a>
-            <a class="button secondary" href="https://github.com/Yasir-Alharbi">GitHub Profile</a>
-          </div>
-          <div class="signal-list" aria-label="Portfolio focus areas">
-            <span>SOC triage</span>
-            <span>Incident response</span>
-            <span>Forensic timelines</span>
-            <span>AI-assisted detection</span>
+            <a class="button primary" href="#projects">View Portfolio</a>
+            <a class="button secondary" href="https://github.com/Yasir-Alharbi">GitHub</a>
           </div>
         </div>
 
-        <aside class="operator-panel" aria-label="SOC portfolio dashboard visual">
-          <div class="panel-header">
-            <span class="status-dot"></span>
-            <strong>Analyst Workspace</strong>
-            <small>live portfolio</small>
-          </div>
-          <div class="terminal-card">
-            <p class="terminal-line"><span>$</span> profile --focus</p>
-            <p>SOC operations / DFIR practice / AI security</p>
-          </div>
-          <div class="alert-stack">
-            <article>
-              <span class="severity critical">High</span>
-              <h2>Alert Triage Prioritization</h2>
-              <p>Reducing noise while preserving analyst judgment.</p>
-            </article>
-            <article>
-              <span class="severity medium">DFIR</span>
-              <h2>Forensic Timeline Case Study</h2>
-              <p>Evidence handling, sequence reconstruction, and reporting.</p>
-            </article>
-          </div>
-          <div class="mini-grid">
+        <aside class="profile-card" aria-label="Profile snapshot">
+          <h2>Profile Snapshot</h2>
+          <dl>
             <div>
-              <strong>2</strong>
-              <span>Semesters</span>
+              <dt>Current Role</dt>
+              <dd>SOC Analyst</dd>
             </div>
             <div>
-              <strong>7</strong>
-              <span>Projects</span>
+              <dt>Graduate Study</dt>
+              <dd>AI Master's Student</dd>
             </div>
             <div>
-              <strong>SOC</strong>
-              <span>Current role</span>
+              <dt>Growth Track</dt>
+              <dd>Digital Forensics and Incident Response</dd>
             </div>
-          </div>
+            <div>
+              <dt>Portfolio Goal</dt>
+              <dd>Public proof of research, analysis, and defensive projects</dd>
+            </div>
+          </dl>
         </aside>
       </section>
 
@@ -93,98 +70,166 @@
         </div>
         <div class="metric">
           <span>7</span>
-          <p>Course research and project slots</p>
+          <p>Course projects to organize</p>
         </div>
         <div class="metric">
           <span>SOC</span>
-          <p>Operational security experience</p>
+          <p>Current operational experience</p>
         </div>
         <div class="metric">
           <span>DFIR</span>
-          <p>Focused growth area</p>
+          <p>Focused professional development</p>
         </div>
       </section>
 
-      <section id="work" class="content-section">
+      <section id="projects" class="content-section">
         <div class="section-heading">
-          <p class="eyebrow">Selected work</p>
-          <h2>Projects that show investigation, research, and defensive thinking.</h2>
+          <p class="eyebrow">Selected projects</p>
+          <h2>Organized work that hiring teams can scan quickly.</h2>
+          <p>
+            Each project should eventually include a clean README, sanitized evidence or dataset notes, diagrams, methods, results, limitations, and next steps.
+          </p>
         </div>
+
         <div class="filter-bar" role="tablist" aria-label="Project filters">
           <button class="filter-button active" type="button" data-filter="all" role="tab" aria-selected="true">All</button>
           <button class="filter-button" type="button" data-filter="soc" role="tab" aria-selected="false">SOC</button>
           <button class="filter-button" type="button" data-filter="dfir" role="tab" aria-selected="false">DFIR</button>
           <button class="filter-button" type="button" data-filter="ai" role="tab" aria-selected="false">AI</button>
         </div>
-        <div class="project-grid">
+
+        <div class="project-list">
           <article class="project-card featured" data-category="soc ai">
-            <span class="project-type">SOC + AI</span>
-            <h3>Alert Triage Prioritization</h3>
-            <p>Research project exploring how structured features and AI assistance can reduce SOC alert noise while keeping analyst judgment central.</p>
-            <a href="#" aria-label="Open Alert Triage Prioritization project">Project notes</a>
+            <div class="project-meta">
+              <span>SOC + AI</span>
+              <strong>Priority Project</strong>
+            </div>
+            <div class="project-body">
+              <h3>Alert Triage Prioritization</h3>
+              <p>Research project exploring how AI-assisted scoring can help analysts prioritize alerts while preserving human review and explainability.</p>
+              <ul>
+                <li>Artifacts: paper, methodology, feature list, evaluation notes</li>
+                <li>Public-safe data: synthetic or lab-generated only</li>
+              </ul>
+            </div>
+            <a href="#">Repository pending</a>
           </article>
+
           <article class="project-card" data-category="dfir">
-            <span class="project-type">DFIR</span>
-            <h3>Forensic Timeline Case Study</h3>
-            <p>Evidence collection, timeline reconstruction, and reporting workflow for a controlled incident scenario.</p>
-            <a href="#" aria-label="Open Forensic Timeline Case Study project">Case write-up</a>
+            <div class="project-meta">
+              <span>DFIR</span>
+              <strong>Case Study</strong>
+            </div>
+            <div class="project-body">
+              <h3>Forensic Timeline Case Study</h3>
+              <p>Controlled investigation write-up showing evidence collection, timeline reconstruction, findings, and reporting structure.</p>
+              <ul>
+                <li>Artifacts: timeline, screenshots, report template</li>
+                <li>Focus: repeatable investigation process</li>
+              </ul>
+            </div>
+            <a href="#">Repository pending</a>
           </article>
+
           <article class="project-card" data-category="ai">
-            <span class="project-type">AI</span>
-            <h3>ML Security Research Notebook</h3>
-            <p>Master's course work connecting model design, evaluation metrics, and security-focused use cases.</p>
-            <a href="#" aria-label="Open ML Security Research Notebook project">Research repo</a>
+            <div class="project-meta">
+              <span>AI</span>
+              <strong>Notebook</strong>
+            </div>
+            <div class="project-body">
+              <h3>ML Security Research Notebook</h3>
+              <p>Master's coursework connecting machine learning concepts with cybersecurity use cases such as phishing or anomaly detection.</p>
+              <ul>
+                <li>Artifacts: notebook, model notes, metrics summary</li>
+                <li>Focus: clear evaluation and limitations</li>
+              </ul>
+            </div>
+            <a href="#">Repository pending</a>
           </article>
+
           <article class="project-card" data-category="soc dfir">
-            <span class="project-type">SOC + DFIR</span>
-            <h3>Incident Response Playbook</h3>
-            <p>Practical playbook for containment, evidence handling, escalation, and post-incident lessons.</p>
-            <a href="#" aria-label="Open Incident Response Playbook project">Playbook</a>
-          </article>
-          <article class="project-card" data-category="ai soc">
-            <span class="project-type">AI + Detection</span>
-            <h3>Threat Signal Classifier</h3>
-            <p>Experimental pipeline for turning raw security events into explainable features and evaluation results.</p>
-            <a href="#" aria-label="Open Threat Signal Classifier project">Model notes</a>
-          </article>
-          <article class="project-card" data-category="dfir soc">
-            <span class="project-type">Analysis</span>
-            <h3>Phishing Investigation Report</h3>
-            <p>End-to-end report covering headers, URLs, attachments, indicators, enrichment, and response.</p>
-            <a href="#" aria-label="Open Phishing Investigation Report project">Report</a>
+            <div class="project-meta">
+              <span>SOC + DFIR</span>
+              <strong>Playbook</strong>
+            </div>
+            <div class="project-body">
+              <h3>Incident Response Playbook</h3>
+              <p>Practical workflow for triage, escalation, containment, evidence handling, and lessons learned after an incident.</p>
+              <ul>
+                <li>Artifacts: checklist, flowchart, response notes</li>
+                <li>Focus: practical SOC-to-DFIR handoff</li>
+              </ul>
+            </div>
+            <a href="#">Repository pending</a>
           </article>
         </div>
       </section>
 
       <section id="research" class="content-section research-section">
         <div class="section-heading">
-          <p class="eyebrow">Research direction</p>
-          <h2>Turning class work into public proof of capability.</h2>
+          <p class="eyebrow">Research archive</p>
+          <h2>Seven course projects, organized into a publishable roadmap.</h2>
+          <p>Use this table to track what is ready, what needs cleanup, and what should stay private.</p>
         </div>
-        <div class="timeline">
-          <article>
-            <span>Semester 1</span>
-            <h3>Foundations</h3>
-            <p>Convert early course reports into clean repositories with abstracts, methods, results, and sanitized examples.</p>
-          </article>
-          <article>
-            <span>Semester 2</span>
-            <h3>Applied security</h3>
-            <p>Package stronger projects as case studies with diagrams, scripts, screenshots, and clear defensive value.</p>
-          </article>
-          <article>
-            <span>Next semesters</span>
-            <h3>Signature track</h3>
-            <p>Build a visible theme around AI for SOC triage, incident response, evidence analysis, and analyst decision support.</p>
-          </article>
+
+        <div class="research-table" role="table" aria-label="Course project archive">
+          <div class="table-row table-head" role="row">
+            <span role="columnheader">Project</span>
+            <span role="columnheader">Area</span>
+            <span role="columnheader">Public Status</span>
+            <span role="columnheader">Next Step</span>
+          </div>
+          <div class="table-row" role="row">
+            <span role="cell">Alert Triage Prioritization</span>
+            <span role="cell">SOC + AI</span>
+            <span role="cell">Draft</span>
+            <span role="cell">Sanitize data and create README</span>
+          </div>
+          <div class="table-row" role="row">
+            <span role="cell">Forensic Timeline Case Study</span>
+            <span role="cell">DFIR</span>
+            <span role="cell">Draft</span>
+            <span role="cell">Add evidence diagram</span>
+          </div>
+          <div class="table-row" role="row">
+            <span role="cell">ML Security Notebook</span>
+            <span role="cell">AI</span>
+            <span role="cell">Draft</span>
+            <span role="cell">Summarize model evaluation</span>
+          </div>
+          <div class="table-row muted-row" role="row">
+            <span role="cell">Course Project 4</span>
+            <span role="cell">TBD</span>
+            <span role="cell">Needs review</span>
+            <span role="cell">Choose publish-safe artifacts</span>
+          </div>
+          <div class="table-row muted-row" role="row">
+            <span role="cell">Course Project 5</span>
+            <span role="cell">TBD</span>
+            <span role="cell">Needs review</span>
+            <span role="cell">Write short abstract</span>
+          </div>
+          <div class="table-row muted-row" role="row">
+            <span role="cell">Course Project 6</span>
+            <span role="cell">TBD</span>
+            <span role="cell">Needs review</span>
+            <span role="cell">Create repo structure</span>
+          </div>
+          <div class="table-row muted-row" role="row">
+            <span role="cell">Course Project 7</span>
+            <span role="cell">TBD</span>
+            <span role="cell">Needs review</span>
+            <span role="cell">Decide if public or private</span>
+          </div>
         </div>
       </section>
 
       <section id="skills" class="content-section">
         <div class="section-heading">
-          <p class="eyebrow">Skill map</p>
-          <h2>A focused profile for cyber defense roles.</h2>
+          <p class="eyebrow">Skills evidence</p>
+          <h2>Skills shown through projects, not just listed as keywords.</h2>
         </div>
+
         <div class="skill-grid">
           <article>
             <h3>SOC Operations</h3>
@@ -192,23 +237,36 @@
           </article>
           <article>
             <h3>DFIR</h3>
-            <p>Evidence handling, forensic timelines, incident response process, containment, and lessons learned.</p>
+            <p>Evidence handling, forensic timelines, incident response process, containment, and post-incident review.</p>
           </article>
           <article>
             <h3>AI and Data</h3>
             <p>Machine learning coursework, model evaluation, feature design, notebooks, and responsible AI use.</p>
           </article>
           <article>
-            <h3>Communication</h3>
-            <p>Research writing, executive summaries, technical documentation, and repeatable analysis workflows.</p>
+            <h3>Technical Writing</h3>
+            <p>Research papers, executive summaries, project READMEs, limitations, and repeatable analysis workflows.</p>
           </article>
         </div>
+      </section>
+
+      <section class="content-section publish-section">
+        <div>
+          <p class="eyebrow">Before publishing</p>
+          <h2>Public release checklist</h2>
+        </div>
+        <ul class="checklist">
+          <li>No employer data, internal screenshots, real tickets, credentials, or private indicators.</li>
+          <li>Every project has a README with problem, method, results, limitations, and next steps.</li>
+          <li>Links point to real repositories, reports, notebooks, or sanitized artifacts.</li>
+          <li>Contact links are correct and professional.</li>
+        </ul>
       </section>
 
       <section id="contact" class="contact-section">
         <div>
           <p class="eyebrow">Contact</p>
-          <h2>Open to cybersecurity, DFIR, and AI security opportunities.</h2>
+          <h2>Cybersecurity, DFIR, and AI security portfolio.</h2>
         </div>
         <div class="contact-links">
           <a href="https://github.com/Yasir-Alharbi">GitHub</a>
