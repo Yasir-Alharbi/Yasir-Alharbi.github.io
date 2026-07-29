@@ -183,16 +183,16 @@
 }
 
 .about-heading {
-  grid-template-columns: minmax(0, .72fr) minmax(360px, .4fr);
-  gap: clamp(34px, 7vw, 86px);
+  grid-template-columns: minmax(0, .78fr) minmax(340px, .36fr);
+  gap: clamp(30px, 5.2vw, 64px);
   align-items: start;
 }
 
 .about-heading h2 {
-  max-width: 880px;
-  font-size: clamp(2.65rem, 4.15vw, 4.1rem);
-  line-height: 1.09;
-  text-wrap: balance;
+  max-width: 980px;
+  font-size: clamp(2.35rem, 3.3vw, 3.35rem);
+  line-height: 1.14;
+  text-wrap: pretty;
 }
 
 .about-heading .body-copy {
@@ -212,17 +212,17 @@
 
 .structured-heading {
   display: grid;
-  grid-template-columns: minmax(0, .7fr) minmax(320px, .4fr);
-  gap: clamp(34px, 6vw, 72px);
+  grid-template-columns: minmax(0, .76fr) minmax(320px, .34fr);
+  gap: clamp(30px, 5vw, 62px);
   align-items: start;
   margin-bottom: 42px;
 }
 
 .structured-heading h2 {
-  max-width: 850px;
-  font-size: clamp(2.35rem, 3.95vw, 3.8rem);
-  line-height: 1.09;
-  text-wrap: balance;
+  max-width: 980px;
+  font-size: clamp(2.25rem, 3.35vw, 3.35rem);
+  line-height: 1.14;
+  text-wrap: pretty;
 }
 
 .structured-heading p {
@@ -467,6 +467,18 @@
   .handbook-panel {
     min-height: auto;
   }
+
+  .structured-heading,
+  .about-heading {
+    gap: 20px;
+  }
+
+  .structured-heading h2,
+  .about-heading h2 {
+    max-width: 100%;
+    font-size: clamp(2rem, 6.8vw, 3rem);
+    line-height: 1.14;
+  }
 }
 
 @media (max-width: 720px) {
@@ -524,8 +536,8 @@
 
   .structured-heading h2 {
     max-width: 100%;
-    font-size: clamp(2rem, 8.8vw, 2.8rem);
-    line-height: 1.12;
+    font-size: clamp(1.85rem, 7.8vw, 2.5rem);
+    line-height: 1.16;
   }
 
   .about-heading {
@@ -534,8 +546,8 @@
 
   .about-heading h2 {
     max-width: 100%;
-    font-size: clamp(2.05rem, 8.6vw, 2.85rem);
-    line-height: 1.13;
+    font-size: clamp(1.85rem, 7.8vw, 2.5rem);
+    line-height: 1.16;
   }
 
   .about-heading .body-copy {
