@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="What Thousands of Security Alerts Taught Me That No Certification Ever Could by Yasir Alharbi.">
     <title>What Thousands of Security Alerts Taught Me That No Certification Ever Could | Yasir Alharbi</title>
-    <link rel="stylesheet" href="../styles.css?v=article-polish-1">
+    <link rel="stylesheet" href="../styles.css?v=soc-reading-1">
   </head>
   <body class="article-page">
     <header class="site-header">
@@ -26,7 +26,7 @@
     </header>
 
     <main>
-      <article class="article-shell academic-article">
+      <article class="article-shell academic-article soc-article">
         <a class="back-link" href="../index.html#soc">Back to home page</a>
         <header class="article-hero">
           <p class="section-label">SOC article</p>
@@ -60,7 +60,7 @@
             <h2>A SIEM Doesn't Detect Attacks—It Detects Conditions</h2>
             <p>One of the first misconceptions I had was believing that every alert represented malicious activity.</p>
             <p>In reality, a SIEM doesn't know whether something is an attack. It only knows that a predefined rule has been triggered.</p>
-            <p>The analyst's job begins where the SIEM stops.</p>
+            <p class="article-callout">The analyst's job begins where the SIEM stops.</p>
             <p>Every alert requires context:</p>
             <ul class="article-list">
               <li>Is this behavior expected?</li>
@@ -74,35 +74,29 @@
 
           <section class="article-section" id="the-biggest-enemy-isnt-attackers">
             <h2>The Biggest Enemy Isn't Attackers</h2>
-            <p>Before working in a SOC, I assumed attackers would be my biggest challenge.</p>
-            <p>Instead, I discovered that noise is often the real adversary.</p>
+            <p>Before working in a SOC, I assumed attackers would be my biggest challenge. Instead, I discovered that noise is often the real adversary.</p>
             <p>Analysts spend much of their time separating meaningful events from expected business activity. False positives, repetitive alerts, and incomplete logging can easily distract investigators from incidents that truly matter.</p>
             <p>This experience taught me that effective detection isn't about generating more alerts—it's about generating better ones.</p>
           </section>
 
           <section class="article-section" id="curiosity-is-more-valuable-than-assumptions">
             <h2>Curiosity Is More Valuable Than Assumptions</h2>
-            <p>Over time, I noticed a pattern.</p>
-            <p>The best investigations didn't begin with someone saying, "This looks malicious."</p>
-            <p>They began with someone asking, "Can I prove this is normal?"</p>
+            <p>Over time, I noticed a pattern. The best investigations didn't begin with someone saying, "This looks malicious." They began with someone asking, "Can I prove this is normal?"</p>
             <p>That small shift in mindset changes everything.</p>
             <p>Good analysts collect evidence before reaching conclusions. They validate assumptions instead of relying on intuition. In cybersecurity, confidence should come from evidence, not from experience alone.</p>
           </section>
 
           <section class="article-section" id="digital-forensics-changed-my-perspective">
             <h2>Digital Forensics Changed My Perspective</h2>
-            <p>As I studied Digital Forensics and Incident Response (DFIR), I began approaching alerts differently.</p>
-            <p>Instead of viewing an alert as the end of an investigation, I started treating it as the beginning.</p>
+            <p>As I studied Digital Forensics and Incident Response (DFIR), I began approaching alerts differently. Instead of viewing an alert as the end of an investigation, I started treating it as the beginning.</p>
             <p>A single detection can lead to process execution artifacts, Windows Event Logs, registry changes, scheduled tasks, browser history, memory artifacts, or file system evidence.</p>
-            <p>The SIEM tells you <em>where to look</em>.</p>
-            <p>Forensics tells you <em>what actually happened</em>.</p>
+            <p>The SIEM tells you <em>where to look</em>. Forensics tells you <em>what actually happened</em>.</p>
             <p>Understanding both disciplines creates stronger investigations than relying on either one alone.</p>
           </section>
 
           <section class="article-section" id="looking-ahead">
             <h2>Looking Ahead</h2>
-            <p>Today, artificial intelligence is rapidly becoming part of cybersecurity workflows.</p>
-            <p>AI can summarize logs, correlate events, and accelerate investigations. These capabilities will undoubtedly improve SOC operations.</p>
+            <p>Today, artificial intelligence is rapidly becoming part of cybersecurity workflows. AI can summarize logs, correlate events, and accelerate investigations. These capabilities will undoubtedly improve SOC operations.</p>
             <p>However, AI still depends on human judgment.</p>
             <p>It cannot replace an analyst's understanding of business context, investigative reasoning, or the ability to distinguish between suspicious and malicious activity.</p>
             <p>Rather than replacing analysts, I believe AI will amplify those who already understand the fundamentals.</p>
@@ -111,11 +105,8 @@
           <section class="article-section" id="final-thoughts">
             <h2>Final Thoughts</h2>
             <p>If there's one lesson my SOC experience has reinforced, it's this:</p>
-            <p>Cybersecurity isn't about memorizing commands or collecting certifications.</p>
-            <p>It's about learning how to think.</p>
-            <p>The tools will change.</p>
-            <p>Attack techniques will evolve.</p>
-            <p>Detection rules will be rewritten.</p>
+            <p class="article-callout">Cybersecurity isn't about memorizing commands or collecting certifications. It's about learning how to think.</p>
+            <p>The tools will change. Attack techniques will evolve. Detection rules will be rewritten.</p>
             <p>But the ability to ask the right questions, gather evidence objectively, and understand context will remain one of the most valuable skills any analyst can develop.</p>
             <p>That's the lesson no certification alone can teach—and one I continue to learn every day.</p>
           </section>
