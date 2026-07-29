@@ -287,6 +287,18 @@
   margin-top: 10px;
 }
 
+.card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin-top: auto;
+}
+
+.feature-card .card-actions a {
+  margin: 0;
+}
+
 .feature-card strong::after,
 .handbook-panel strong::after {
   content: "->";
