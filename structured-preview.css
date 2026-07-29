@@ -216,6 +216,11 @@
   text-decoration: none;
 }
 
+.feature-card a + a {
+  margin-left: 10px;
+  margin-top: 10px;
+}
+
 .primary-feature {
   grid-row: span 2;
   min-height: 390px;
