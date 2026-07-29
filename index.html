@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Yasir Alharbi cybersecurity, DFIR, and AI security portfolio.">
-    <title>Yasir Alharbi | Cybersecurity Portfolio</title>
+    <meta name="description" content="Yasir Alharbi - Senior Cybersecurity Analyst focused on AI security, SOC analytics, threat detection, and DFIR growth.">
+    <title>Yasir Alharbi | Cybersecurity & AI</title>
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
@@ -13,11 +13,12 @@
         <span class="brand-mark">YA</span>
         <span>
           <strong>Yasir Alharbi</strong>
-          <small>SOC Analyst | DFIR | AI Security</small>
+          <small>Cybersecurity & AI</small>
         </span>
       </a>
+
       <nav class="nav-links" aria-label="Main navigation">
-        <a href="#profile">Profile</a>
+        <a href="#about">About</a>
         <a href="#projects">Projects</a>
         <a href="#research">Research</a>
         <a href="#skills">Skills</a>
@@ -26,252 +27,188 @@
     </header>
 
     <main id="top">
-      <section id="profile" class="hero-section">
+      <section class="hero">
         <div class="hero-copy">
-          <p class="eyebrow">Cybersecurity portfolio</p>
           <h1>Yasir Alharbi</h1>
-          <p class="subtitle">SOC Analyst developing toward DFIR and AI security research.</p>
-          <p class="lead">
-            I work in Security Operations, study Artificial Intelligence at master's level, and organize my academic projects into practical, evidence-based cybersecurity work.
+          <p class="subtitle">
+            Senior Cybersecurity Analyst and AI master's student, developing toward advanced defensive security,
+            AI-assisted threat detection, and DFIR.
           </p>
-          <div class="hero-actions" aria-label="Primary links">
-            <a class="button primary" href="#projects">View Portfolio</a>
-            <a class="button secondary" href="https://github.com/Yasir-Alharbi">GitHub</a>
+          <div class="hero-actions">
+            <a class="button primary" href="#projects">View Projects</a>
+            <a class="button secondary" href="https://www.linkedin.com/in/Yasir-T-Alharbi">LinkedIn</a>
+          </div>
+        </div>
+      </section>
+
+      <section id="about" class="section about-section">
+        <div class="section-label">01 // About</div>
+        <div class="split">
+          <div>
+            <h2>Senior Cybersecurity Analyst. AI master's student. Building toward DFIR.</h2>
+          </div>
+          <div class="body-copy">
+            <p>
+              I am a Senior Cybersecurity Analyst and AI master's student with a clear goal: to grow into a stronger
+              security professional who can combine real operational judgment with modern AI methods.
+            </p>
+            <p>
+              I am using my master's projects to build discipline in research, experimentation, documentation, and
+              reproducible technical work. My focus is long-term development: becoming better at threat detection,
+              security analytics, AI-assisted defense, and digital forensics and incident response.
+            </p>
           </div>
         </div>
 
-        <aside class="profile-card" aria-label="Profile snapshot">
-          <h2>Profile Snapshot</h2>
-          <dl>
-            <div>
-              <dt>Current Role</dt>
-              <dd>SOC Analyst</dd>
-            </div>
-            <div>
-              <dt>Graduate Study</dt>
-              <dd>AI Master's Student</dd>
-            </div>
-            <div>
-              <dt>Growth Track</dt>
-              <dd>Digital Forensics and Incident Response</dd>
-            </div>
-            <div>
-              <dt>Portfolio Goal</dt>
-              <dd>Public proof of research, analysis, and defensive projects</dd>
-            </div>
-          </dl>
-        </aside>
-      </section>
-
-      <section class="metrics-section" aria-label="Portfolio highlights">
-        <div class="metric">
-          <span>2</span>
-          <p>Master's semesters completed</p>
-        </div>
-        <div class="metric">
-          <span>7</span>
-          <p>Course projects to organize</p>
-        </div>
-        <div class="metric">
-          <span>SOC</span>
-          <p>Current operational experience</p>
-        </div>
-        <div class="metric">
-          <span>DFIR</span>
-          <p>Focused professional development</p>
+        <div class="info-grid">
+          <article>
+            <span>Current role</span>
+            <strong>Senior Cybersecurity Analyst</strong>
+          </article>
+          <article>
+            <span>Graduate study</span>
+            <strong>MSc Artificial Intelligence</strong>
+          </article>
+          <article>
+            <span>Direction</span>
+            <strong>Cybersecurity and AI</strong>
+          </article>
         </div>
       </section>
 
-      <section id="projects" class="content-section">
+      <section id="projects" class="section">
+        <div class="section-label">02 // Projects</div>
         <div class="section-heading">
-          <p class="eyebrow">Selected projects</p>
-          <h2>Organized work that hiring teams can scan quickly.</h2>
-          <p>
-            Each project should eventually include a clean README, sanitized evidence or dataset notes, diagrams, methods, results, limitations, and next steps.
-          </p>
+          <h2>Selected projects</h2>
+          <p>Each project links to a dedicated GitHub repository for the report, notebook, code, and supporting files.</p>
         </div>
 
-        <div class="filter-bar" role="tablist" aria-label="Project filters">
-          <button class="filter-button active" type="button" data-filter="all" role="tab" aria-selected="true">All</button>
-          <button class="filter-button" type="button" data-filter="soc" role="tab" aria-selected="false">SOC</button>
-          <button class="filter-button" type="button" data-filter="dfir" role="tab" aria-selected="false">DFIR</button>
-          <button class="filter-button" type="button" data-filter="ai" role="tab" aria-selected="false">AI</button>
-        </div>
-
-        <div class="project-list">
-          <article class="project-card featured" data-category="soc ai">
-            <div class="project-meta">
-              <span>SOC + AI</span>
-              <strong>Priority Project</strong>
-            </div>
-            <div class="project-body">
-              <h3>Alert Triage Prioritization</h3>
-              <p>Research project exploring how AI-assisted scoring can help analysts prioritize alerts while preserving human review and explainability.</p>
-              <ul>
-                <li>Artifacts: paper, methodology, feature list, evaluation notes</li>
-                <li>Public-safe data: synthetic or lab-generated only</li>
-              </ul>
-            </div>
-            <a href="#">Repository pending</a>
+        <div class="project-grid">
+          <article class="project-card">
+            <span>Security Operations Center + Optimization</span>
+            <h3>SOC Alert Triage Optimization</h3>
+            <p>A cybersecurity SOC triage project that uses machine learning and optimization algorithms to prioritize security alerts and assign them to suitable analysts during a shift.</p>
+            <a href="https://github.com/Yasir-Alharbi/soc-alert-triage-optimization">Repository</a>
           </article>
 
-          <article class="project-card" data-category="dfir">
-            <div class="project-meta">
-              <span>DFIR</span>
-              <strong>Case Study</strong>
-            </div>
-            <div class="project-body">
-              <h3>Forensic Timeline Case Study</h3>
-              <p>Controlled investigation write-up showing evidence collection, timeline reconstruction, findings, and reporting structure.</p>
-              <ul>
-                <li>Artifacts: timeline, screenshots, report template</li>
-                <li>Focus: repeatable investigation process</li>
-              </ul>
-            </div>
-            <a href="#">Repository pending</a>
+          <article class="project-card">
+            <span>Natural Language Processing</span>
+            <h3>Arabic Fake News Detection</h3>
+            <p>Arabic misinformation detection using AraBERT, stylometric features, model comparison, and ethical evaluation discussion.</p>
+            <a href="https://github.com/Yasir-Alharbi/arabic-fake-news-detection">Repository</a>
           </article>
 
-          <article class="project-card" data-category="ai">
-            <div class="project-meta">
-              <span>AI</span>
-              <strong>Notebook</strong>
-            </div>
-            <div class="project-body">
-              <h3>ML Security Research Notebook</h3>
-              <p>Master's coursework connecting machine learning concepts with cybersecurity use cases such as phishing or anomaly detection.</p>
-              <ul>
-                <li>Artifacts: notebook, model notes, metrics summary</li>
-                <li>Focus: clear evaluation and limitations</li>
-              </ul>
-            </div>
-            <a href="#">Repository pending</a>
+          <article class="project-card">
+            <span>Network Security + ML</span>
+            <h3>Network Intrusion Detection Using ML</h3>
+            <p>Compared machine learning classifiers for multi-class network traffic and cyberattack detection.</p>
+            <a href="https://github.com/Yasir-Alharbi/ml-network-intrusion-detection">Repository</a>
           </article>
 
-          <article class="project-card" data-category="soc dfir">
-            <div class="project-meta">
-              <span>SOC + DFIR</span>
-              <strong>Playbook</strong>
-            </div>
-            <div class="project-body">
-              <h3>Incident Response Playbook</h3>
-              <p>Practical workflow for triage, escalation, containment, evidence handling, and lessons learned after an incident.</p>
-              <ul>
-                <li>Artifacts: checklist, flowchart, response notes</li>
-                <li>Focus: practical SOC-to-DFIR handoff</li>
-              </ul>
-            </div>
-            <a href="#">Repository pending</a>
+          <article class="project-card">
+            <span>Optimization Algorithms</span>
+            <h3>CFLP Metaheuristics Benchmark</h3>
+            <p>Compared Gurobi, Tabu Search, and Genetic Algorithm approaches across 144 benchmark instances.</p>
+            <a href="https://github.com/Yasir-Alharbi/cflp-optimization-metaheuristics">Repository</a>
           </article>
         </div>
       </section>
 
-      <section id="research" class="content-section research-section">
+      <section id="research" class="section">
+        <div class="section-label">03 // Research</div>
         <div class="section-heading">
-          <p class="eyebrow">Research archive</p>
-          <h2>Seven course projects, organized into a publishable roadmap.</h2>
-          <p>Use this table to track what is ready, what needs cleanup, and what should stay private.</p>
+          <h2>Research papers and notebooks</h2>
+          <p>Additional graduate work, including papers, reviews, assignments, and executed notebooks.</p>
         </div>
 
-        <div class="research-table" role="table" aria-label="Course project archive">
-          <div class="table-row table-head" role="row">
-            <span role="columnheader">Project</span>
-            <span role="columnheader">Area</span>
-            <span role="columnheader">Public Status</span>
-            <span role="columnheader">Next Step</span>
-          </div>
-          <div class="table-row" role="row">
-            <span role="cell">Alert Triage Prioritization</span>
-            <span role="cell">SOC + AI</span>
-            <span role="cell">Draft</span>
-            <span role="cell">Sanitize data and create README</span>
-          </div>
-          <div class="table-row" role="row">
-            <span role="cell">Forensic Timeline Case Study</span>
-            <span role="cell">DFIR</span>
-            <span role="cell">Draft</span>
-            <span role="cell">Add evidence diagram</span>
-          </div>
-          <div class="table-row" role="row">
-            <span role="cell">ML Security Notebook</span>
-            <span role="cell">AI</span>
-            <span role="cell">Draft</span>
-            <span role="cell">Summarize model evaluation</span>
-          </div>
-          <div class="table-row muted-row" role="row">
-            <span role="cell">Course Project 4</span>
-            <span role="cell">TBD</span>
-            <span role="cell">Needs review</span>
-            <span role="cell">Choose publish-safe artifacts</span>
-          </div>
-          <div class="table-row muted-row" role="row">
-            <span role="cell">Course Project 5</span>
-            <span role="cell">TBD</span>
-            <span role="cell">Needs review</span>
-            <span role="cell">Write short abstract</span>
-          </div>
-          <div class="table-row muted-row" role="row">
-            <span role="cell">Course Project 6</span>
-            <span role="cell">TBD</span>
-            <span role="cell">Needs review</span>
-            <span role="cell">Create repo structure</span>
-          </div>
-          <div class="table-row muted-row" role="row">
-            <span role="cell">Course Project 7</span>
-            <span role="cell">TBD</span>
-            <span role="cell">Needs review</span>
-            <span role="cell">Decide if public or private</span>
-          </div>
+        <div class="timeline">
+          <a href="https://github.com/Yasir-Alharbi/diabetic-retinopathy-transfer-learning">
+            <span>Deep Learning</span>
+            <strong>Automated Diabetic Retinopathy Grading</strong>
+            <em>Transfer learning, CNN comparison, Grad-CAM explainability.</em>
+          </a>
+          <a href="https://github.com/Yasir-Alharbi/deep-learning-ids-critical-review">
+            <span>IDS Review</span>
+            <strong>Deep Learning-Based IDS Critical Review</strong>
+            <em>Critical review of intrusion detection literature and evaluation limitations.</em>
+          </a>
+          <a href="https://github.com/Yasir-Alharbi/ai-threat-detection-review">
+            <span>Advanced AI Concepts</span>
+            <strong>AI and ML for Threat Detection</strong>
+            <em>Analytical and bibliometric review of AI-based cybersecurity threat detection.</em>
+          </a>
+          <a href="https://github.com/Yasir-Alharbi/breast-cancer-knn-svm">
+            <span>Pattern Recognition</span>
+            <strong>Breast Cancer Detection Using KNN and SVM</strong>
+            <em>Classical ML comparison using accuracy, recall, and AUC reporting.</em>
+          </a>
+          <a href="https://github.com/Yasir-Alharbi/pca-digits-dimensionality-reduction">
+            <span>Pattern Recognition Lab</span>
+            <strong>PCA Dimensionality Reduction</strong>
+            <em>Executed notebook for PCA visualization and explained variance analysis.</em>
+          </a>
         </div>
       </section>
 
-      <section id="skills" class="content-section">
+      <section id="skills" class="section">
+        <div class="section-label">04 // Skills</div>
         <div class="section-heading">
-          <p class="eyebrow">Skills evidence</p>
-          <h2>Skills shown through projects, not just listed as keywords.</h2>
+          <h2>Technical skills</h2>
         </div>
 
-        <div class="skill-grid">
-          <article>
-            <h3>SOC Operations</h3>
-            <p>Alert triage, investigation notes, escalation logic, SIEM thinking, and defensive reporting.</p>
-          </article>
-          <article>
-            <h3>DFIR</h3>
-            <p>Evidence handling, forensic timelines, incident response process, containment, and post-incident review.</p>
-          </article>
-          <article>
-            <h3>AI and Data</h3>
-            <p>Machine learning coursework, model evaluation, feature design, notebooks, and responsible AI use.</p>
-          </article>
-          <article>
-            <h3>Technical Writing</h3>
-            <p>Research papers, executive summaries, project READMEs, limitations, and repeatable analysis workflows.</p>
-          </article>
+        <div class="skill-cloud">
+          <span>SOC Triage</span>
+          <span>Threat Detection</span>
+          <span>Intrusion Detection</span>
+          <span>DFIR Growth</span>
+          <span>Machine Learning</span>
+          <span>Deep Learning</span>
+          <span>Natural Language Processing</span>
+          <span>Optimization</span>
+          <span>Gurobi</span>
+          <span>Python</span>
+          <span>Scikit-learn</span>
+          <span>TensorFlow / Keras</span>
+          <span>Transformers</span>
+          <span>Research Writing</span>
+          <span>Technical Reporting</span>
         </div>
       </section>
 
-      <section class="content-section publish-section">
+      <section id="writing" class="section writing-section">
+        <div class="section-label">05 // Writing</div>
+        <div class="split compact-split">
+          <h2>Technical articles</h2>
+        </div>
+        <div class="article-grid">
+          <a class="article-card handbook-card" href="https://yasir-alharbi.github.io/windows-forensic-artifacts-handbook/">
+            <span>Technical handbook</span>
+            <h3>Windows Forensic Artifacts: Evidence Correlation Handbook</h3>
+            <p>A 24-chapter DFIR handbook for reconstructing incidents by correlating Windows forensic artifacts, timelines, execution evidence, persistence traces, and investigative findings.</p>
+            <small>Read handbook</small>
+          </a>
+          <a class="article-card" href="articles/one-year-two-worlds.html">
+            <span>AI learning journey</span>
+            <h3>One Year, Two Worlds: Hunting Adversaries by Day, Mastering AI by Night</h3>
+            <p>Cybersecurity work, AI master's study, NVIDIA Generative AI learning, and where the two worlds meet.</p>
+          </a>
+          <a class="article-card" href="articles/sans-for508-dfir-learning-journey.html">
+            <span>DFIR learning journey</span>
+            <h3>My Learning Journey Through SANS FOR508</h3>
+            <p>How advanced incident response, threat hunting, forensic artifacts, memory analysis, and timeline reconstruction strengthened my DFIR mindset.</p>
+          </a>
+        </div>
+      </section>
+
+      <section id="contact" class="contact">
         <div>
-          <p class="eyebrow">Before publishing</p>
-          <h2>Public release checklist</h2>
-        </div>
-        <ul class="checklist">
-          <li>No employer data, internal screenshots, real tickets, credentials, or private indicators.</li>
-          <li>Every project has a README with problem, method, results, limitations, and next steps.</li>
-          <li>Links point to real repositories, reports, notebooks, or sanitized artifacts.</li>
-          <li>Contact links are correct and professional.</li>
-        </ul>
-      </section>
-
-      <section id="contact" class="contact-section">
-        <div>
-          <p class="eyebrow">Contact</p>
-          <h2>Cybersecurity, DFIR, and AI security portfolio.</h2>
+          <div class="section-label">06 // Contact</div>
+          <h2>Let's connect.</h2>
+          <p>Open to cybersecurity, AI security, and DFIR-focused opportunities.</p>
         </div>
         <div class="contact-links">
           <a href="https://github.com/Yasir-Alharbi">GitHub</a>
-          <a href="https://www.linkedin.com/in/your-profile">LinkedIn</a>
-          <a href="mailto:your.email@example.com">Email</a>
+          <a href="https://www.linkedin.com/in/Yasir-T-Alharbi">LinkedIn</a>
         </div>
       </section>
     </main>

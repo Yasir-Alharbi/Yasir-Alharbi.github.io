@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Digital Forensics and Incident Response (DFIR) has become one of the most critical disciplines in modern cybersecurity due to the increasing sophistication of cyber threats. While practical experience provides valuable exposure to security incidents, mastering DFIR requires a structured understanding of forensic artifacts, attacker methodologies, evidence analysis, and investigative reasoning. My completion of the SANS FOR508: Advanced Incident Response, Threat Hunting, and Digital Forensics course significantly expanded both my theoretical knowledge and practical investigative capabilities. This article reflects on how the course transformed my understanding of DFIR, strengthened my analytical thinking, and prepared me to conduct more comprehensive investigations against modern cyber adversaries.">
+    <title>My Learning Journey Through SANS FOR508: Advancing My Knowledge in Digital Forensics and Incident Response | Yasir Alharbi</title>
+    <link rel="stylesheet" href="../styles.css?v=dfir-article-2">
+  </head>
+  <body class="article-page">
+    <header class="site-header">
+      <a class="brand" href="../index.html#top" aria-label="Yasir Alharbi home">
+        <span class="brand-mark">YA</span>
+        <span>
+          <strong>Yasir Alharbi</strong>
+          <small>Cybersecurity &amp; AI</small>
+        </span>
+      </a>
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="../index.html#about">About</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../index.html#research">Research</a>
+        <a href="../index.html#skills">Skills</a>
+        <a href="../index.html#contact">Contact</a>
+      </nav>
+    </header>
+
+    <main>
+      <article class="article-shell academic-article dfir-article">
+        <a class="back-link" href="../index.html#writing">Back to articles</a>
+        <header class="article-hero">
+          <p class="section-label">DFIR Article</p>
+          <h1>My Learning Journey Through SANS FOR508: Advancing My Knowledge in Digital Forensics and Incident Response</h1>
+          <div class="article-meta">
+            <span>Yasir Alharbi</span>
+            <span>DFIR</span>
+            <span>FOR508 reflection</span>
+          </div>
+        </header>
+
+        <nav class="article-toc" aria-label="Article contents">
+          <strong>Contents</strong>
+          <div>
+<a href="#abstract">Abstract</a>
+<a href="#introduction">Introduction</a>
+<a href="#building-a-complete-dfir-mindset">Building a Complete DFIR Mindset</a>
+<a href="#understanding-the-complete-attack-lifecycle">Understanding the Complete Attack Lifecycle</a>
+<a href="#mastering-windows-forensic-artifacts">Mastering Windows Forensic Artifacts</a>
+<a href="#developing-advanced-memory-forensics-skills">Developing Advanced Memory Forensics Skills</a>
+<a href="#learning-timeline-analysis">Learning Timeline Analysis</a>
+<a href="#recognizing-anti-forensic-techniques">Recognizing Anti-Forensic Techniques</a>
+<a href="#improving-threat-hunting-methodology">Improving Threat Hunting Methodology</a>
+<a href="#practical-laboratory-experience">Practical Laboratory Experience</a>
+<a href="#impact-on-my-professional-development">Impact on My Professional Development</a>
+<a href="#conclusion">Conclusion</a>
+          </div>
+        </nav>
+
+        <div class="article-content">
+<section class="article-section article-abstract" id="abstract">
+<h2>Abstract</h2>
+<p>Digital Forensics and Incident Response (DFIR) has become one of the most critical disciplines in modern cybersecurity due to the increasing sophistication of cyber threats. While practical experience provides valuable exposure to security incidents, mastering DFIR requires a structured understanding of forensic artifacts, attacker methodologies, evidence analysis, and investigative reasoning. My completion of the SANS FOR508: Advanced Incident Response, Threat Hunting, and Digital Forensics course significantly expanded both my theoretical knowledge and practical investigative capabilities. This article reflects on how the course transformed my understanding of DFIR, strengthened my analytical thinking, and prepared me to conduct more comprehensive investigations against modern cyber adversaries.</p>
+</section>
+<section class="article-section" id="introduction">
+<h2>Introduction</h2>
+<p>Before studying FOR508, my professional background as a Cybersecurity Analyst had already exposed me to security monitoring, SIEM analysis, threat hunting, and incident response. Daily work involved identifying indicators of compromise (IOCs), investigating alerts, and determining whether suspicious activities represented genuine security incidents.</p>
+<p>However, I recognized an important limitation. Most investigations within a Security Operations Center focus on detecting attacks, whereas DFIR requires understanding exactly what happened, how it happened, when it happened, why it happened, and what evidence proves each conclusion.</p>
+<p>The SANS FOR508 course filled this gap by introducing a structured forensic methodology that extends beyond simple alert analysis. Rather than focusing solely on detection, the course emphasizes reconstructing entire attack lifecycles using multiple forensic evidence sources.</p>
+<p>This shift fundamentally changed the way I approach cybersecurity investigations.</p>
+</section>
+<section class="article-section" id="building-a-complete-dfir-mindset">
+<h2>Building a Complete DFIR Mindset</h2>
+<p>One of the most valuable lessons from FOR508 was learning to think like a digital forensic investigator instead of only a SOC analyst.</p>
+<p>Previously, I often viewed security events independently:</p>
+<ul class="article-list">
+<li>A suspicious PowerShell execution</li>
+<li>A new scheduled task</li>
+<li>A registry modification</li>
+<li>A network connection</li>
+</ul>
+<p>The course taught me that these artifacts rarely exist in isolation.</p>
+<p>Instead, every artifact represents one piece of a much larger investigative puzzle.</p>
+<p>The investigator&#39;s responsibility is not merely to identify malicious activity but to reconstruct the complete timeline of attacker behavior while validating every conclusion using reliable evidence.</p>
+<p>This investigative mindset dramatically improved my analytical reasoning.</p>
+</section>
+<section class="article-section" id="understanding-the-complete-attack-lifecycle">
+<h2>Understanding the Complete Attack Lifecycle</h2>
+<p>FOR508 presents cyber incidents as complete attack chains rather than isolated events.</p>
+<p>Throughout the course, I learned to investigate:</p>
+<ul class="article-list">
+<li>Initial compromise</li>
+<li>Privilege escalation</li>
+<li>Credential theft</li>
+<li>Lateral movement</li>
+<li>Persistence mechanisms</li>
+<li>Defense evasion</li>
+<li>Data collection</li>
+<li>Exfiltration</li>
+<li>Anti-forensic activities</li>
+</ul>
+<p>Rather than memorizing attacker techniques, I learned how each phase leaves behind forensic evidence across Windows systems, memory, event logs, registry hives, scheduled tasks, network artifacts, browser history, and numerous other forensic sources.</p>
+<p>This holistic perspective enables investigators to understand not only what attackers did, but also what evidence remains after each action.</p>
+</section>
+<section class="article-section" id="mastering-windows-forensic-artifacts">
+<h2>Mastering Windows Forensic Artifacts</h2>
+<p>A major strength of FOR508 is its extensive coverage of Windows forensic artifacts.</p>
+<p>The course demonstrates how Windows continuously records valuable information that investigators can leverage during incident response.</p>
+<p>I developed a much deeper understanding of artifacts including:</p>
+<ul class="article-list">
+<li>Master File Table (MFT)</li>
+<li>USN Change Journal</li>
+<li>Registry hives</li>
+<li>Event Logs</li>
+<li>Amcache</li>
+<li>Shimcache</li>
+<li>Prefetch files</li>
+<li>Shellbags</li>
+<li>Scheduled Tasks</li>
+<li>SRUM</li>
+<li>Jump Lists</li>
+<li>Shortcut (LNK) files</li>
+<li>Browser artifacts</li>
+<li>Windows services</li>
+<li>WMI persistence</li>
+<li>Recycle Bin artifacts</li>
+</ul>
+<p>Before FOR508, I understood many of these artifacts individually.</p>
+<p>After completing the course, I learned how they complement one another to validate investigative findings and eliminate uncertainty.</p>
+<p>This significantly increased my confidence when reconstructing attacker activity.</p>
+</section>
+<section class="article-section" id="developing-advanced-memory-forensics-skills">
+<h2>Developing Advanced Memory Forensics Skills</h2>
+<p>Memory forensics became one of the most impactful sections of the course.</p>
+<p>Unlike traditional disk-based investigations, memory captures the active state of a compromised system, revealing information that often disappears after reboot.</p>
+<p>Through extensive hands-on analysis, I learned how investigators can identify:</p>
+<ul class="article-list">
+<li>Hidden processes</li>
+<li>Process injection</li>
+<li>DLL injection</li>
+<li>Reflective loading</li>
+<li>Malware residing only in memory</li>
+<li>Network connections</li>
+<li>Open handles</li>
+<li>Loaded drivers</li>
+<li>Command histories</li>
+<li>Credential artifacts</li>
+<li>Parent-child process relationships</li>
+</ul>
+<p>Memory analysis provided a completely new perspective on malware investigations.</p>
+<p>I realized that many sophisticated attacks intentionally avoid leaving evidence on disk, making memory acquisition one of the most valuable sources during incident response.</p>
+</section>
+<section class="article-section" id="learning-timeline-analysis">
+<h2>Learning Timeline Analysis</h2>
+<p>One of the most transformative concepts introduced by FOR508 was timeline analysis.</p>
+<p>Initially, I viewed timestamps simply as metadata.</p>
+<p>The course demonstrated that timestamps become significantly more valuable when correlated across multiple forensic artifacts.</p>
+<p>Timeline reconstruction allows investigators to answer questions such as:</p>
+<ul class="article-list">
+<li>When did the attacker first gain access?</li>
+<li>Which files were modified?</li>
+<li>When was persistence established?</li>
+<li>What occurred before malware execution?</li>
+<li>Which user actions were legitimate?</li>
+<li>Which activities belonged to the attacker?</li>
+</ul>
+<p>By integrating timestamps from various forensic sources, investigators can reconstruct the entire sequence of events with remarkable precision.</p>
+<p>This approach substantially strengthened my ability to perform evidence-based investigations.</p>
+</section>
+<section class="article-section" id="recognizing-anti-forensic-techniques">
+<h2>Recognizing Anti-Forensic Techniques</h2>
+<p>Modern adversaries frequently attempt to hide their activities.</p>
+<p>FOR508 dedicates significant attention to anti-forensic techniques designed to mislead investigators.</p>
+<p>Examples include:</p>
+<ul class="article-list">
+<li>Timestamp manipulation</li>
+<li>Log deletion</li>
+<li>Event log clearing</li>
+<li>Secure file deletion</li>
+<li>Registry cleanup</li>
+<li>Alternate Data Streams</li>
+<li>Process masquerading</li>
+<li>Memory-only malware</li>
+<li>Artifact removal</li>
+</ul>
+<p>Perhaps the most important lesson was understanding that the absence of evidence is not evidence of absence.</p>
+<p>Instead, missing artifacts often become valuable evidence themselves.</p>
+<p>This concept fundamentally changed how I evaluate suspicious systems.</p>
+</section>
+<section class="article-section" id="improving-threat-hunting-methodology">
+<h2>Improving Threat Hunting Methodology</h2>
+<p>FOR508 also strengthened my threat hunting capabilities.</p>
+<p>Instead of searching only for known Indicators of Compromise (IOCs), I learned to hunt for attacker behaviors.</p>
+<p>Behavior-based hunting is significantly more resilient because adversaries frequently modify malware signatures, filenames, IP addresses, and hashes.</p>
+<p>However, attacker behavior remains relatively consistent.</p>
+<p>The course emphasized identifying:</p>
+<ul class="article-list">
+<li>Abnormal parent-child process relationships</li>
+<li>Unusual PowerShell usage</li>
+<li>Suspicious WMI activity</li>
+<li>Unauthorized scheduled tasks</li>
+<li>Credential dumping behaviors</li>
+<li>Persistence mechanisms</li>
+<li>Evidence of lateral movement</li>
+</ul>
+<p>This behavioral approach provides greater resilience against evolving threats.</p>
+</section>
+<section class="article-section" id="practical-laboratory-experience">
+<h2>Practical Laboratory Experience</h2>
+<p>One of the defining strengths of FOR508 is its extensive hands-on laboratory exercises.</p>
+<p>Rather than simply explaining forensic concepts, each module requires students to investigate realistic attack scenarios using forensic tools and actual evidence.</p>
+<p>These practical exercises reinforced theoretical knowledge by requiring students to:</p>
+<ul class="article-list">
+<li>Analyze compromised systems</li>
+<li>Examine memory images</li>
+<li>Investigate Windows artifacts</li>
+<li>Build investigative timelines</li>
+<li>Identify attacker persistence</li>
+<li>Validate forensic evidence</li>
+<li>Produce investigative findings</li>
+</ul>
+<p>This practical methodology significantly improved my confidence when approaching real-world investigations.</p>
+</section>
+<section class="article-section" id="impact-on-my-professional-development">
+<h2>Impact on My Professional Development</h2>
+<p>Completing FOR508 has had a direct impact on my professional growth as a cybersecurity analyst.</p>
+<p>The course strengthened several critical competencies:</p>
+<ul class="article-list">
+<li>Evidence-based investigative reasoning</li>
+<li>Advanced Windows forensic analysis</li>
+<li>Memory forensics</li>
+<li>Timeline reconstruction</li>
+<li>Threat hunting methodology</li>
+<li>Incident response workflow</li>
+<li>Adversary behavior analysis</li>
+<li>Anti-forensics detection</li>
+<li>Digital evidence correlation</li>
+<li>Technical reporting</li>
+</ul>
+<p>More importantly, it transformed the way I think during investigations.</p>
+<p>Instead of asking:</p>
+<ul class="article-list">
+<li>&quot;Is this alert malicious?&quot;</li>
+</ul>
+<p>I now ask:</p>
+<ul class="article-list">
+<li>What happened?</li>
+<li>What evidence supports this conclusion?</li>
+<li>What evidence contradicts it?</li>
+<li>What artifacts remain?</li>
+<li>What has the attacker attempted to hide?</li>
+<li>What occurred before and after this event?</li>
+</ul>
+<p>This investigative mindset represents the greatest benefit I gained from the course.</p>
+</section>
+<section class="article-section" id="conclusion">
+<h2>Conclusion</h2>
+<p>SANS FOR508 is considerably more than a technical training course; it is a comprehensive framework for conducting advanced digital forensic investigations and incident response. It bridges the gap between security monitoring and evidence-driven investigation by teaching analysts how to reconstruct complete attack lifecycles through systematic analysis of forensic artifacts.</p>
+<p>For me, the course transformed DFIR from a collection of isolated tools and techniques into a structured investigative discipline. It strengthened my understanding of Windows internals, memory analysis, forensic artifact correlation, timeline reconstruction, adversary tradecraft, and evidence validation. Perhaps most importantly, it reshaped my investigative mindset from simply identifying suspicious events to building defensible, evidence-based conclusions.</p>
+<p>As cyber threats continue to evolve in complexity and sophistication, the knowledge gained through FOR508 provides a strong foundation for conducting thorough incident response, digital forensic investigations, and proactive threat hunting. The skills developed throughout the course have significantly enhanced my technical capabilities and will continue to influence how I investigate security incidents throughout my cybersecurity career.</p>
+</section>
+        </div>
+      </article>
+    </main>
+  </body>
+</html>
