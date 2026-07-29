@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Why Context Is the Most Powerful Detection Rule by Yasir Alharbi.">
+    <title>Why Context Is the Most Powerful Detection Rule | Yasir Alharbi</title>
+    <link rel="stylesheet" href="../styles.css?v=article-polish-1">
+  </head>
+  <body class="article-page">
+    <header class="site-header">
+      <a class="brand" href="../index.html#top" aria-label="Yasir Alharbi home">
+        <span class="brand-mark">YA</span>
+        <span>
+          <strong>Yasir Alharbi</strong>
+          <small>Cybersecurity & AI</small>
+        </span>
+      </a>
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="../index.html#about">About</a>
+        <a href="../index.html#dfir">DFIR</a>
+        <a href="../index.html#soc">SOC</a>
+        <a href="../index.html#ai">AI</a>
+        <a href="../index.html#contact">Contact</a>
+      </nav>
+    </header>
+
+    <main>
+      <article class="article-shell academic-article">
+        <a class="back-link" href="../index.html#soc">Back to home page</a>
+        <header class="article-hero">
+          <p class="section-label">SOC article</p>
+          <h1>Why Context Is the Most Powerful Detection Rule</h1>
+          <div class="article-meta">
+            <span>Yasir Alharbi</span>
+            <span>Security Operations Center</span>
+            <span>Detection thinking</span>
+          </div>
+        </header>
+
+        <nav class="article-toc" aria-label="Article contents">
+          <strong>Contents</strong>
+          <div>
+            <a href="#the-same-event-can-mean-two-completely-different-things">The Same Event Can Mean Two Completely Different Things</a>
+            <a href="#detection-rules-are-only-the-starting-point">Detection Rules Are Only the Starting Point</a>
+            <a href="#looking-beyond-a-single-log">Looking Beyond a Single Log</a>
+            <a href="#context-reduces-alert-fatigue">Context Reduces Alert Fatigue</a>
+            <a href="#technology-helps-but-judgment-matters">Technology Helps—But Judgment Matters</a>
+            <a href="#final-thoughts">Final Thoughts</a>
+          </div>
+        </nav>
+
+        <div class="article-content">
+          <section class="article-section intro-section">
+            <p>Security Operations Centers generate thousands of alerts every day.</p>
+            <p>Many of them look suspicious.</p>
+            <p>Only a few are actually malicious.</p>
+            <p>The difference between the two is rarely determined by the detection rule itself.</p>
+            <p>It's determined by context.</p>
+          </section>
+
+          <section class="article-section" id="the-same-event-can-mean-two-completely-different-things">
+            <h2>The Same Event Can Mean Two Completely Different Things</h2>
+            <p>Imagine a detection rule triggers because PowerShell was executed.</p>
+            <p>Should you escalate the alert?</p>
+            <p>The answer is: it depends.</p>
+            <p>PowerShell launched by a system administrator during scheduled maintenance is completely different from PowerShell executed by Microsoft Word after a user opened an email attachment.</p>
+            <p>The event is the same.</p>
+            <p>The context is not.</p>
+            <p>Without context, both alerts appear equally suspicious.</p>
+          </section>
+
+          <section class="article-section" id="detection-rules-are-only-the-starting-point">
+            <h2>Detection Rules Are Only the Starting Point</h2>
+            <p>One lesson I learned while working in a SOC is that detection rules don't make decisions.</p>
+            <p>They raise questions.</p>
+            <p>A good alert should encourage an analyst to investigate, not immediately conclude that an attack has occurred.</p>
+            <p>Questions such as these often matter more than the alert itself:</p>
+            <ul class="article-list">
+              <li>Who executed the process?</li>
+              <li>Which host generated the event?</li>
+              <li>Has this behavior been seen before?</li>
+              <li>What happened immediately before and after the alert?</li>
+              <li>Is this expected within the organization's environment?</li>
+            </ul>
+            <p>Answering these questions transforms raw telemetry into an informed investigation.</p>
+          </section>
+
+          <section class="article-section" id="looking-beyond-a-single-log">
+            <h2>Looking Beyond a Single Log</h2>
+            <p>One log rarely tells the full story.</p>
+            <p>Suppose an endpoint reports multiple failed logon attempts.</p>
+            <p>On its own, this could indicate password spraying.</p>
+            <p>Or it could simply be a user typing the wrong password after returning from vacation.</p>
+            <p>Now add more context:</p>
+            <ul class="article-list">
+              <li>The source IP belongs to an internal management server.</li>
+              <li>The account successfully authenticated seconds later.</li>
+              <li>Similar activity occurs every morning at the same time.</li>
+            </ul>
+            <p>Suddenly, what looked suspicious becomes understandable.</p>
+            <p>The investigation changed—not because of a different detection rule, but because additional evidence was considered.</p>
+          </section>
+
+          <section class="article-section" id="context-reduces-alert-fatigue">
+            <h2>Context Reduces Alert Fatigue</h2>
+            <p>Alert fatigue is one of the biggest challenges facing SOC teams.</p>
+            <p>The solution isn't always writing more rules.</p>
+            <p>Sometimes it's improving the quality of the information surrounding existing detections.</p>
+            <p>Asset criticality, user roles, authentication history, known administrative activity, maintenance windows, and historical behavior all provide valuable context.</p>
+            <p>When analysts have this information available, they spend less time chasing noise and more time focusing on genuine threats.</p>
+          </section>
+
+          <section class="article-section" id="technology-helps-but-judgment-matters">
+            <h2>Technology Helps—But Judgment Matters</h2>
+            <p>Modern security platforms are becoming increasingly intelligent.</p>
+            <p>Machine learning models can identify anomalies.</p>
+            <p>AI can summarize investigations and correlate related events.</p>
+            <p>Automation can enrich alerts within seconds.</p>
+            <p>These capabilities improve efficiency, but they don't replace human reasoning.</p>
+            <p>A system may identify something as unusual.</p>
+            <p>An analyst determines whether it matters.</p>
+            <p>That distinction remains essential.</p>
+          </section>
+
+          <section class="article-section" id="final-thoughts">
+            <h2>Final Thoughts</h2>
+            <p>Detection engineering is often viewed as the process of writing better rules.</p>
+            <p>I believe it's equally about providing better context.</p>
+            <p>A simple detection supported by rich context is often more valuable than a complex detection that leaves analysts guessing.</p>
+            <p>The next time an alert appears in your queue, don't ask only, "What rule fired?"</p>
+            <p>Ask a better question:</p>
+            <p><strong>"What is the complete story behind this event?"</strong></p>
+            <p>More often than not, that's where the real investigation begins.</p>
+          </section>
+        </div>
+      </article>
+    </main>
+  </body>
+</html>
