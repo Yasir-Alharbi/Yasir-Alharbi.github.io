@@ -505,9 +505,7 @@
   }
 
   .identity-visual {
-    justify-self: stretch;
-    width: 100%;
-    max-width: 560px;
+    display: none !important;
   }
 
   .focus-strip,
