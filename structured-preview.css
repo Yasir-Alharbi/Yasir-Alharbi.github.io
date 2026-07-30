@@ -654,8 +654,8 @@
 
 @media (max-width: 720px) {
   .about-track .structured-heading.about-heading {
-    width: 100% !important;
-    max-width: calc(100vw - 32px) !important;
+    width: min(100%, 340px) !important;
+    max-width: 340px !important;
   }
 
   .about-track .structured-heading.about-heading h2 {
@@ -670,6 +670,6 @@
   .about-track .structured-heading.about-heading .body-copy,
   .about-track .structured-heading.about-heading .body-copy p {
     width: 100%;
-    max-width: 100%;
+    max-width: 340px;
   }
 }
