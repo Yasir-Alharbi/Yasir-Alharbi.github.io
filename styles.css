@@ -190,14 +190,16 @@ p {
 
 .hero-actions {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: flex-start;
   gap: 12px;
   margin-top: 30px;
 }
 
-.hero-action-break {
-  flex-basis: 100%;
-  height: 0;
+.hero-action-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
 .button {
