@@ -574,13 +574,7 @@
   }
 
   .identity-visual {
-    width: 100%;
-    max-width: 100%;
-  }
-
-  .identity-visual img {
-    height: auto;
-    object-fit: contain;
+    display: none;
   }
 
   .structured-subtitle {
