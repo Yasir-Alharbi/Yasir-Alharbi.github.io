@@ -651,3 +651,16 @@
   max-width: 820px;
   padding-top: 18px;
 }
+
+@media (max-width: 720px) {
+  .about-track .structured-heading.about-heading h2 {
+    max-width: 100%;
+    font-size: clamp(2rem, 8.2vw, 2.45rem);
+    line-height: 1.16;
+  }
+
+  .about-track .structured-heading.about-heading .body-copy,
+  .about-track .structured-heading.about-heading .body-copy p {
+    max-width: 100%;
+  }
+}
