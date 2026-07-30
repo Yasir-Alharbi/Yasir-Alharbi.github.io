@@ -571,6 +571,11 @@
     white-space: normal;
   }
 
+  .identity-hero {
+    min-height: auto;
+    padding: 76px 0 62px;
+  }
+
   .identity-visual {
     display: none;
   }
