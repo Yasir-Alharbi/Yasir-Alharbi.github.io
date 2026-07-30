@@ -502,6 +502,7 @@
   }
 
   .identity-visual {
+    width: 100%;
     max-width: 560px;
   }
 
@@ -566,6 +567,10 @@
   .identity-hero h1 {
     width: auto;
     white-space: normal;
+  }
+
+  .identity-visual {
+    max-width: 100%;
   }
 
   .structured-subtitle {
