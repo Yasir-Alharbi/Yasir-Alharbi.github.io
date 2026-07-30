@@ -39,6 +39,8 @@
 
 .identity-visual {
   position: relative;
+  min-width: 0;
+  box-sizing: border-box;
   overflow: hidden;
   border: 1px solid rgba(51, 245, 223, .34);
   border-radius: 22px;
@@ -57,6 +59,7 @@
 .identity-visual img {
   display: block;
   width: 100%;
+  max-width: 100%;
   aspect-ratio: 20 / 21;
   object-fit: cover;
   border-radius: inherit;
@@ -502,6 +505,7 @@
   }
 
   .identity-visual {
+    justify-self: stretch;
     width: 100%;
     max-width: 560px;
   }
@@ -570,7 +574,13 @@
   }
 
   .identity-visual {
+    width: 100%;
     max-width: 100%;
+  }
+
+  .identity-visual img {
+    height: auto;
+    object-fit: contain;
   }
 
   .structured-subtitle {
