@@ -653,14 +653,23 @@
 }
 
 @media (max-width: 720px) {
+  .about-track .structured-heading.about-heading {
+    width: 100% !important;
+    max-width: calc(100vw - 32px) !important;
+  }
+
   .about-track .structured-heading.about-heading h2 {
-    max-width: 100%;
-    font-size: clamp(2rem, 8.2vw, 2.45rem);
+    width: 100% !important;
+    max-width: 100% !important;
+    font-size: clamp(1.8rem, 7.2vw, 2.2rem) !important;
     line-height: 1.16;
+    overflow-wrap: break-word;
+    text-wrap: wrap;
   }
 
   .about-track .structured-heading.about-heading .body-copy,
   .about-track .structured-heading.about-heading .body-copy p {
+    width: 100%;
     max-width: 100%;
   }
 }
