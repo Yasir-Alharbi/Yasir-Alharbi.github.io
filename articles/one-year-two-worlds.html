@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="One Year, Two Worlds by Yasir Alharbi.">
     <title>One Year, Two Worlds: Hunting Adversaries by Day, Mastering AI by Night | Yasir Alharbi</title>
-    <link rel="stylesheet" href="../styles.css?v=article-polish-1">
+    <link rel="stylesheet" href="../styles.css?v=article-split-1">
   </head>
   <body class="article-page">
     <header class="site-header">
@@ -18,9 +18,9 @@
       </a>
       <nav class="nav-links" aria-label="Main navigation">
         <a href="../index.html#about">About</a>
-        <a href="../index.html#projects">Projects</a>
-        <a href="../index.html#research">Research</a>
-        <a href="../index.html#skills">Skills</a>
+        <a href="../index.html#dfir">DFIR</a>
+        <a href="../index.html#soc">SOC</a>
+        <a href="../index.html#ai">AI</a>
         <a href="../index.html#contact">Contact</a>
       </nav>
     </header>
@@ -29,194 +29,65 @@
       <article class="article-shell academic-article">
         <a class="back-link" href="../index.html#ai">Back to home page</a>
         <header class="article-hero">
-          <p class="section-label">Article</p>
+          <p class="section-label">AI learning journey</p>
           <h1>One Year, Two Worlds: Hunting Adversaries by Day, Mastering AI by Night</h1>
           <div class="article-meta">
             <span>Yasir Alharbi</span>
             <span>Cybersecurity & AI</span>
-            <span>Long-form reflection</span>
+            <span>Personal reflection</span>
           </div>
         </header>
 
         <nav class="article-toc" aria-label="Article contents">
           <strong>Contents</strong>
           <div>
-<a href="#learning-ai-beyond-the-surface">Learning AI Beyond the Surface</a>
-<a href="#1-fundamentals-of-deep-learning">1. Fundamentals of Deep Learning</a>
-<a href="#2-fundamentals-of-accelerating-end-to-end-data-science">2. Fundamentals of Accelerating End-to-End Data Science</a>
-<a href="#3-introduction-to-transformer-based-natural-language-processing">3. Introduction to Transformer-Based Natural Language Processing</a>
-<a href="#4-building-llm-applications-with-prompt-engineering">4. Building LLM Applications with Prompt Engineering</a>
-<a href="#5-rapid-application-development-with-large-language-models">5. Rapid Application Development with Large Language Models</a>
-<a href="#learning-by-writing-and-building">Learning by Writing and Building</a>
-<a href="#building-an-interactive-practice-exam">Building an Interactive Practice Exam</a>
-<a href="#my-first-professional-ai-certification">My First Professional AI Certification</a>
-<a href="#where-the-two-worlds-meet">Where the Two Worlds Meet</a>
-<a href="#resources-from-this-journey">Resources from This Journey</a>
+            <a href="#two-worlds">Two Different Worlds</a>
+            <a href="#learning-ai">Learning AI Beyond the Surface</a>
+            <a href="#security-perspective">Why It Matters in Security</a>
+            <a href="#where-they-meet">Where the Two Worlds Meet</a>
           </div>
         </nav>
 
         <div class="article-content">
-<section class="article-section intro-section">
-<p>For more than a year, my daily routine has moved between two very different worlds.</p>
-<p>By day, I work as a Senior Cybersecurity Analyst. My time is spent analyzing logs, investigating incidents, validating alerts, hunting adversaries, and trying to understand what happened inside complex environments.</p>
-<p>By evening, I become a student again.</p>
-<p>The SIEM dashboards are replaced by lecture slides, Jupyter notebooks, mathematical equations, and code. Instead of tracing attacker activity, I study optimization, neural networks, deep learning, transformers, algorithms, and Large Language Models as part of my Master’s degree in Artificial Intelligence.</p>
-<p>At first, cybersecurity and AI felt like separate paths. One focused on adversaries, evidence, and defensive systems; the other on mathematics, data, and intelligent models.</p>
-<p>Over time, however, the connection between them became increasingly clear.</p>
-<p>AI is already changing how security teams investigate incidents, analyze malware, search large volumes of data, automate repetitive work, and detect patterns that might otherwise be missed. I did not want to understand AI only as a user of AI-powered security tools. I wanted to understand what happens behind those tools: how models learn, how they make decisions, how they are integrated into applications, and where their limitations begin.</p>
-<p>That motivation shaped my first year in AI.</p>
-</section>
-<section class="article-section" id="learning-ai-beyond-the-surface">
-<h2>Learning AI Beyond the Surface</h2>
-<p>Before formally studying AI, much of the public discussion around it seemed to revolve around chatbots, prompts, and generated content.</p>
-<p>My Master’s program quickly showed me that this was only the visible surface.</p>
-<p>Behind every model were mathematical foundations, optimization methods, data preparation decisions, evaluation techniques, and architectural choices. Concepts such as gradient descent, loss functions, probability, neural networks, attention, and transformers were not isolated academic topics. They were the mechanisms that allowed modern AI systems to work.</p>
-<p>The deeper I studied, the more questions I had.</p>
-<p>I rarely felt satisfied with knowing that a model produced the correct result. I wanted to understand why it worked, what each component contributed, what information entered the system, and how it was transformed before reaching the output.</p>
-<p>That habit carried into my preparation for the NVIDIA Certified Associate: Generative AI and Large Language Models certification.</p>
-<p>Rather than studying only to pass the exam, I used the preparation as another opportunity to connect the theory from my Master’s program with the practical engineering of modern AI systems.</p>
-<p>My preparation included five NVIDIA courses, each representing a different stage in that progression.</p>
-</section>
-<section class="article-section" id="1-fundamentals-of-deep-learning">
-<h2>1. Fundamentals of Deep Learning</h2>
-<p>This course strengthened the foundation beneath everything that followed.</p>
-<p>I had already studied neural networks academically, but there was still a difference between recognizing an architecture and being able to reason through how it worked.</p>
-<p>The course helped me examine deep learning as a complete pipeline rather than only a sequence of layers. Data preparation, normalization, augmentation, batching, training, evaluation, and inference all mattered. The model was only one part of the system.</p>
-<p>One of the most important lessons was transfer learning.</p>
-<p>Before working through it practically, training often seemed like the process of starting with an untrained model and teaching it a task from the beginning. Transfer learning revealed a more efficient reality: a pretrained model may already contain valuable representations learned from enormous datasets.</p>
-<p>The objective is not always to teach the model how to see again. Sometimes, it is only necessary to adapt what it already knows to a new task.</p>
-<p>I also became more comfortable reading architectures rather than treating them as black boxes. Models such as VGG and BERT became combinations of understandable components: feature extractors, embeddings, attention layers, encoder blocks, and task-specific output heads.</p>
-<p>This was the point where AI stopped feeling like a collection of models I could import and began to feel like a system I could inspect and reason about.</p>
-</section>
-<section class="article-section" id="2-fundamentals-of-accelerating-end-to-end-data-science">
-<h2>2. Fundamentals of Accelerating End-to-End Data Science</h2>
-<p>This course expanded my view beyond individual algorithms and models.</p>
-<p>It demonstrated that real AI and data-science workloads depend heavily on the infrastructure surrounding them: how data is processed, how workloads are distributed, how GPUs are used, and how complete workflows are accelerated.</p>
-<p>The word acceleration initially sounded as though it referred only to making computations faster. In practice, it represented something broader.</p>
-<p>Performance affects what becomes technically and economically possible. Faster data processing and model execution can enable larger datasets, quicker experimentation, more responsive applications, and more scalable systems.</p>
-<p>Coming from cybersecurity, this way of thinking felt familiar.</p>
-<p>A SOC does not create value from a single security product or log source. Data must be collected, normalized, enriched, correlated, analyzed, and presented in a form that supports decisions. Similarly, practical AI depends on an entire end-to-end workflow rather than one isolated model.</p>
-<p>This course encouraged me to think about AI as infrastructure.</p>
-<p>It also influenced how I began imagining AI applications for cybersecurity, including the possibility of using accelerated analytics, APIs, automation, and AI-generated summaries to reduce repetitive SOC reporting tasks.</p>
-<p>The lesson that remained with me was simple:</p>
-<p>Intelligence does not exist only inside the model. It also exists in the way the surrounding system is designed.</p>
-</section>
-<section class="article-section" id="3-introduction-to-transformer-based-natural-language-processing">
-<h2>3. Introduction to Transformer-Based Natural Language Processing</h2>
-<p>Transformers were already familiar from my academic studies, but this course helped organize them into a practical ecosystem.</p>
-<p>Before it, names such as BERT, RoBERTa, BART, T5, and GPT sometimes felt like separate entries in a long list of models. The course helped me understand them through their architecture and purpose rather than by memorizing names.</p>
-<p>BERT became associated with understanding and representation. GPT represented generation. BART combined reading and generation. Different models had different strengths, but they were connected by the same broader transformer foundation.</p>
-<p>One of the most important insights was that a pretrained transformer can be adapted to multiple tasks.</p>
-<p>Text classification, token classification, Named Entity Recognition, extractive question answering, and generative question answering may sound like separate AI problems. In practice, many of them share a similar engineering workflow:</p>
-<p class="article-flow-line">Dataset → Pretrained model → Task adaptation → Fine-tuning → Evaluation → Inference</p>
-<p>The core model often remains largely the same. What changes is the task objective, the training data, or the output layer.</p>
-<p>This also clarified the role of frameworks such as Hugging Face and NVIDIA NeMo. They are not substitutes for understanding deep learning. They are engineering ecosystems that provide pretrained models, tokenizers, training workflows, and reusable components.</p>
-<p>The course transformed transformers from an academic architecture into a practical foundation that could support many real NLP applications.</p>
-</section>
-<section class="article-section" id="4-building-llm-applications-with-prompt-engineering">
-<h2>4. Building LLM Applications with Prompt Engineering</h2>
-<p>This course corrected one of the most common misunderstandings around Generative AI: that prompt engineering is simply the skill of writing clever instructions.</p>
-<p>I learned that reliable prompt engineering is much closer to software engineering.</p>
-<p>A good prompt is not necessarily a one-time message written for a chatbot. It can be a reusable component inside a larger application. Prompt templates, structured outputs, parsers, chains, tool calling, and agents can all work together as parts of a workflow.</p>
-<p>The pipeline became more important than the individual prompt:</p>
-<p class="article-flow-line">Input → Prompt template → LLM → Structured output → Tool or application</p>
-<p>Structured output was especially meaningful to me because cybersecurity relies heavily on structured information.</p>
-<p>An LLM that generates a well-written paragraph may be useful to a person. An LLM that produces predictable JSON, fields, classifications, or extracted entities can be integrated directly into software, automation, and security workflows.</p>
-<p>Tool calling introduced another important shift.</p>
-<p>The model does not need to contain every answer internally. It can identify when external information or functionality is needed, call an appropriate tool, receive the result, and continue the workflow.</p>
-<p>That changed my view of LLM capabilities. The intelligence of an application does not come only from what the model remembers. It can also come from how effectively the model interacts with external systems.</p>
-<p>By the end of the course, Large Language Models no longer felt like impressive standalone algorithms. They had become reusable components inside complete engineering systems.</p>
-</section>
-<section class="article-section" id="5-rapid-application-development-with-large-language-models">
-<h2>5. Rapid Application Development with Large Language Models</h2>
-<p>The final course brought many of the previous ideas together.</p>
-<p>By that stage, I understood deep learning, transformers, prompting, structured outputs, and the basic ecosystem surrounding LLMs. What remained was learning how multiple AI services could be assembled into a complete application.</p>
-<p>The most important lesson was orchestration.</p>
-<p>Modern AI applications are rarely built around one model performing every task. They often combine specialized models, each responsible for a particular stage.</p>
-<p>One of the course workflows demonstrated this clearly:</p>
-<p class="article-flow-line">Image → Vision-Language Model → LLM prompt refinement → Image-generation model → Final result</p>
-<p>The Vision-Language Model understood the image. The LLM transformed that understanding into an improved prompt. The image-generation model created the final output.</p>
-<p>No individual model completed the entire task. The capability emerged from the way they were connected.</p>
-<p>That was the moment I stopped asking only:</p>
-<p>Which model is the most powerful?</p>
-<p>and started asking:</p>
-<p>How should these models communicate with one another?</p>
-<p>The course also introduced a more production-oriented mindset through inference servers, APIs, endpoints, routing, and application pipelines.</p>
-<p>This was particularly familiar from a cybersecurity perspective. Security operations also rely on multiple systems exchanging data: collectors, detection logic, enrichment services, threat-intelligence sources, case-management platforms, and reporting layers.</p>
-<p>AI engineering followed a similar principle. The strength of the final system depended not only on its individual components, but on the architecture connecting them.</p>
-<p>This course changed my perspective from studying individual AI models to engineering complete AI systems.</p>
-</section>
-<section class="article-section" id="learning-by-writing-and-building">
-<h2>Learning by Writing and Building</h2>
-<p>My preparation did not end when I finished the courses.</p>
-<p>I learn best when I am forced to reorganize information in my own words. Reading or watching a lesson may create familiarity, but writing about it reveals whether I genuinely understand it.</p>
-<p>For that reason, I wrote a dedicated article for each of the five NVIDIA courses. These articles document the concepts that mattered most to me, the misunderstandings I had to correct, and the practical lessons I wanted to preserve.</p>
-<p>I also created a personal certification cheat sheet to connect the major exam topics, including:</p>
-<ul class="article-list">
-<li>Core ML and AI fundamentals</li>
-<li>Data analysis techniques</li>
-<li>Experimentation, validation, and evaluation</li>
-<li>Software development, deployment, and monitoring</li>
-<li>Trustworthy AI, privacy, bias, and ethics</li>
-<li>Key NVIDIA technologies: NIM, NeMo, RAPIDS, Triton, TensorRT-LLM</li>
-<li>Prompt engineering, RAG, embeddings, and LLM application patterns</li>
-<li>Model evaluation, testing metrics, Python tools, and exam scenario traps</li>
-</ul>
-<p>The goal was not to collect definitions. It was to build one connected mental map of the certification domains.</p>
-</section>
-<section class="article-section" id="building-an-interactive-practice-exam">
-<h2>Building an Interactive Practice Exam</h2>
-<p>As part of my preparation, I also converted a collection of 123 practice questions into an interactive exam format.</p>
-<p>The original questions and their explanations were created by the CertPro Deep Dive YouTube channel. Their playlist provided a valuable resource during my preparation, and full credit for the questions belongs to them.</p>
-<p>My contribution was converting the questions into an interactive practice experience and combining them with my personal study cheat sheets.</p>
-<p>The project does not claim ownership of the original questions.</p>
-<p>Original resources:</p>
-<ul class="article-list">
-<li>Playlist: https://youtube.com/playlist?list=PLB574eEmT4odPerWxbnPTCMy5dBqLfurF&amp;si=t1Ixv9MiSJIuHA6U</li>
-<li>Channel: https://www.youtube.com/@CertProDeepDive</li>
-</ul>
-<p>Creating the interactive format helped me simulate the pressure of answering questions without immediately seeing the explanations. It also made it easier to identify weak areas, review incorrect answers, and repeat the assessment during the final preparation stage.</p>
-<p>Explore the interactive practice exam: <a href="https://yasir-alharbi.github.io/nca-genl-practice-exam/">https://yasir-alharbi.github.io/nca-genl-practice-exam/</a></p>
-<p>View the cheat sheet: <a href="https://yasir-alharbi.github.io/assets/papers/nca-genl-master-cheat-sheet-dark.pdf">https://yasir-alharbi.github.io/assets/papers/nca-genl-master-cheat-sheet-dark.pdf</a></p>
-<p>Open the GitHub repository: <a href="https://github.com/Yasir-Alharbi/nca-genl-practice-exam">https://github.com/Yasir-Alharbi/nca-genl-practice-exam</a></p>
-</section>
-<section class="article-section" id="my-first-professional-ai-certification">
-<h2>My First Professional AI Certification</h2>
-<p>After more than a year of balancing full-time cybersecurity work, graduate studies, technical courses, writing, and practical preparation, I earned my first professional AI certification:</p>
-<p>NVIDIA Certified Associate: Generative AI and Large Language Models</p>
-<p>The certification was meaningful, but not because it represented the end of the journey.</p>
-<p>It became the first professional validation of a foundation I had been building through my Master’s program and independent study.</p>
-<p>More importantly, preparing for it changed how I understood Generative AI.</p>
-<p>I no longer saw an LLM as a chatbot that receives a prompt and produces text. I saw a component inside a much larger system—one that could retrieve information, call tools, generate structured data, coordinate specialized models, and support complete applications.</p>
-</section>
-<section class="article-section" id="where-the-two-worlds-meet">
-<h2>Where the Two Worlds Meet</h2>
-<p>When I started studying AI, cybersecurity and Artificial Intelligence felt like separate worlds competing for my time.</p>
-<p>Today, they feel increasingly connected.</p>
-<p>The same engineering mindset appears in both fields.</p>
-<p>Cybersecurity depends on data pipelines, correlation, context, automation, investigation, and decision-making. AI systems depend on data preparation, models, retrieval, orchestration, evaluation, and reliable integration.</p>
-<p>Both fields also require skepticism.</p>
-<p>A security alert cannot be trusted without evidence and context. An AI output should not be trusted without evaluation, validation, and an understanding of its limitations.</p>
-<p>My goal is not to leave cybersecurity behind.</p>
-<p>It is to strengthen my cybersecurity expertise by developing a deep understanding of the technology that will increasingly influence the field. I want to be prepared not only to use AI in defensive security, but also to understand how AI systems can fail, how they may be abused, and how they can be designed more securely.</p>
-<p>The Senior Cybersecurity Analyst in me still enjoys hunting adversaries.</p>
-<p>The AI student in me is still fascinated by how intelligent systems learn, reason, and generate.</p>
-<p>After more than a year between these two worlds, they no longer feel separate.</p>
-<p>They are gradually becoming one.</p>
-</section>
-<section class="article-section" id="resources-from-this-journey">
-<h2>Resources from This Journey</h2>
-<ul>
-<li>Interactive 123-question practice exam: <a href="https://yasir-alharbi.github.io/nca-genl-practice-exam/">https://yasir-alharbi.github.io/nca-genl-practice-exam/</a></li>
-<li>Personal certification cheat sheet: <a href="https://yasir-alharbi.github.io/assets/papers/nca-genl-master-cheat-sheet-dark.pdf">https://yasir-alharbi.github.io/assets/papers/nca-genl-master-cheat-sheet-dark.pdf</a></li>
-<li>GitHub repository: <a href="https://github.com/Yasir-Alharbi/nca-genl-practice-exam">https://github.com/Yasir-Alharbi/nca-genl-practice-exam</a></li>
-</ul>
-</section>
+          <section class="article-section intro-section" id="two-worlds">
+            <p>For more than a year, my daily routine has moved between two very different worlds.</p>
+            <p>By day, I work as a Senior Cybersecurity Analyst. My time is spent reviewing alerts, analyzing logs, validating evidence, investigating suspicious activity, and trying to understand what really happened inside complex environments.</p>
+            <p>By evening, I become a student again.</p>
+            <p>The SIEM dashboards are replaced by lecture slides, Jupyter notebooks, mathematical equations, model architectures, and code. Instead of tracing attacker behavior, I study optimization, deep learning, transformers, algorithms, and large language models as part of my master's degree in Artificial Intelligence.</p>
+            <p>At first, cybersecurity and AI felt like separate paths. One was built around adversaries, evidence, and defensive decisions. The other was built around data, mathematics, and intelligent systems.</p>
+            <p>Over time, the connection became impossible to ignore.</p>
+          </section>
+
+          <section class="article-section" id="learning-ai">
+            <h2>Learning AI Beyond the Surface</h2>
+            <p>Before studying AI seriously, it was easy to see it mainly through the public conversation: chatbots, prompts, generated text, and impressive demos.</p>
+            <p>Graduate study changed that view quickly.</p>
+            <p>Behind every model were decisions about data, optimization, evaluation, architecture, and deployment. Concepts such as loss functions, gradient descent, transfer learning, attention, embeddings, and transformers were not just academic terms. They were the mechanisms that made modern AI systems work.</p>
+            <p>The deeper I studied, the less satisfied I became with simply using a model and accepting its output. I wanted to know what entered the system, how it was transformed, why the model behaved the way it did, and where the limitations began.</p>
+            <p>That mindset felt familiar because it is close to how good security investigation works. A security alert cannot be trusted without context. An AI output should not be trusted without evaluation.</p>
+          </section>
+
+          <section class="article-section" id="security-perspective">
+            <h2>Why It Matters in Security</h2>
+            <p>AI is already changing the way security teams work. It can help summarize logs, search large volumes of data, enrich alerts, detect patterns, and reduce repetitive reporting work.</p>
+            <p>But I do not want to understand AI only as a user of AI-powered security tools.</p>
+            <p>I want to understand what happens behind those tools: how models learn, how they make decisions, how they can fail, how they may be abused, and how they can be integrated responsibly into defensive workflows.</p>
+            <p>That matters because cybersecurity is an evidence-driven field. We cannot replace investigation with automation and call it progress. The strongest future belongs to analysts who can combine operational judgment with a real understanding of modern AI systems.</p>
+            <p>This is the direction I am developing toward: stronger security thinking, deeper DFIR discipline, and practical AI knowledge that can support defensive work.</p>
+          </section>
+
+          <section class="article-section" id="where-they-meet">
+            <h2>Where the Two Worlds Meet</h2>
+            <p>Cybersecurity and AI are no longer separate worlds for me.</p>
+            <p>Security operations depend on data pipelines, correlation, context, automation, investigation, and decision-making. AI systems depend on data preparation, models, retrieval, orchestration, evaluation, and reliable integration.</p>
+            <p>Both fields require skepticism. Both require discipline. Both require the ability to explain why a conclusion should be trusted.</p>
+            <p>The Senior Cybersecurity Analyst in me still enjoys hunting adversaries and reconstructing incidents from evidence. The AI student in me is still fascinated by how intelligent systems learn, reason, and generate.</p>
+            <p>After more than a year moving between these two worlds, my goal has become clearer: I want to strengthen my cybersecurity career by deeply understanding the technology that will increasingly influence it.</p>
+            <p>My NVIDIA certification preparation and study resources are documented separately here: <a href="nvidia-generative-ai-certification-preparation.html">My First Professional AI Certification</a>.</p>
+          </section>
         </div>
       </article>
     </main>
     <!-- Cloudflare Web Analytics --><script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"e4d406a7bc7f46ea9fc26f9b0344f4cb"}'></script><!-- End Cloudflare Web Analytics -->
   </body>
 </html>
-
-
