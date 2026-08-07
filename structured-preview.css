@@ -523,6 +523,44 @@
   font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
 }
 
+.nvidia-course-card {
+  grid-column: span 2;
+}
+
+.mini-course-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: 18px 0 20px;
+}
+
+.feature-card .mini-course-list p {
+  min-height: 112px;
+  margin: 0;
+  padding: 14px 15px;
+  border: 1px solid rgba(114, 138, 170, .18);
+  border-radius: 12px;
+  background: rgba(6, 15, 28, .58);
+  color: #cfe0f3;
+  font-size: .92rem;
+  line-height: 1.58;
+}
+
+.feature-card .mini-course-list strong {
+  display: block;
+  width: auto;
+  min-height: 0;
+  margin: 0 0 5px;
+  padding: 0;
+  border: 0;
+  color: #ffffff;
+  line-height: 1.35;
+}
+
+.feature-card .mini-course-list strong::after {
+  content: none;
+}
+
 .primary-feature {
   grid-row: span 2;
   min-height: 390px;
@@ -787,6 +825,18 @@
   .soc-section .feature-card {
     min-height: auto;
     padding: 22px;
+  }
+
+  .nvidia-course-card {
+    grid-column: auto;
+  }
+
+  .mini-course-list {
+    grid-template-columns: 1fr;
+  }
+
+  .feature-card .mini-course-list p {
+    min-height: auto;
   }
 
   .research-list a {
