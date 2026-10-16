@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<title>Research Methodologies &amp; Ethics — Midterm Simulator</title>
+<style>
+:root{
+  --bg:#f6f7f9; --card:#ffffff; --ink:#15181d; --muted:#5d6672;
+  --line:#dfe3e9; --accent:#2f5fd0; --accent-soft:#e8eefc;
+  --ok:#0f7a47; --ok-soft:#e3f5ec; --bad:#b32533; --bad-soft:#fdeaec;
+  --warn:#8a5a00; --warn-soft:#fdf3df;
+  --radius:12px;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#111418; --card:#1a1f26; --ink:#e9edf2; --muted:#9aa5b1;
+    --line:#2a313a; --accent:#7aa2f7; --accent-soft:#1e2a44;
+    --ok:#5fd3a0; --ok-soft:#133227; --bad:#ff8b96; --bad-soft:#3a1b20;
+    --warn:#f0c674; --warn-soft:#352c16;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#111418; --card:#1a1f26; --ink:#e9edf2; --muted:#9aa5b1;
+  --line:#2a313a; --accent:#7aa2f7; --accent-soft:#1e2a44;
+  --ok:#5fd3a0; --ok-soft:#133227; --bad:#ff8b96; --bad-soft:#3a1b20;
+  --warn:#f0c674; --warn-soft:#352c16;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  padding:16px;
+}
+.wrap{max-width:760px;margin:0 auto}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+h1{font-size:19px;margin:0;letter-spacing:-.2px}
+.sub{color:var(--muted);font-size:13px;margin-top:2px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px}
+.bar{height:6px;background:var(--line);border-radius:99px;overflow:hidden;margin:12px 0 18px}
+.bar > i{display:block;height:100%;background:var(--accent);width:0;transition:width .25s}
+.meta{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--muted);margin-bottom:4px}
+.meta b{color:var(--ink)}
+.tag{display:inline-block;font-size:11px;letter-spacing:.06em;text-transform:uppercase;
+  background:var(--accent-soft);color:var(--accent);padding:3px 9px;border-radius:99px;font-weight:700}
+.qtext{font-size:17px;font-weight:600;margin:14px 0 16px;line-height:1.5}
+.opt{display:flex;gap:11px;align-items:flex-start;width:100%;text-align:left;
+  background:var(--card);border:1.5px solid var(--line);color:var(--ink);
+  border-radius:10px;padding:12px 14px;margin-bottom:9px;cursor:pointer;font:inherit;transition:.12s}
+.opt:hover:not(:disabled){border-color:var(--accent)}
+.opt .k{font-weight:800;color:var(--muted);min-width:18px}
+.opt.sel{border-color:var(--accent);background:var(--accent-soft)}
+.opt.right{border-color:var(--ok);background:var(--ok-soft)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.opt:disabled{cursor:default;opacity:1}
+textarea{width:100%;min-height:120px;padding:12px;border-radius:10px;border:1.5px solid var(--line);
+  background:var(--card);color:var(--ink);font:inherit;resize:vertical}
+textarea:focus{outline:none;border-color:var(--accent)}
+.btn{background:var(--accent);color:#fff;border:0;border-radius:9px;padding:11px 20px;
+  font:inherit;font-weight:650;cursor:pointer}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn.ghost{background:transparent;color:var(--accent);border:1.5px solid var(--accent)}
+.btn.small{padding:7px 13px;font-size:13px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:16px}
+.fb{border-radius:10px;padding:14px 16px;margin-top:16px;border:1px solid}
+.fb.ok{background:var(--ok-soft);border-color:var(--ok)}
+.fb.bad{background:var(--bad-soft);border-color:var(--bad)}
+.fb.part{background:var(--warn-soft);border-color:var(--warn)}
+.fb h4{margin:0 0 8px;font-size:15px}
+.fb p{margin:7px 0}
+.fb .lbl{font-weight:700}
+ul.items{margin:8px 0 0;padding-left:20px}
+ul.items li{margin:4px 0}
+li.hit{color:var(--ok)}
+li.miss{color:var(--bad)}
+.hint{font-size:13px;color:var(--muted);margin-top:8px}
+.center{text-align:center}
+.score{font-size:44px;font-weight:800;letter-spacing:-1px;margin:6px 0}
+table{width:100%;border-collapse:collapse;margin-top:12px;font-size:14px}
+td,th{padding:8px 6px;border-bottom:1px solid var(--line);text-align:left}
+th{color:var(--muted);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.05em}
+.wk{background:var(--warn-soft);border:1px solid var(--warn);border-radius:10px;padding:14px 16px;margin-top:16px}
+.wk h4{margin:0 0 8px;font-size:14px}
+select{font:inherit;padding:7px 10px;border-radius:8px;border:1.5px solid var(--line);
+  background:var(--card);color:var(--ink)}
+.rev{border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-top:10px}
+.rev .q{font-weight:600;font-size:14px}
+.rev .a{font-size:13px;margin-top:5px}
+.mode{display:block;width:100%;text-align:left;background:var(--card);color:var(--ink);
+  border:1.5px solid var(--line);border-radius:10px;padding:16px 18px;margin-bottom:11px;
+  font:inherit;cursor:pointer;transition:.12s}
+.mode:hover:not(:disabled){border-color:var(--accent);background:var(--accent-soft)}
+.mode:disabled{opacity:.5;cursor:not-allowed}
+.mode .mt{font-weight:700;font-size:16px;margin-bottom:3px}
+.mode .mn{font-size:13px;color:var(--muted)}
+.themeBtn{background:transparent;border:1.5px solid var(--line);color:var(--muted);
+  border-radius:8px;padding:6px 11px;font:inherit;font-size:13px;cursor:pointer}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Research Methodologies &amp; Ethics</h1>
+      <div class="sub">Midterm Exam Simulator</div>
+    </div>
+    <button class="themeBtn" id="theme">Dark / Light</button>
+  </header>
+  <div id="app"></div>
+</div>
+
+<script>
+/* ============================================================
+   QUESTION BANK — Chapter 1
+   Every item is drawn strictly from the uploaded Chapter 1 slides.
+   ============================================================ */
+
+const CH1 = [
+
+/* ---------- MCQ (30) ---------- */
+{t:"mcq",topic:"Applied vs. Fundamental",
+ q:"A team studies human behaviour with a view to making generalisations about human behaviour. No particular organization&rsquo;s problem prompted the study. According to the chapter, this is best classified as:",
+ o:["Applied research","Descriptive research","Fundamental (&lsquo;pure&rsquo; or &lsquo;basic&rsquo;) research","Analytical research"],
+ a:2,
+ why:"The chapter gives this precise case: &ldquo;research studies concerning human behaviour carried on with a view to make generalisations about human behaviour are also examples of <b>fundamental research</b>.&rdquo; Fundamental research is concerned with generalizations and with the formulation of a theory; gathering knowledge for knowledge&rsquo;s sake is termed &lsquo;pure&rsquo; or &lsquo;basic&rsquo; research.",
+ w:["Applied research aims at a solution for an <i>immediate problem</i> facing a society or an industrial/business organization &mdash; which the stem explicitly rules out.","Descriptive research describes the state of affairs as it exists at present, through surveys and fact-finding enquiries; the aim here is generalisation, not description.","","Analytical research uses facts or information <i>already available</i> and critically evaluates them; nothing in the stem says the data already exist."]},
+
+{t:"mcq",topic:"Objectives of research",
+ q:"Which of the following is listed in the chapter as an <b>objective</b> of research (not a motivation)?",
+ o:["To find out the truth which has not been discovered yet","To get intellectual joy of doing some creative work","To serve the society","To attain a high position in the social structure"],
+ a:0,
+ why:"The chapter gives exactly two objectives: &ldquo;to discover answers to questions through the application of scientific procedures&rdquo; and &ldquo;to find out the truth which has not been discovered yet.&rdquo;",
+ w:["","Intellectual joy is listed under <b>Motivations</b> of research, not objectives.","Desire to serve the society is listed under <b>Motivations</b>.","Attaining a high position in the social structure is listed under <b>Significance</b> of research (for master&rsquo;s and PhD students)."]},
+
+{t:"mcq",topic:"Motivations of research",
+ q:"The chapter notes that &ldquo;concern over practical problems initiates research.&rdquo; This remark belongs to which motivation?",
+ o:["Desire to get respectability","Desire to serve the society","Desire to get a research degree along with its consequential benefits","Desire to face the challenge in solving the unsolved problems"],
+ a:3,
+ why:"That exact note is attached to the motivation &ldquo;Desire to face the challenge in solving the unsolved problems, i.e., concern over practical problems initiates research.&rdquo;",
+ w:["Respectability is a separate, stand-alone motivation with no such note.","Serving the society is a separate motivation; the practical-problems remark is not attached to it.","The research-degree motivation is linked to &ldquo;consequential benefits,&rdquo; not to practical problems.",""]},
+
+{t:"mcq",topic:"Correlational research",
+ q:"In the chapter&rsquo;s discussion of correlational research, a <b>variable</b> is defined as:",
+ o:["A factor that the researcher deliberately manipulates","A characteristic that remains constant across groups","The outcome measure compared between two groups","Anything that can take on different values"],
+ a:3,
+ why:"The chapter defines it directly: &ldquo;A variable is anything that can take on different values, such as weight, time, and height.&rdquo;",
+ w:["Manipulation by the researcher is not part of the chapter&rsquo;s definition; in fact descriptive research is described as having <i>no</i> control over variables.","This is the opposite of the definition &mdash; a variable takes on <i>different</i> values.","The &ldquo;one outcome measure&rdquo; wording belongs to the definition of <b>experimental</b> research, not of a variable.",""]},
+
+{t:"mcq",topic:"Correlational research",
+ q:"According to the chapter, if a correlation between two variables is strong enough, knowing about one variable allows a researcher to:",
+ o:["Make a prediction about the other variable","Conclude that one variable caused the other","Reject the null hypothesis without statistical analysis","Generalize the finding to any population"],
+ a:0,
+ why:"The chapter&rsquo;s note states: &ldquo;If a correlation between two variables is strong enough, knowing about one variable allows a researcher to make a <b>prediction</b> about the other variable.&rdquo;",
+ w:["","The chapter explicitly warns the opposite: in a correlational study, a strong relationship does <i>not</i> permit a causal conclusion.","Rejecting the null hypothesis is described as a decision made <i>with the assistance of statistics</i>, under Analyses.","Generalizability is discussed under <b>Replication</b>, not correlation strength."]},
+
+{t:"mcq",topic:"Correlational research",
+ q:"A researcher finds that GPAs <b>decrease</b> as SAT scores increase. According to the chapter, this is an example of:",
+ o:["A positive correlation","No correlation","An experimental effect","A negative (inverse) correlation"],
+ a:3,
+ why:"The chapter uses this exact example: &ldquo;if GPAs decrease as SAT scores increase, there is a <b>negative correlation</b> between SAT scores and GPAs.&rdquo; In a negative (inverse) correlation the variables change in opposite directions.",
+ w:["Positive correlation is defined as both variables changing in the <i>same</i> direction (either increase or decrease).","The variables clearly change together, just in opposite directions &mdash; that is a correlation, not its absence.","No groups are being compared and no causation is being tested, so this is not experimental research.",""]},
+
+{t:"mcq",topic:"Scientific method &mdash; definitions",
+ q:"According to the chapter, scientists define key concepts and terms in the context of their research studies by using:",
+ o:["Conceptual definitions","Empirical definitions","Operational definitions","Analytical definitions"],
+ a:2,
+ why:"The chapter&rsquo;s Test Yourself item states that scientists define key concepts and terms in the context of their research studies by using <b>operational</b> definitions.",
+ w:["&ldquo;Conceptual&rdquo; in this chapter labels a <i>type of research</i> (related to abstract ideas or theory), not a kind of definition.","&ldquo;Empirical&rdquo; names the evidence-based <i>approach</i> relying on direct observation and experimentation.","&ldquo;Analytical&rdquo; names a <i>type of research</i> that critically evaluates already-available information.",""]},
+
+{t:"mcq",topic:"Experimental research",
+ q:"The chapter defines experimental research as comparing two groups on one outcome measure in order to test a hypothesis regarding:",
+ o:["Correlation","Causation","Description","Generalization"],
+ a:1,
+ why:"The chapter states: &ldquo;Experimental research: involves comparing two groups on one outcome measure to test some hypothesis regarding <b>causation</b>.&rdquo;",
+ w:["Determining whether variables are <i>related</i> is the goal of correlational research, not experimental research.","","Description of the state of affairs as it exists at present is the purpose of <b>descriptive</b> research.","Generalization is associated with <b>fundamental</b> research and with replication, not with the definition of an experiment."]},
+
+{t:"mcq",topic:"Scientific method &mdash; characteristics",
+ q:"Which of the following is <b>NOT</b> listed in the chapter among the characteristics of the scientific method?",
+ o:["Replication","Generalization","Analyses","Questions"],
+ a:1,
+ why:"The chapter lists eight characteristics: empirical approach, observations, questions, hypotheses, experiments, analyses, conclusions, and replication. <b>Generalization is not one of them.</b> The word appears elsewhere in the chapter &mdash; as the concern of fundamental research, and as one purpose served by replication &mdash; but it is not itself a characteristic of the scientific method.",
+ w:["Replication is listed, and the chapter calls it one of the most important elements of the scientific method.","","Analyses is listed; the chapter devotes a slide to the use of statistical techniques.","Questions is listed; the chapter describes translating a research idea into an answerable question."]},
+
+{t:"mcq",topic:"Experimental research",
+ q:"In that same example, why would the two groups be treated <b>exactly the same</b> apart from the medication they receive?",
+ o:["So that the researcher could isolate the effects of the medications","So that participants would not know which group they were in","So that the study could be replicated by other researchers","So that the sample would be representative of the population"],
+ a:0,
+ why:"The chapter states: &ldquo;Besides receiving different medications, the groups would be treated exactly the same so that the research could <b>isolate the effects</b> of the medications.&rdquo;",
+ w:["","Blinding of participants is not discussed in the chapter.","Replication is defined separately as repeating the study with <i>another group of participants</i>, and is not the reason given here.","Representativeness of the sample is not the reason given in the chapter for equal treatment of groups."]},
+
+{t:"mcq",topic:"Descriptive vs. Analytical",
+ q:"Which statement best captures the <b>main characteristic</b> of descriptive research as described in the chapter?",
+ o:["The researcher formulates a theory and then tests it statistically","The researcher has no control over the variables and can only report what has happened or is happening","The researcher critically evaluates information that is already available","The researcher randomly assigns participants to groups before measuring an outcome"],
+ a:1,
+ why:"The chapter&rsquo;s note reads: &ldquo;The main characteristic of this method is that the researcher <b>has no control over the variables</b>; he can only report what has happened or what is happening.&rdquo;",
+ w:["Formulating a theory is associated with <b>fundamental</b> research, not descriptive research.","","Critically evaluating already-available material is the definition of <b>analytical</b> research.","Random assignment to groups belongs to the <b>experimental</b> research example."]},
+
+{t:"mcq",topic:"Descriptive vs. Analytical",
+ q:"A government agency runs a nationwide survey documenting the current state of household internet access. It manipulates nothing and reports what exists at present. According to the chapter, this is:",
+ o:["Analytical research","Experimental research","Descriptive research","Conceptual research"],
+ a:2,
+ why:"Descriptive research &ldquo;includes surveys and fact-finding enquiries of different kinds,&rdquo; its major purpose being &ldquo;<b>description of the state of affairs as it exists at present</b>,&rdquo; and the researcher &ldquo;has no control over the variables.&rdquo; The chapter also states that the methods utilized in descriptive research are survey methods of all kinds, including comparative and correlational methods.",
+ w:["Analytical research uses facts or information <i>already available</i> and critically evaluates them; here fresh survey data are being collected.","Experimental research compares two groups on one outcome measure to test a hypothesis regarding causation; no groups are being compared here.","","Conceptual research relates to abstract ideas or theory and is generally used by philosophers and thinkers."]},
+
+{t:"mcq",topic:"Descriptive vs. Analytical",
+ q:"A researcher gathers government statistics that were already collected and critically evaluates them to reach an assessment. According to the chapter, this is:",
+ o:["Analytical research","Descriptive research","Applied research","Empirical research"],
+ a:0,
+ why:"The chapter defines analytical research as research in which &ldquo;the researcher has to use <b>facts or information already available</b>, and analyze these to make a critical evaluation of the material.&rdquo;",
+ w:["","Descriptive research describes the state of affairs as it exists at present, typically through surveys and fact-finding enquiries.","Applied research is defined by its aim &mdash; solving an immediate problem &mdash; not by the use of pre-existing data.","Empirical research relies on <i>direct observation and experimentation</i> to acquire new knowledge, not on already-available facts."]},
+
+{t:"mcq",topic:"Applied vs. Fundamental",
+ q:"Research aimed at reaching a solution for a concrete social or business problem facing an organization is classified in the chapter as:",
+ o:["Applied research","Fundamental research","Conceptual research","Pure research"],
+ a:0,
+ why:"The chapter defines applied research as research that &ldquo;aims at finding a solution for an <b>immediate problem</b> facing a society or an industrial/business organization.&rdquo;",
+ w:["","Fundamental research is concerned with generalizations and with the formulation of a theory.","Conceptual research relates to abstract ideas or theory and is used by philosophers and thinkers.","&lsquo;Pure&rsquo; is given in the chapter as another name for <b>fundamental/basic</b> research &mdash; the opposite of applied."]},
+
+{t:"mcq",topic:"Scientific method &mdash; sequence",
+ q:"According to the chapter, <b>after articulating the hypothesis</b>, the next step in the research process involves:",
+ o:["Translating the research idea into an answerable question","Analyzing the data using statistical techniques","Deciding whether the null hypothesis should be rejected","Actually conducting the experiment or research study"],
+ a:3,
+ why:"The chapter states: &ldquo;After articulating the hypothesis, the next step involves <b>actually conducting the experiment or research study</b>,&rdquo; and notes that a key aspect of this is measuring the phenomenon of interest in an accurate and reliable manner.",
+ w:["That step comes <i>before</i> the hypothesis: the chapter places it right after getting a research idea.","Analysis comes <i>after</i> the study has been conducted and the data gathered.","That decision is made during the Analyses stage, once data exist &mdash; not immediately after the hypothesis is stated.",""]},
+
+{t:"mcq",topic:"Quantitative vs. Qualitative",
+ q:"A researcher interviews twelve managers in depth and reports recurring themes, making no attempt to summarize the findings statistically. According to the chapter, what makes this <b>qualitative</b> rather than quantitative research?",
+ o:["The small number of participants involved","That it was carried out before any hypothesis was formed","That it does not attempt to quantify its results through statistical summary or analysis","That it relies on direct observation rather than experimentation"],
+ a:2,
+ why:"The chapter draws the line precisely here: qualitative research &ldquo;involves studies that <b>do not attempt to quantify their results through statistical summary or analysis</b>,&rdquo; typically using interviews and observations without formal measurement. Quantitative research, by contrast, is defined by formal and systematic measurement and the use of statistics.",
+ w:["Sample size is not the chapter&rsquo;s criterion. The distinction rests on whether results are quantified statistically &mdash; which is why a case study of a single person counts as qualitative by its nature, not by its size.","The chapter notes qualitative research is <i>often</i> a source of hypotheses for later quantitative testing, but timing is not what defines it.","","Direct observation and experimentation define the <b>empirical approach</b>, which the chapter calls the guiding principle behind <i>all</i> research conducted in accordance with the scientific method &mdash; so it cannot be what separates qualitative from quantitative."]},
+
+{t:"mcq",topic:"Quantitative vs. Qualitative",
+ q:"The chapter describes a case study as an in-depth examination of one person, and classifies it as a form of:",
+ o:["Experimental research","Qualitative research","Analytical research","Conceptual research"],
+ a:1,
+ why:"The chapter states: &ldquo;A case study, which is an in-depth examination of one person, is a form of <b>qualitative research</b>.&rdquo;",
+ w:["Experimental research compares two groups to test causation &mdash; the opposite of examining one person in depth.","","Analytical research critically evaluates already-available facts; the chapter does not place the case study there.","Conceptual research deals with abstract ideas or theory, not with in-depth examination of a person."]},
+
+{t:"mcq",topic:"Quantitative vs. Qualitative",
+ q:"According to the chapter, qualitative research is often used as:",
+ o:["A way of confirming results already obtained statistically","A replacement for statistical analysis in large samples","A source of hypotheses for later testing in quantitative research","A method for establishing causation between two variables"],
+ a:2,
+ why:"The chapter&rsquo;s note reads: &ldquo;Qualitative research is often used as a <b>source of hypotheses for later testing in quantitative research</b>.&rdquo;",
+ w:["The chapter puts qualitative research <i>before</i> quantitative testing, as a source of hypotheses &mdash; not as a confirmation step after it.","The chapter does not present qualitative research as a replacement for statistics in large samples.","","Testing hypotheses regarding causation is the stated purpose of <b>experimental</b> research."]},
+
+{t:"mcq",topic:"Conceptual vs. Empirical",
+ q:"The chapter states that conceptual research is generally used by:",
+ o:["Philosophers and thinkers, to develop new concepts or reinterpret existing ones","Social scientists, to study social relationships","Analysts and intellectuals, to generalize new theories","Business organizations, to solve immediate operational problems"],
+ a:0,
+ why:"The chapter states: conceptual research &ldquo;is generally used by <b>philosophers and thinkers</b> to develop new concepts or to reinterpret existing ones.&rdquo;",
+ w:["","Social scientists are mentioned under the <b>significance</b> of research (studying social relationships), not as the users of conceptual research.","Analysts and intellectuals appear under <b>significance</b> of research (generalisations of new theories) &mdash; a close but different statement.","Solving an immediate organizational problem is the aim of <b>applied</b> research."]},
+
+{t:"mcq",topic:"Conceptual vs. Empirical",
+ q:"How does the chapter characterize the empirical approach, with its emphasis on direct, systematic and careful observation?",
+ o:["As one optional technique among several in quantitative research","As the defining feature of qualitative research","As a method used mainly in descriptive surveys","As the guiding principle behind all research conducted in accordance with the scientific method"],
+ a:3,
+ why:"The chapter&rsquo;s note reads: the empirical approach &ldquo;is best thought of as the <b>guiding principle behind all research</b> conducted in accordance with the scientific method.&rdquo;",
+ w:["The chapter elevates it well beyond an optional technique &mdash; it calls it the guiding principle behind <i>all</i> such research.","Qualitative research is defined by not quantifying results statistically, not by the empirical approach.","Descriptive research is associated with survey methods; the empirical approach is not restricted to it.",""]},
+
+{t:"mcq",topic:"Significance of research",
+ q:"According to the chapter, for <b>philosophers and thinkers</b>, research may mean:",
+ o:["A way to attain a high position in the social structure","The outlet for new ideas and insights","The generalisations of new theories","The basis for government economic policy"],
+ a:1,
+ why:"The chapter states: &ldquo;For philosophers and thinkers, research may mean the <b>outlet for new ideas and insights</b>.&rdquo;",
+ w:["Attaining a high position in the social structure is what research may mean for <b>master&rsquo;s and PhD students</b>.","","Generalisations of new theories is what research may mean for <b>analysts and intellectuals</b>.","Providing the basis for government policies is listed as a general significance point, not as what research means to philosophers."]},
+
+{t:"mcq",topic:"Methods vs. Methodology",
+ q:"Which description matches <b>research methodology</b> as defined in the chapter?",
+ o:["A science of studying how research is done scientifically","All those methods and techniques used for the conduction of research","The methods researchers use in performing research operations","The statistical techniques used to analyze gathered data"],
+ a:0,
+ why:"The chapter defines research methodology as &ldquo;a way to systematically solve the research problem&hellip; a <b>science of studying how research is done scientifically</b>.&rdquo;",
+ w:["","This is the chapter&rsquo;s definition of research <b>methods</b>, not methodology.","This too is part of the definition of research <b>methods</b> &mdash; the methods used in performing research operations.","Statistical techniques are discussed under <b>Analyses</b> in the scientific method, not as the definition of methodology."]},
+
+{t:"mcq",topic:"Methods vs. Methodology",
+ q:"Which term does the chapter define as referring to &ldquo;the various steps that are generally adopted by a researcher in studying his research problem <b>along with the logic behind them</b>&rdquo;?",
+ o:["Research methods","The scientific method","The empirical approach","Research methodology"],
+ a:3,
+ why:"That phrase, including &ldquo;along with the logic behind them,&rdquo; is part of the chapter&rsquo;s definition of <b>research methodology</b>.",
+ w:["Research methods are defined as the methods/techniques used in performing research operations &mdash; without the &lsquo;logic behind them&rsquo; clause.","The scientific method is presented through its eight characteristics, not with this definition.","The empirical approach is the evidence-based reliance on direct observation and experimentation.",""]},
+
+{t:"mcq",topic:"Scientific method &mdash; Observations",
+ q:"The chapter says that, in scientific research, observation refers to <b>two distinct concepts</b>. These are:",
+ o:["Measuring accurately and measuring consistently","Being aware of the world around us, and making careful measurements","Describing the present state of affairs, and predicting future events","Collecting data, and evaluating data"],
+ a:1,
+ why:"The chapter states: &ldquo;observation refers to two distinct concepts&mdash;<b>being aware of the world around us and making careful measurements</b>.&rdquo;",
+ w:["Accuracy (correct) and reliability (consistent) are the two measurement concepts &mdash; a different pair, discussed under Experiments.","","Description and prediction are two of the three general <i>goals</i> of scientific research, not the two senses of observation.","Collecting and evaluating data appear in the definition of research, not in the definition of observation."]},
+
+{t:"mcq",topic:"Hypotheses",
+ q:"The chapter defines a hypothesis as:",
+ o:["An educated and testable guess about the answer to your research question","A statement of the problem that the research intends to solve","A conclusion drawn after the data have been analyzed","A prediction that has already been supported by data"],
+ a:0,
+ why:"The chapter states: &ldquo;Hypothesis: is simply an <b>educated and testable guess</b> about the answer to your research question&rdquo; &mdash; often described as the researcher&rsquo;s attempt to explain the phenomenon of interest.",
+ w:["","Defining and redefining problems is listed as part of what research comprises, not as the definition of a hypothesis.","Conclusions come <i>after</i> analysis; the hypothesis is formulated before the study is conducted.","A hypothesis is tested and may be either supported <i>or refuted</i>; it is not already supported."]},
+
+{t:"mcq",topic:"Hypotheses",
+ q:"According to the chapter, what is a <b>key feature of all</b> hypotheses?",
+ o:["Each must be stated in the null form","Each must involve at least two groups","Each must make a prediction","Each must be derived from a qualitative study"],
+ a:2,
+ why:"The chapter states: &ldquo;A key feature of all hypotheses is that each must <b>make a prediction</b>&rdquo; about the variables being studied.",
+ w:["The chapter describes two types &mdash; null <i>and</i> alternate &mdash; so the null form is not required of all hypotheses.","Hypotheses &ldquo;can take various forms, depending on the question being asked and the type of study&rdquo;; two groups are not required of all of them.","","Qualitative research is <i>often</i> a source of hypotheses, but the chapter does not require every hypothesis to come from one."]},
+
+{t:"mcq",topic:"Accuracy vs. Reliability",
+ q:"A dart thrower throws every dart into the same spot, but that spot is not the bull&rsquo;s eye. Using the chapter&rsquo;s analogy, this demonstrates:",
+ o:["High accuracy but low reliability","High reliability but low accuracy","Low accuracy and low reliability","High accuracy and high reliability"],
+ a:1,
+ why:"The chapter uses this exact case: throwing all darts in the same spot &ldquo;demonstrates <b>high reliability</b>&rdquo;, but if that spot is not the bull&rsquo;s eye it &ldquo;demonstrates <b>low accuracy</b>.&rdquo; Reliability is consistency; accuracy is correctness.",
+ w:["This reverses the two terms: hitting the same spot is consistency (reliability), and missing the bull&rsquo;s eye is a failure of correctness (accuracy).","","Hitting the same spot every time is precisely what the chapter calls high reliability, so reliability is not low here.","Missing the bull&rsquo;s eye means the measurement is not correct, so accuracy is not high."]},
+
+{t:"mcq",topic:"Scientific method &mdash; Analyses",
+ q:"The chapter says the type of statistical techniques a researcher uses depends on:",
+ o:["The number of participants and the funding available","The design of the study, the type of data being gathered, and the questions being asked","Whether the research is applied or fundamental","Whether the hypothesis is null or alternate"],
+ a:1,
+ why:"The chapter states the type of statistical techniques used &ldquo;depends on the <b>design of the study, the type of data being gathered, and the questions being asked</b>.&rdquo;",
+ w:["Sample size and funding are not mentioned among the determining factors in the chapter.","","The applied/fundamental distinction concerns the <i>aim</i> of the research, and is not given as a determinant of statistical technique.","The null/alternate distinction concerns what a hypothesis predicts; the decision about the null comes <i>after</i> the technique is chosen."]},
+
+{t:"mcq",topic:"Scientific method &mdash; Analyses",
+ q:"According to the chapter, a key decision that researchers must make <b>with the assistance of statistics</b> is:",
+ o:["Which research design to adopt","Whether the study should be replicated","How the results should be disseminated","Whether the null hypothesis should be rejected"],
+ a:3,
+ why:"The chapter states: &ldquo;A key decision that researchers must make with the assistance of statistics is whether the <b>null hypothesis should be rejected</b>.&rdquo;",
+ w:["The design is settled before data are gathered; the chapter instead says the design determines which statistical techniques are used.","Replication is a separate characteristic of the scientific method, not the statistical decision named here.","Dissemination of results is mentioned among the purposes of the course, not as the statistical decision.",""]},
+
+{t:"mcq",topic:"Replication",
+ q:"Which statement matches the chapter&rsquo;s definition of <b>replication</b>?",
+ o:["Conducting the same research study again with another group of participants to see whether the same results are obtained","Repeating the statistical analysis on the same data using a different technique","Confirming the findings by comparing them with previously published research","Repeating the measurement on the same participants to check consistency"],
+ a:0,
+ why:"The chapter defines replication as &ldquo;conducting the same research study once again with <b>another group of participants</b> to see whether the same results are obtained,&rdquo; and calls it one of the most important elements of the scientific method.",
+ w:["","Re-analysing the same data is not what the chapter describes; replication requires a new group of participants.","Comparison with already-available published material describes <b>analytical</b> research, not replication.","Checking consistency of a measurement is <b>reliability</b>; replication requires repeating the whole study with a different group."]},
+
+/* ---------- TRUE / FALSE (12) ---------- */
+{t:"tf",topic:"Descriptive vs. Analytical",
+ q:"In descriptive research, the researcher is able to control the variables under study.",
+ a:false,
+ why:"<b>False.</b> The chapter states the main characteristic of descriptive research is that &ldquo;the researcher has <b>no control over the variables</b>; he can only report what has happened or what is happening.&rdquo;"},
+
+{t:"tf",topic:"Correlational research",
+ q:"If a correlational study shows that two things are strongly related, the researcher may conclude that one of them caused the other.",
+ a:false,
+ why:"<b>False.</b> The chapter gives this as its example under Conclusions: &ldquo;if a researcher conducted a correlational study and the results indicated that the two things being studied were strongly related, the researcher <b>could not conclude that one thing caused the other</b>.&rdquo; Testing causation is the role of experimental research."},
+
+{t:"tf",topic:"Hypotheses",
+ q:"The alternate (or experimental) hypothesis predicts that there will be a difference between the groups.",
+ a:true,
+ why:"<b>True.</b> The chapter contrasts the two: &ldquo;The null hypothesis always predicts that there will be <b>no</b> differences between the groups being studied. By contrast, the alternate hypothesis predicts that there <b>will be</b> a difference between the groups.&rdquo;"},
+
+{t:"tf",topic:"Accuracy vs. Reliability",
+ q:"According to the chapter, it is possible for a measurement to be reliable but not accurate.",
+ a:true,
+ why:"<b>True.</b> The chapter states: &ldquo;it is possible for the dart thrower to be <b>reliable, but not accurate</b>&rdquo; &mdash; all darts in the same spot (consistent), but not the bull&rsquo;s eye (not correct)."},
+
+{t:"tf",topic:"Conceptual vs. Empirical",
+ q:"In this chapter, the empirical approach appears twice: once as one half of a research-type contrast, and once as a characteristic of the scientific method.",
+ a:true,
+ why:"<b>True.</b> &ldquo;Empirical&rdquo; appears in the typology as <b>Conceptual vs. Empirical</b>, and again as the first of the eight <b>characteristics of the scientific method</b>. Both passages define it identically &mdash; an evidence-based approach relying on direct observation and experimentation in the acquisition of new knowledge."},
+
+{t:"tf",topic:"Methods vs. Methodology",
+ q:"The chapter treats &ldquo;research methods&rdquo; and &ldquo;research methodology&rdquo; as two names for the same thing.",
+ a:false,
+ why:"<b>False.</b> The chapter distinguishes them: research <b>methods</b> are the methods/techniques used in performing research operations, while research <b>methodology</b> is a way to systematically solve the research problem &mdash; a science of studying how research is done scientifically, including the logic behind the steps."},
+
+{t:"tf",topic:"Applied vs. Fundamental",
+ q:"Applied research is mainly concerned with generalizations and with the formulation of a theory.",
+ a:false,
+ why:"<b>False.</b> That is the chapter&rsquo;s description of <b>fundamental</b> research. Applied research aims at finding a solution for an immediate problem facing a society or an industrial/business organization."},
+
+{t:"tf",topic:"Scientific method &mdash; characteristics",
+ q:"The chapter acknowledges that some disagreement exists regarding the exact characteristics of the scientific method.",
+ a:true,
+ why:"<b>True.</b> The chapter opens that slide with the hedge: &ldquo;Although <b>some disagreement exists</b> regarding the exact characteristics of the scientific method, <i>most agree</i> that it is characterized by the following&hellip;&rdquo; The eight characteristics are presented as a consensus, not as a settled definition."},
+
+{t:"tf",topic:"Replication",
+ q:"Replication is described in the chapter as one of the most important elements of the scientific method.",
+ a:true,
+ why:"<b>True.</b> The chapter says of replication: &ldquo;It is <b>one of the most important elements</b> of the scientific method,&rdquo; and warns researchers against drawing broad conclusions from a single study, whose results may be an aberration."},
+
+{t:"tf",topic:"Descriptive vs. Analytical",
+ q:"Analytical research requires the researcher to collect entirely new data through surveys and fact-finding enquiries.",
+ a:false,
+ why:"<b>False.</b> In analytical research &ldquo;the researcher has to use <b>facts or information already available</b>, and analyze these to make a critical evaluation of the material.&rdquo; Surveys and fact-finding enquiries belong to <b>descriptive</b> research."},
+
+{t:"tf",topic:"Hypotheses",
+ q:"The null hypothesis always predicts that there will be no differences between the groups being studied.",
+ a:true,
+ why:"<b>True.</b> The chapter states this directly, using the word &ldquo;always&rdquo;: &ldquo;The null hypothesis <b>always</b> predicts that there will be no differences between the groups being studied.&rdquo;"},
+
+{t:"tf",topic:"Descriptive vs. Analytical",
+ q:"In the chapter&rsquo;s classification, descriptive research and correlational methods are entirely separate, with no overlap between them.",
+ a:false,
+ why:"<b>False.</b> The chapter states that &ldquo;the methods of research utilized in descriptive research are survey methods of all kinds, <b>including comparative and correlational methods</b>.&rdquo; So correlational methods sit inside the descriptive toolkit, even though Correlational vs. Experimental is listed as its own contrasting pair. The categories in this chapter are not mutually exclusive."},
+
+/* ---------- ENUMERATION (8) ---------- */
+{t:"enum",topic:"Motivations of research",
+ q:"<b>Mention the 5 motivations of research</b> listed in the chapter.",
+ items:[
+  {label:"Desire to get a research degree along with its consequential benefits",keys:["degree"]},
+  {label:"Desire to face the challenge in solving the unsolved problems (concern over practical problems)",keys:["challenge","unsolved","practical problem"]},
+  {label:"Desire to get intellectual joy of doing some creative work",keys:["joy","creative","intellectual"]},
+  {label:"Desire to serve the society",keys:["serve","societ"]},
+  {label:"Desire to get respectability",keys:["respect"]}],
+ why:"These are the five motivations listed on the Motivations of Research slide."},
+
+{t:"enum",topic:"Types of research",
+ q:"<b>List the 5 pairs of research types</b> presented in the chapter&rsquo;s classification. (One pair per line, e.g. &ldquo;X vs. Y&rdquo;.)",
+ items:[
+  {label:"Correlational vs. Experimental",keys:["correlational","experimental"]},
+  {label:"Descriptive vs. Analytical",keys:["descriptive","analytical"]},
+  {label:"Applied vs. Fundamental (pure / basic)",keys:["applied","fundamental","basic","pure"]},
+  {label:"Quantitative vs. Qualitative",keys:["quantitative","qualitative"]},
+  {label:"Conceptual vs. Empirical",keys:["conceptual","empirical"]}],
+ why:"The Types of Research slide lists exactly these five contrasting pairs."},
+
+{t:"enum",topic:"Scientific method &mdash; characteristics",
+ q:"<b>Name the 8 characteristics of the scientific method</b> on which, the chapter says, most agree.",
+ items:[
+  {label:"Empirical approach",keys:["empirical"]},
+  {label:"Observations",keys:["observ"]},
+  {label:"Questions",keys:["question"]},
+  {label:"Hypotheses",keys:["hypothes"]},
+  {label:"Experiments",keys:["experiment"]},
+  {label:"Analyses",keys:["analys","analyz"]},
+  {label:"Conclusions",keys:["conclusion"]},
+  {label:"Replication",keys:["replicat"]}],
+ why:"The chapter lists these eight characteristics and then devotes one slide to each."},
+
+{t:"enum",topic:"Correlational research",
+ q:"<b>State the 2 types of correlation</b> described in the chapter.",
+ items:[
+  {label:"Positive correlation &mdash; both variables change in the same direction",keys:["positive"]},
+  {label:"Negative (inverse) correlation &mdash; one variable increases while the other decreases",keys:["negative","inverse"]}],
+ why:"The Types of Correlation slide gives positive correlation (same direction) and negative or inverse correlation (opposite directions)."},
+
+{t:"enum",topic:"Hypotheses",
+ q:"<b>Name the 2 types of hypotheses</b> the chapter says you should be familiar with.",
+ items:[
+  {label:"The null hypothesis &mdash; predicts no difference between the groups",keys:["null"]},
+  {label:"The alternate (experimental) hypothesis &mdash; predicts a difference between the groups",keys:["alternate","alternative","experimental"]}],
+ why:"The chapter names the null hypothesis and the alternate (or experimental) hypothesis."},
+
+{t:"enum",topic:"Replication",
+ q:"<b>Mention the 2 purposes</b> that replication serves, according to the chapter.",
+ items:[
+  {label:"Establishing the reliability of the research study&rsquo;s findings",keys:["reliab"]},
+  {label:"Determining whether the same results can be obtained with a different group of participants (generalizability)",keys:["generaliz","different group","another group","other group","different participant"]}],
+ why:"The chapter states replication &ldquo;serves several integral purposes, including establishing the reliability of the research study&rsquo;s findings and determining whether the same results can be obtained with a different group of participants (generalizable).&rdquo;"},
+
+{t:"enum",topic:"Goals of scientific research",
+ q:"<b>State the 3 general goals of scientific research.</b>",
+ items:[
+  {label:"Description",keys:["descri"]},
+  {label:"Prediction",keys:["predict"]},
+  {label:"Understanding / explaining",keys:["understand","explain"]}],
+ why:"The chapter&rsquo;s Test Yourself answer key gives the three general goals as description, prediction, and understanding/explaining."},
+
+{t:"enum",topic:"Significance of research",
+ q:"<b>Mention the 4 points</b> the chapter gives on the significance of research.",
+ items:[
+  {label:"It inculcates scientific and inductive thinking and promotes the development of logical habits of thinking and organization",keys:["inductive","logical","habits","thinking"]},
+  {label:"It provides the basis for nearly all government policies in our economic system",keys:["government","polic","economic"]},
+  {label:"It has special significance in solving operational and planning problems of business and industry",keys:["business","industry","operational","planning"]},
+  {label:"It is equally important for social scientists in studying social relationships and seeking answers to social problems",keys:["social"]}],
+ why:"These four points are listed on the Significance of Research slide."}
+];
+
+/* ============================================================
+   QUESTION BANK — Chapter 2: Planning and Designing a Research Study
+   Every item is drawn strictly from the uploaded Chapter 2 slides,
+   including the slides whose content is embedded as images.
+   ============================================================ */
+
+const CH2 = [
+
+/* ---------- MCQ (30) ---------- */
+{t:"mcq",topic:"Research design",
+ q:"A research design does <b>not</b> use random assignment, but it does use multiple waves of measurement. According to the chapter&rsquo;s classification procedure, this design is:",
+ o:["Nonexperimental","Quasi-experimental","A randomized (true) experimental design","Not classifiable until the number of groups is known"],
+ a:1,
+ why:"The chapter&rsquo;s procedure asks first whether the design involves random assignment. If not, a second question follows: does the design use <b>either multiple groups or multiple waves of measurement</b>? &ldquo;If the answer is yes, the design is considered <b>quasi-experimental</b>.&rdquo;",
+ w:["Nonexperimental applies only when the second question is answered <i>no</i> &mdash; neither multiple groups nor multiple waves of measurement.","","A randomized or true experimental design requires random assignment, which the stem rules out.","The second question is satisfied by multiple groups <i>or</i> multiple waves of measurement, so multiple waves alone settles it."]},
+
+{t:"mcq",topic:"Research design",
+ q:"According to the chapter, which question must be asked <b>first</b> when determining the classification of a particular research design?",
+ o:["Does the design use multiple waves of measurement?","Does the design use multiple groups?","Is the sample randomly selected from the population of interest?","Does the design involve random assignment to different conditions?"],
+ a:3,
+ why:"The chapter states: &ldquo;<b>First</b>: does the design involve <b>random assignment</b> to different conditions?&rdquo; Only if the answer is no is a second question asked, about multiple groups or multiple waves of measurement.",
+ w:["This belongs to the <i>second</i> question, asked only after random assignment has been ruled out.","Also part of the second question, not the first.","Random <i>selection</i> concerns how participants are drawn from the population; the classification procedure turns on random <i>assignment</i>.",""]},
+
+{t:"mcq",topic:"Random selection vs. assignment",
+ q:"Which definition matches <b>random selection</b> as given in the chapter?",
+ o:["Choosing study participants from the population of interest so that each member of the population has an equal probability of being selected","Assigning study participants to groups so that each participant has an equal probability of being assigned to any group","Choosing which statistical tests to apply without regard to the researcher&rsquo;s expectations","Choosing a research topic without being influenced by the researcher&rsquo;s field of expertise"],
+ a:0,
+ why:"The chapter defines random selection as &ldquo;choosing study participants <b>from the population of interest</b> in such a way that each member of the population has an equal probability of being selected to participate in the study.&rdquo;",
+ w:["","This is the chapter&rsquo;s definition of random <b>assignment</b>, which concerns placement into groups <i>within</i> the study.","The chapter says the choice of statistical tests depends partly on whether variables are categorical or continuous &mdash; it is not a random process.","Topic choice is described as necessarily influenced by several factors, the researcher&rsquo;s field among them."]},
+
+{t:"mcq",topic:"Random selection vs. assignment",
+ q:"A researcher places each volunteer into either the treatment group or the comparison group so that every volunteer has an equal probability of ending up in either one. According to the chapter, this is:",
+ o:["Random selection","Nondirectional allocation","Random assignment","Quasi-experimental sampling"],
+ a:2,
+ why:"Random assignment is &ldquo;assigning study participants to groups <b>within the study</b> in such a way that each participant has an equal probability of being assigned to any of the groups.&rdquo; The chapter&rsquo;s Test Yourself box also calls random assignment the most effective method of assigning participants to groups.",
+ w:["Random selection concerns drawing participants <i>from the population</i> into the study, not distributing them among groups once they are in it.","&lsquo;Nondirectional&rsquo; describes a type of hypothesis, not a method of allocation.","","Random assignment is precisely what makes a design a <i>true</i> experiment; quasi-experimental designs are those <i>without</i> random assignment."]},
+
+{t:"mcq",topic:"Variables",
+ q:"According to the chapter, the independent variable has two levels. They are:",
+ o:["Categorical and continuous","Directional and nondirectional","High and low","Present and absent"],
+ a:3,
+ why:"The chapter states: &ldquo;The independent variable is the factor that is manipulated or controlled by the researcher. It has two levels: <b>present or absent</b>.&rdquo; In its example, one group is exposed to the psychotherapy and one group is not.",
+ w:["Categorical and continuous are the chapter&rsquo;s two <i>kinds</i> of variable, not the two levels of an independent variable.","Directional and nondirectional describe hypotheses.","The chapter specifies present or absent, not degrees of magnitude.",""]},
+
+{t:"mcq",topic:"Variables",
+ q:"A researcher examines the effects of a new medication on symptoms of depression among college students. In this study, symptoms of depression are:",
+ o:["The independent variable, because they are the focus of the study","The dependent variable, because they measure the effect of the medication","A categorical variable, because a student either is or is not depressed","A constant, because every participant is a college student"],
+ a:1,
+ why:"The chapter defines the dependent variable as &ldquo;a measure of the <b>effect (if any) of the independent variable</b>,&rdquo; and uses this exact example. The medication is the independent variable &mdash; the factor manipulated by the researcher.",
+ w:["The independent variable is the factor manipulated or controlled by the researcher &mdash; here, the medication.","","The chapter illustrates categorical variables with gender (male or female); it does not present depression symptoms that way.","A constant is something that cannot vary. Symptoms of depression are measured precisely because they can vary."]},
+
+{t:"mcq",topic:"Variables",
+ q:"Which of the following does the chapter give as an example of a <b>categorical</b> variable?",
+ o:["Gender","Age","Income","Height"],
+ a:0,
+ why:"The chapter states: &ldquo;&lsquo;Gender&rsquo; is a categorical variable because you can either be male or female.&rdquo; Categorical variables take on specific values only within a defined range of values.",
+ w:["","Age is the chapter&rsquo;s lead example of a <b>continuous</b> variable &mdash; theoretically, someone can be any age.","Income is named among the chapter&rsquo;s continuous variables.","Height is named among the chapter&rsquo;s continuous variables."]},
+
+{t:"mcq",topic:"Variables",
+ q:"Why does the chapter say the distinction between categorical and continuous variables matters?",
+ o:["Because only continuous variables may serve as dependent variables","Because categorical variables cannot be analyzed statistically","Because continuous variables can be measured with greater precision, and the choice of statistical tests partly depends on which type is used","Because categorical variables require random assignment whereas continuous variables require random selection"],
+ a:2,
+ why:"The chapter&rsquo;s note makes both points: &ldquo;continuous variables can be measured with a <b>greater degree of precision</b>,&rdquo; and &ldquo;the choice of which statistical tests will be used to analyze the data is <b>partially dependent</b> on whether the researcher uses categorical or continuous variables.&rdquo;",
+ w:["The chapter places no such restriction on dependent variables.","The chapter says variable type partly determines <i>which</i> statistical test is chosen &mdash; not that categorical variables resist analysis.","","Neither form of randomization is tied to variable type anywhere in the chapter."]},
+
+{t:"mcq",topic:"Variables",
+ q:"According to the chapter, if something cannot vary or take on different values, it is referred to as:",
+ o:["A categorical variable","A constant","A nondirectional factor","A dependent variable"],
+ a:1,
+ why:"The chapter states: &ldquo;A variable is anything that can take on different values. By contrast, if something cannot vary, or take on different values, then it is referred to as a <b>constant</b>.&rdquo;",
+ w:["A categorical variable still varies &mdash; it simply takes specific values within a defined range, such as male or female.","","&lsquo;Nondirectional&rsquo; describes a hypothesis, not a non-varying quantity.","A dependent variable varies: it is the measure of the effect of the independent variable."]},
+
+{t:"mcq",topic:"Null vs. Alternate hypotheses",
+ q:"A study does <b>not</b> involve groups of participants; it examines only selected variables. According to the chapter, what does the null hypothesis predict in this case?",
+ o:["That the study cannot proceed without at least two groups","That there will be no difference between the groups being studied","That the alternate hypothesis must be tested instead","That there will be no relationship between the variables being studied"],
+ a:3,
+ why:"The chapter makes this exact qualification: &ldquo;If&hellip; a particular research study does not involve groups of study participants, but instead involves only an examination of selected variables, the null hypothesis predicts that there will be <b>no relationship between the variables</b> being studied.&rdquo;",
+ w:["The chapter accommodates studies without groups rather than ruling them out.","This is the standard wording, which applies when the study <i>does</i> involve groups.","The chapter states it is the null hypothesis that is tested, in either case.",""]},
+
+{t:"mcq",topic:"Null vs. Alternate hypotheses",
+ q:"According to the chapter, which hypothesis is the one actually <b>tested</b> in scientific research?",
+ o:["The null hypothesis, which is then confirmed or refuted","The alternate hypothesis, which is then accepted or rejected","Whichever of the two is stated in directional form","Both are tested simultaneously and their results compared"],
+ a:0,
+ why:"The chapter&rsquo;s note states: &ldquo;In scientific research, keep in mind that it is <b>the null hypothesis that is tested</b>, and then the null hypothesis is either confirmed or refuted (sometimes phrased as rejected or not rejected).&rdquo;",
+ w:["","The alternate hypothesis predicts a difference or relationship, but the chapter says it is the null that is put to the test.","Directionality is a separate dimension of hypotheses and does not determine which one is tested.","The chapter describes a single hypothesis &mdash; the null &mdash; being tested."]},
+
+{t:"mcq",topic:"Directional vs. Nondirectional",
+ q:"According to the chapter, the decision whether to use a directional or a nondirectional hypothesis is based on:",
+ o:["Whether the study involves groups or only variables","Whether the researcher expects the null hypothesis to be rejected","Whether the researcher has some idea about <i>how</i> the groups being studied will differ","Whether the variables being studied are categorical or continuous"],
+ a:2,
+ why:"The chapter states the decision &ldquo;is based on whether the researcher has some idea about <b>how the groups being studied will differ</b>.&rdquo; Both types assume the groups will differ; only the directional hypothesis specifies how.",
+ w:["That distinction governs how the <i>null</i> hypothesis is worded, not directionality.","The chapter ties directionality to the expected <i>form</i> of the difference, not to the anticipated outcome of the test.","","Variable type affects the choice of statistical tests, not the directionality of a hypothesis."]},
+
+{t:"mcq",topic:"Directional vs. Nondirectional",
+ q:"A hypothesis uses comparison terms such as &ldquo;greater,&rdquo; &ldquo;less,&rdquo; &ldquo;better&rdquo; or &ldquo;worse.&rdquo; According to the chapter, this makes it:",
+ o:["Nondirectional, because comparison terms do not identify a cause","Directional, because it predicts a difference <i>and</i> specifies how the groups will differ","Falsifiable, which other kinds of hypotheses are not","A working hypothesis rather than a research hypothesis"],
+ a:1,
+ why:"The chapter&rsquo;s example states that with such comparison terms &ldquo;it is <b>directional</b> because it predicts that there will be a difference between the two groups <b>and it specifies how</b> the two groups will differ.&rdquo;",
+ w:["Nondirectional hypotheses predict a difference <i>without</i> a belief about how the groups will differ &mdash; the opposite of what comparison terms supply.","","The chapter requires <i>all</i> hypotheses to be falsifiable, so falsifiability cannot distinguish this one.","Directional and nondirectional are presented as the second category of <i>research</i> hypotheses, not as an alternative to working hypotheses."]},
+
+{t:"mcq",topic:"Directional vs. Nondirectional",
+ q:"A researcher believes two groups will differ on the outcome, but holds no belief about which group will score higher. According to the chapter, the appropriate hypothesis is:",
+ o:["Directional, because a difference is predicted","Null, because no direction is specified","Alternate and directional, because two groups are involved","Nondirectional, because there is no belief regarding how the groups will differ"],
+ a:3,
+ why:"The chapter states: &ldquo;Researchers use <b>nondirectional hypotheses</b> when they believe that the groups will differ, but they do not have a belief regarding <b>how</b> the groups will differ.&rdquo;",
+ w:["A directional hypothesis requires a belief about how the groups will differ, which the stem rules out.","The null hypothesis predicts <i>no</i> difference at all; here a difference is expected.","Predicting a difference does make it alternate rather than null &mdash; but without a belief about how, it is <b>non</b>directional.",""]},
+
+{t:"mcq",topic:"Working hypothesis",
+ q:"The chapter defines a <b>working hypothesis</b> as:",
+ o:["A prediction confirmed several times over and now ready to be generalized","A broad statement of the general area of interest, made before ambiguities are resolved","A tentative assumption made in order to draw out and test its logical or empirical consequences","A brief summary of the topic submitted to the Research Board for approval"],
+ a:2,
+ why:"The chapter states: &ldquo;Working hypothesis is a <b>tentative assumption</b> made in order to draw out and test its <b>logical or empirical consequences</b>.&rdquo;",
+ w:["A hypothesis confirmed several times leads to a generalization &mdash; that is an outcome, not the definition.","That describes the initial broad statement of the research problem, before ambiguities are resolved and feasibility considered.","","That is the synopsis, written once the problem is formulated and submitted to a Committee or the Research Board."]},
+
+{t:"mcq",topic:"Working hypothesis",
+ q:"According to the chapter, <b>all</b> hypotheses must be:",
+ o:["Falsifiable &mdash; capable of being refuted on the basis of the results of the study","Directional, so that the form of the expected difference is specified","Derived from a theory rather than from previous research","Stated in both null and alternate form before data collection begins"],
+ a:0,
+ why:"The chapter states: &ldquo;All hypotheses must be <b>falsifiable</b>; hypotheses must be capable of being refuted based on the results of the study.&rdquo; They must also be specific, limited to the research in hand, and make a prediction.",
+ w:["","Directional and nondirectional are both legitimate; the choice depends on whether the researcher has an idea how the groups will differ.","The chapter lists theory as one source of research ideas among several, alongside previous research, problem solving and the researcher&rsquo;s field.","The chapter imposes no such requirement."]},
+
+{t:"mcq",topic:"Working hypothesis",
+ q:"The chapter notes a kind of research in which working hypotheses are not needed. Which does it name?",
+ o:["Replication studies, because the original hypothesis already exists","Exploratory or formulative research, which does not aim at testing the hypothesis","Nonexperimental research, because no groups are compared","Research using only continuous variables"],
+ a:1,
+ why:"The chapter&rsquo;s note reads: &ldquo;There may be a problem where we do not need working hypotheses, specially in the case of <b>exploratory or formulative researches which do not aim at testing the hypothesis</b>.&rdquo;",
+ w:["The chapter does not exempt replication studies from having hypotheses.","","Nonexperimental is a design category in the chapter, not an exemption from hypotheses.","Variable type has no bearing on whether a hypothesis is needed."]},
+
+{t:"mcq",topic:"Working hypothesis",
+ q:"According to the chapter, what is the <b>role</b> of the hypothesis?",
+ o:["To summarize the findings for readers in non-technical language","To guide the researcher by delimiting the area of research, and to indicate the type of data required and the methods of analysis to be used","To ensure each member of the population has an equal probability of being selected","To state the conceptual structure within which the research will be conducted"],
+ a:1,
+ why:"The chapter states: &ldquo;The role of the hypothesis is to <b>guide the researcher by delimiting the area of research</b> and to keep him on the right track. It also <b>indicates the type of data required and the type of methods of data analysis</b> to be used.&rdquo;",
+ w:["That describes the Summary of findings section of the research report.","","That is random selection.","That is the chapter&rsquo;s description of the <b>research design</b>."]},
+
+{t:"mcq",topic:"Formulating the research problem",
+ q:"According to the chapter, what is the <b>first and foremost</b> step in the research process?",
+ o:["Reviewing the existing literature in the topic area","Stating the working hypothesis in clear terms","Selecting and properly defining a research problem","Deciding how the data will be collected"],
+ a:2,
+ why:"The chapter states: &ldquo;The <b>first and foremost step</b> in the research process is selecting and properly defining a research problem.&rdquo; The researcher must find the problem and formulate it so that it becomes susceptible to research.",
+ w:["The literature review supports problem formulation, but the chapter gives the problem itself this priority.","The working hypothesis is stated <i>after</i> the extensive literature survey.","","Data collection comes much later, after the research design has been prepared."]},
+
+{t:"mcq",topic:"Formulating the research problem",
+ q:"The chapter says that essentially <b>two steps</b> are involved in formulating the research problem. They are:",
+ o:["Understanding the problem thoroughly, and rephrasing it into meaningful terms from an analytical point of view","Stating the problem broadly, and then submitting a synopsis to the Research Board","Reviewing the conceptual literature, and then reviewing the empirical literature","Establishing categories, and then applying them to the raw data through coding"],
+ a:0,
+ why:"The chapter states: &ldquo;Essentially two steps are involved in formulating the research problem: <b>understanding the problem thoroughly</b>, and <b>rephrasing the same into meaningful terms from an analytical point of view</b>.&rdquo;",
+ w:["","The synopsis is written once the problem is already formulated, and is compulsory for a researcher writing a thesis.","The researcher must examine both types of literature, but these are not the two steps the chapter names.","Those are two of the four operations in the <b>analysis of data</b>."]},
+
+{t:"mcq",topic:"Formulating the research problem",
+ q:"The chapter says the researcher may review two types of literature while formulating the problem. The <b>empirical</b> literature consists of:",
+ o:["Books and journal articles of any kind on the topic","Abstracting and indexing journals, and published bibliographies","The concepts and theories relevant to the problem","Studies made earlier which are similar to the one proposed"],
+ a:3,
+ why:"The chapter distinguishes them: &ldquo;the <b>conceptual literature</b> concerning the concepts and theories, and the <b>empirical literature</b> consisting of <b>studies made earlier which are similar to the one proposed</b>.&rdquo;",
+ w:["Too broad: the chapter divides this literature specifically into the conceptual and the empirical.","These are named as the first place to go for the <i>extensive literature survey</i>, not as a type of literature.","That is the <b>conceptual</b> literature.",""]},
+
+{t:"mcq",topic:"Literature review",
+ q:"The chapter distinguishes replicating a study from simply duplicating one. The difference is that:",
+ o:["Replication uses the same participants, while duplication uses a different group","Replication is done to establish the robustness or generalizability of the original findings, while duplication is done without any knowledge that the same study has already been conducted","Replication is required before publication, while duplication is prohibited","Replication applies only to experimental designs, duplication only to nonexperimental ones"],
+ a:1,
+ why:"The chapter&rsquo;s note states there is a difference &ldquo;between <b>replicating</b> a study for purposes of establishing the <b>robustness or generalizability</b> of the original findings and simply <b>duplicating</b> a study <b>without having any knowledge</b> that the same study has already been conducted.&rdquo; This is one reason the literature review matters.",
+ w:["The chapter draws the distinction by <i>purpose and awareness</i>, not by who the participants are.","","The chapter states no such publication rule.","The chapter ties neither term to a particular design category."]},
+
+{t:"mcq",topic:"Preparation of the report",
+ q:"According to the chapter, the layout of the research report should consist of:",
+ o:["The preliminary pages; the main text; and the end matter","The introduction; the main report; and the bibliography","The title page; the findings; and the appendices","The synopsis; the analysis; and the conclusion"],
+ a:0,
+ why:"The chapter states: &ldquo;The layout of the report should be; the <b>preliminary pages</b>; the <b>main text</b>, and the <b>end matter</b>.&rdquo; The preliminary pages carry the title and date, acknowledgements and foreword, the table of contents, and lists of tables, graphs and charts.",
+ w:["","Introduction and main report are parts <i>within</i> the main text, and the bibliography belongs to the end matter &mdash; these are not the three top-level divisions.","These items sit inside the three divisions rather than constituting them.","The synopsis is submitted at the problem-formulation stage; it is not a division of the report."]},
+
+{t:"mcq",topic:"Extensive literature survey",
+ q:"For the extensive literature survey, which sources does the chapter name as the <b>first place to go</b>?",
+ o:["Academic journals and conference proceedings","Government reports and books","Abstracting and indexing journals, and published or unpublished bibliographies","The conceptual and the empirical literature on the problem"],
+ a:2,
+ why:"The chapter states: &ldquo;For this purpose, the <b>abstracting and indexing journals and published or unpublished bibliographies are the first place to go to</b>.&rdquo; Academic journals, conference proceedings, government reports and books are tapped afterwards, depending on the nature of the problem.",
+ w:["Named among the sources tapped <i>after</i> the first place to go.","Also named among the sources tapped afterwards.","","The conceptual/empirical division belongs to the discussion of formulating the research problem."]},
+
+{t:"mcq",topic:"Extensive literature survey",
+ q:"According to the chapter, a researcher writing a thesis must write a synopsis of the topic and submit it to:",
+ o:["The researcher&rsquo;s own colleagues and experts in the matter","The journal in which the research is to be published","The study participants, as part of informed consent","A Committee or the Research Board for approval"],
+ a:3,
+ why:"The chapter states: &ldquo;It is <b>compulsory</b> for a researcher writing a thesis to write a synopsis of the topic and submit it to <b>a Committee or the Research Board for approval</b>.&rdquo;",
+ w:["Discussion with colleagues and experts is given as the best way of <i>understanding the problem</i>, and as one approach to developing working hypotheses.","The chapter involves no journal at this stage.","Informed consent concerns informing participants about procedures, risks and benefits.",""]},
+
+{t:"mcq",topic:"Research design",
+ q:"According to the chapter, the role of the research design is to:",
+ o:["Guarantee that the null hypothesis will be rejected","Provide for the collection of relevant evidence with minimal expenditure of effort, time, and money","Ensure that every member of the population has an equal probability of being selected","Determine whether the findings can be generalized into a theory"],
+ a:1,
+ why:"The chapter states that the researcher must &ldquo;state the conceptual structure within which research would be conducted. Its role is to <b>provide for the collection of relevant evidence with minimal expenditure of effort, time, and money</b>.&rdquo;",
+ w:["No design can guarantee a result; the chapter says the null is tested and then confirmed or refuted.","","That is random selection.","Generalization is reached after a hypothesis has been tested and confirmed several times."]},
+
+{t:"mcq",topic:"Choosing a research topic",
+ q:"How does the chapter define a <b>theory</b>?",
+ o:["A tentative assumption made in order to test its logical or empirical consequences","A generalization that has been verified by replication in several different populations","A description of a phenomenon that attempts to integrate all that we know about it into a concise statement or question","The conceptual structure within which the research will be conducted"],
+ a:2,
+ why:"The chapter states: &ldquo;A theory is a <b>description of a phenomenon that attempts to integrate all that we know about the phenomenon into a concise statement or question</b>.&rdquo; In the research context theories function as a rich source of hypotheses that can be examined empirically.",
+ w:["That is the chapter&rsquo;s definition of a <b>working hypothesis</b>.","The chapter does say a hypothesis confirmed several times may let the researcher construct a theory &mdash; but that is how a theory is <i>reached</i>, not how it is defined.","","That is the <b>research design</b>."]},
+
+{t:"mcq",topic:"Analysis of data",
+ q:"In the chapter&rsquo;s account of data analysis, <b>coding</b> is the operation through which:",
+ o:["The categories of data are transformed into symbols that may be tabulated and counted","The classified data are put in the form of tables","Percentages and coefficients are computed by applying statistical formulae","Relationships or differences are subjected to tests of significance"],
+ a:0,
+ why:"The chapter states: &ldquo;<b>Coding</b> operation is usually done at this stage through which the <b>categories of data are transformed into symbols that may be tabulated and counted</b>.&rdquo;",
+ w:["","That is the chapter&rsquo;s definition of <b>tabulation</b>: the technical procedure wherein the classified data are put in the form of tables.","That is the analysis work done <i>after</i> tabulation.","That is the final step, undertaken to determine any conclusions."]},
+
+{t:"mcq",topic:"Generalization &amp; Interpretation",
+ q:"A researcher began the study with no hypothesis, and now explains the findings on the basis of a theory. According to the chapter, this is called:",
+ o:["Generalization","Interpretation","Hypothesis-testing","Deduction"],
+ a:1,
+ why:"The chapter states: &ldquo;If the researcher did not have a hypothesis to begin with, he could seek to explain his findings on the basis of a theory. This is called <b>interpretation</b>.&rdquo; Interpretation can trigger new questions, which in turn lead to further research.",
+ w:["Generalization is reached when a hypothesis has been tested and confirmed several times, allowing a theory to be constructed.","","Hypothesis-testing asks whether the facts support the hypothesis and results in accepting or rejecting it &mdash; it presupposes a hypothesis.","Deduction is reasoning from a premise to a conclusion that follows from it, discussed under the criteria of good research."]},
+
+{t:"mcq",topic:"Criteria of good research",
+ q:"According to the chapter, <b>induction</b> is the process of reasoning:",
+ o:["From some premise to a conclusion which follows from that premise","From a theory to a hypothesis that can be tested","From the sample to the statistical test appropriate for it","From a part to the whole"],
+ a:3,
+ why:"The chapter states: &ldquo;<b>Induction is the process of reasoning from a part to the whole</b> whereas deduction is the process of reasoning from some premise to a conclusion which follows from that very premise.&rdquo; Both belong to the &lsquo;Logical&rsquo; criterion of good research.",
+ w:["That is the chapter&rsquo;s definition of <b>deduction</b>.","The chapter describes theories as a source of hypotheses, but does not define induction this way.","The choice of statistical test depends partly on whether variables are categorical or continuous; that is not induction.",""]},
+
+/* ---------- TRUE / FALSE (12) ---------- */
+{t:"tf",topic:"Null vs. Alternate hypotheses",
+ q:"In scientific research, it is the alternate hypothesis that is tested, and it is then confirmed or refuted.",
+ a:false,
+ why:"<b>False.</b> The chapter states the opposite: &ldquo;it is <b>the null hypothesis that is tested</b>, and then the null hypothesis is either confirmed or refuted (sometimes phrased as rejected or not rejected).&rdquo;"},
+
+{t:"tf",topic:"Research design",
+ q:"If random assignment is used, the design is considered a randomized, or true, experimental design.",
+ a:true,
+ why:"<b>True.</b> The chapter states: &ldquo;If random assignment is used, it is considered to be a <b>randomized, or true, experimental design</b>.&rdquo; Only when random assignment is absent does the second question &mdash; multiple groups or multiple waves of measurement &mdash; come into play."},
+
+{t:"tf",topic:"Variables",
+ q:"Continuous variables can be measured with a greater degree of precision than categorical variables.",
+ a:true,
+ why:"<b>True.</b> The chapter&rsquo;s note states: &ldquo;When compared with categorical variables, continuous variables can be measured with a <b>greater degree of precision</b>.&rdquo;"},
+
+{t:"tf",topic:"Collecting the data",
+ q:"The chapter allows that there are a few limited instances in which researchers are not required to obtain informed consent from study participants.",
+ a:true,
+ why:"<b>True.</b> The chapter describes informed consent &mdash; all potential participants being informed about the procedures and the risks and benefits of participating &mdash; and then adds the exception: &ldquo;There are, however, <b>a few limited instances</b> in which researchers are not required to obtain informed consent from the study participants.&rdquo;"},
+
+{t:"tf",topic:"Working hypothesis",
+ q:"Exploratory or formulative research always requires a working hypothesis before it can begin.",
+ a:false,
+ why:"<b>False.</b> The chapter states: &ldquo;There may be a problem where we do not need working hypotheses, specially in the case of <b>exploratory or formulative researches which do not aim at testing the hypothesis</b>.&rdquo;"},
+
+{t:"tf",topic:"Variables",
+ q:"The independent variable is a measure of the effect, if any, of the dependent variable.",
+ a:false,
+ why:"<b>False.</b> The two are reversed. The chapter states that the <b>independent</b> variable is the factor manipulated or controlled by the researcher, while the <b>dependent</b> variable &ldquo;is a measure of the effect (if any) of the independent variable.&rdquo;"},
+
+{t:"tf",topic:"Literature review",
+ q:"According to the chapter, replicating a study and duplicating a study amount to the same thing.",
+ a:false,
+ why:"<b>False.</b> The chapter explicitly separates them: replication is undertaken to establish the <b>robustness or generalizability</b> of the original findings, whereas duplication is repeating a study <b>without knowing</b> it has already been conducted. Avoiding the latter is one reason for the literature review."},
+
+{t:"tf",topic:"Generalization &amp; Interpretation",
+ q:"The chapter states that the real value of research lies in its ability to arrive at certain generalizations.",
+ a:true,
+ why:"<b>True.</b> The chapter states: &ldquo;In fact, the <b>real value of research lies in its ability to arrive at certain generalizations</b>.&rdquo; If a hypothesis is tested and confirmed several times, the researcher may reach a generalization &mdash; that is, construct a theory."},
+
+{t:"tf",topic:"Formulating the research problem",
+ q:"A good research problem should take the form of a question.",
+ a:true,
+ why:"<b>True.</b> This is the second of the three criteria the chapter gives: a good research problem should describe the relationship between two or more variables, should take the form of a question, and must be capable of being tested empirically."},
+
+{t:"tf",topic:"Preparation of the report",
+ q:"The summary of findings should be reported in non-technical language.",
+ a:true,
+ why:"<b>True.</b> The chapter states: &ldquo;After introduction, a statement of findings and recommendations in <b>non-technical language</b> should be reported. If the findings are extensive, they should be summarized.&rdquo;"},
+
+{t:"tf",topic:"Random selection vs. assignment",
+ q:"Random selection and random assignment both describe how participants are distributed into groups within the study.",
+ a:false,
+ why:"<b>False.</b> Only random <b>assignment</b> concerns groups within the study. Random <b>selection</b> is &ldquo;choosing study participants <b>from the population of interest</b>&rdquo; so that each member of the population has an equal probability of being selected to participate at all."},
+
+{t:"tf",topic:"Preparation of the report",
+ q:"Charts and illustrations should be included in the main report wherever possible, to make it more visually appealing.",
+ a:false,
+ why:"<b>False.</b> The chapter sets a stricter test: &ldquo;Charts and illustrations in the main report should be used <b>only if they present the information more clearly and forcibly</b>.&rdquo; Visual appeal is not the criterion."},
+
+/* ---------- ENUMERATION (8) ---------- */
+{t:"enum",topic:"Steps of the research process",
+ q:"<b>List the 10 steps</b> of planning and designing a research study, as set out in the chapter.",
+ items:[
+  {label:"Choosing a research topic",keys:["topic"]},
+  {label:"Literature review",keys:["literature"]},
+  {label:"Formulating the research problem",keys:["problem"]},
+  {label:"Development of working hypothesis",keys:["hypothes"]},
+  {label:"Preparing the research design",keys:["design"]},
+  {label:"Collecting the data",keys:["collect"]},
+  {label:"Analysis of data",keys:["analys","analyz"]},
+  {label:"Generalisation and Interpretation",keys:["generali","interpret"]},
+  {label:"Preparation of Report",keys:["report"]},
+  {label:"Criteria of good research",keys:["criteria","good research"]}],
+ why:"These ten items are the contents list on the &lsquo;Planning and Designing a Research Study&rsquo; slide, and the chapter then works through them in this order."},
+
+{t:"enum",topic:"Choosing a research topic",
+ q:"<b>Name the 4 sources</b> from which, according to the chapter, researchers choose their research topics.",
+ items:[
+  {label:"The field within which the researcher works (competence gained through training and experience)",keys:["field","expertise","discipline","training"]},
+  {label:"Problem solving &mdash; the motivation to solve a particular problem",keys:["problem solv","solving","solve"]},
+  {label:"Previous research &mdash; the results of prior research, whether their own or someone else&rsquo;s",keys:["previous","prior","past research","earlier research"]},
+  {label:"Theory &mdash; a rich source of hypotheses that can be examined empirically",keys:["theor"]}],
+ why:"The chapter presents these four sources in turn, noting along the way that &ldquo;research begets research,&rdquo; because research tends to raise more questions than it answers."},
+
+{t:"enum",topic:"Formulating the research problem",
+ q:"<b>State the 3 criteria</b> that good research problems must meet.",
+ items:[
+  {label:"The research problem should describe the relationship between two or more variables",keys:["relationship","variable"]},
+  {label:"The research problem should take the form of a question",keys:["question"]},
+  {label:"The research problem must be capable of being tested empirically",keys:["empiric","tested","testab","test"]}],
+ why:"The chapter&rsquo;s note lists exactly these three criteria for a good research problem."},
+
+{t:"enum",topic:"Working hypothesis",
+ q:"<b>List the 4 approaches</b> the chapter gives for developing working hypotheses.",
+ items:[
+  {label:"Discussions with colleagues and experts about the problem, its origin and the objectives in seeking a solution",keys:["colleague","expert","discussion","discuss"]},
+  {label:"Examination of data and records, if available, for possible trends, peculiarities and other clues",keys:["record","trend","peculiar","clue","examination of data"]},
+  {label:"Review of similar studies in the area, or of studies on similar problems",keys:["similar"]},
+  {label:"Exploratory personal investigation",keys:["exploratory","personal investigation"]}],
+ why:"The chapter answers the question &ldquo;How does one go about developing working hypotheses?&rdquo; with exactly these four approaches."},
+
+{t:"enum",topic:"Research design",
+ q:"<b>Name the 3 general categories</b> into which research design falls.",
+ items:[
+  {label:"Experimental (randomized or &lsquo;true&rsquo; experimental &mdash; uses random assignment)",keys:["experimental"],not:["quasi","nonexperimental","non-experimental","non experimental"]},
+  {label:"Quasi-experimental (no random assignment, but multiple groups or multiple waves of measurement)",keys:["quasi"]},
+  {label:"Nonexperimental (no random assignment, and no multiple groups or waves of measurement)",keys:["nonexperimental","non-experimental","non experimental"]}],
+ why:"The chapter states: &ldquo;Research Design falls into one of three general categories: <b>experimental, quasi-experimental, and nonexperimental</b>,&rdquo; and then gives the two questions that distinguish them."},
+
+{t:"enum",topic:"Collecting the data",
+ q:"<b>Mention the 5 ways</b> of collecting the appropriate data that the chapter lists.",
+ items:[
+  {label:"Formal testing (psychological, educational, academic, intelligence)",keys:["formal test","testing","psychological","educational","intelligence"]},
+  {label:"Interviewing",keys:["interview"]},
+  {label:"Global ratings",keys:["global","rating"]},
+  {label:"Observation",keys:["observ"]},
+  {label:"Biological measures",keys:["biolog"]}],
+ why:"The chapter lists these five, noting that the ways of collecting data &ldquo;differ considerably in context of money, costs, and time.&rdquo;"},
+
+{t:"enum",topic:"Analysis of data",
+ q:"<b>List the 4 closely related operations</b> that the analysis of data requires.",
+ items:[
+  {label:"Establishment of categories",keys:["categor"]},
+  {label:"The application of these categories to raw data through coding",keys:["coding","code"]},
+  {label:"Tabulation",keys:["tabulat"]},
+  {label:"Drawing statistical inferences",keys:["inference","infer","statistic"]}],
+ why:"The chapter states that &ldquo;the analysis of data requires a number of closely related operations&rdquo; and lists exactly these four."},
+
+{t:"enum",topic:"Criteria of good research",
+ q:"<b>Name the 4 characteristics</b> the chapter gives when it says what good research <i>is</i>.",
+ items:[
+  {label:"Systematic &mdash; structured with specified steps taken in a specified sequence, in accordance with well defined rules",keys:["systematic"]},
+  {label:"Logical &mdash; guided by the rules of logical reasoning, through induction and deduction",keys:["logic"]},
+  {label:"Empirical &mdash; related to aspects of a real situation, dealing with concrete data that provide a basis for external validity",keys:["empiric"]},
+  {label:"Replicable &mdash; allowing results to be verified by replicating the study, building a sound basis for decisions",keys:["replica"]}],
+ why:"The chapter&rsquo;s &lsquo;Good research is:&rsquo; slide gives these four characteristics: systematic, logical, empirical and replicable."}
+];
+
+/* Flat bank: every question tagged with its chapter. */
+const ALL = [];
+CH1.forEach(q => ALL.push(Object.assign({ch:1}, q)));
+CH2.forEach(q => ALL.push(Object.assign({ch:2}, q)));
+
+const IDX1 = ALL.map((q,i)=>q.ch===1?i:-1).filter(i=>i>=0);
+const IDX2 = ALL.map((q,i)=>q.ch===2?i:-1).filter(i=>i>=0);
+
+function shuffle(a){
+  a = a.slice();
+  for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
+  return a;
+}
+function countTypes(idx){
+  const c={mcq:0,tf:0,enum:0};
+  idx.forEach(i=>c[ALL[i].t]++);
+  return c;
+}
+
+/* ============================================================
+   ENGINE
+   ============================================================ */
+const app = document.getElementById('app');
+let S = null;
+
+function esc(s){return String(s).replace(/&(?![a-z#]+;)/g,'&amp;').replace(/</g,'&lt;');}
+function norm(s){return s.toLowerCase().replace(/[^a-z0-9 ]+/g,' ').replace(/\s+/g,' ').trim();}
+
+const MODES = {
+  ch1:  {label:"Chapter 1",            idx:()=>IDX1,                      all:IDX1},
+  ch2:  {label:"Chapter 2",            idx:()=>IDX2,                      all:IDX2},
+  both: {label:"Both chapters mixed",  idx:()=>shuffle(IDX1.concat(IDX2)), all:IDX1.concat(IDX2)}
+};
+
+function launch(mode){
+  const m = MODES[mode];
+  start(m.label, m.idx(), mode);
+}
+
+function start(bankName, indices, mode){
+  S = {
+    bankName, bank: ALL, mode: mode || (S && S.mode) || 'ch1',
+    order: indices,
+    pos: 0, correct: 0, wrong: 0,
+    wrongIdx: [], log: [],
+    submitted:false, picked:null, result:null, typed:""
+  };
+  render();
+}
+
+function render(){
+  if(!S){ return home(); }
+  if(S.pos >= S.order.length){ return report(); }
+  question();
+}
+
+function home(){
+  function tile(mode, title, note){
+    const idx = MODES[mode].all;
+    const n = idx.length;
+    const c = countTypes(idx);
+    const ready = n > 0 && (mode !== 'both' || (IDX1.length > 0 && IDX2.length > 0));
+    const breakdown = ready
+      ? `${c.mcq} multiple choice &middot; ${c.tf} true/false &middot; ${c.enum} enumeration`
+      : note;
+    return `<button class="mode" data-mode="${mode}" ${ready?'':'disabled'}>
+        <div class="mt">${title}</div>
+        <div class="mn">${ready ? `<b>${n}</b> questions &mdash; ${breakdown}` : breakdown}</div>
+      </button>`;
+  }
+
+  app.innerHTML = `
+  <div class="card">
+    <h2 style="margin:2px 0 6px;font-size:20px">Choose a practice mode</h2>
+    <p style="color:var(--muted);font-size:13px;margin:0 0 18px">
+      Every question is based strictly on the course chapters. Difficulty: medium to hard.
+      You get instant feedback after each answer, a score, and a review of what you missed.</p>
+    ${tile('ch1','Chapter 1','')}
+    ${tile('ch2','Chapter 2','Not added yet')}
+    ${tile('both','Both chapters &mdash; shuffled','Available once Chapter 2 is added')}
+  </div>`;
+
+  [...document.querySelectorAll('.mode')].forEach(b=>{
+    if(!b.disabled) b.onclick = ()=>launch(b.dataset.mode);
+  });
+}
+
+function question(){
+  const q = S.bank[S.order[S.pos]];
+  const n = S.pos+1, tot = S.order.length;
+  const done = S.correct + S.wrong;
+  const pct = done ? Math.round(S.correct/done*100) : 0;
+  const typeLabel = q.t==='mcq' ? 'Multiple choice' : q.t==='tf' ? 'True / False' : 'Enumeration';
+
+  let body = '';
+  if(q.t==='mcq'){
+    body = q.o.map((o,i)=>`<button class="opt" data-i="${i}"><span class="k">${"ABCD"[i]}</span><span>${o}</span></button>`).join('');
+  } else if(q.t==='tf'){
+    body = ['True','False'].map((o,i)=>`<button class="opt" data-i="${i}"><span class="k">${i?'F':'T'}</span><span>${o}</span></button>`).join('');
+  } else {
+    body = `<textarea id="ta" placeholder="Type one item per line…"></textarea>
+            <div class="hint">Write ${q.items.length} items, one per line. Your wording does not have to match exactly &mdash; key terms are enough.</div>`;
+  }
+
+  app.innerHTML = `
+  <div class="card">
+    <div class="meta">
+      <span>Question <b>${n}</b> of <b>${tot}</b></span>
+      <span>Correct <b style="color:var(--ok)">${S.correct}</b></span>
+      <span>Incorrect <b style="color:var(--bad)">${S.wrong}</b></span>
+      <span>Score <b>${pct}%</b></span>
+    </div>
+    <div class="bar"><i style="width:${(S.pos/tot*100)}%"></i></div>
+    <span class="tag">${typeLabel}</span>
+    <div class="qtext">${q.q}</div>
+    <div id="body">${body}</div>
+    <div id="fb"></div>
+    <div class="row" id="ctrl">
+      <button class="btn" id="submit">Submit answer</button>
+      <button class="btn ghost small" id="quit">End &amp; see report</button>
+    </div>
+  </div>`;
+
+  document.getElementById('quit').onclick = ()=>{ S.order = S.order.slice(0,S.pos); S.pos = S.order.length; render(); };
+
+  if(q.t==='enum'){
+    const ta = document.getElementById('ta'); ta.focus();
+    document.getElementById('submit').onclick = ()=>gradeEnum(q, ta.value);
+  } else {
+    let picked = null;
+    const btns = [...document.querySelectorAll('.opt')];
+    btns.forEach(b=>b.onclick=()=>{ picked = +b.dataset.i; btns.forEach(x=>x.classList.remove('sel')); b.classList.add('sel'); });
+    document.getElementById('submit').onclick = ()=>{
+      if(picked===null){ document.getElementById('fb').innerHTML =
+        `<div class="fb part"><p style="margin:0">Choose an option before submitting.</p></div>`; return; }
+      gradeChoice(q, picked, btns);
+    };
+  }
+}
+
+function gradeChoice(q, picked, btns){
+  const ans = q.t==='tf' ? (q.a ? 0 : 1) : q.a;
+  const ok = picked === ans;
+  btns.forEach((b,i)=>{ b.disabled = true; b.classList.remove('sel');
+    if(i===ans) b.classList.add('right');
+    else if(i===picked) b.classList.add('wrong'); });
+
+  let html;
+  if(ok){
+    html = `<div class="fb ok"><h4>✅ Correct</h4><p>${q.why}</p></div>`;
+  } else {
+    const chosen = q.t==='tf' ? (picked===0?'True':'False') : `<b>${"ABCD"[picked]}</b> &mdash; ${q.o[picked]}`;
+    const right  = q.t==='tf' ? (q.a?'True':'False')        : `<b>${"ABCD"[ans]}</b> &mdash; ${q.o[ans]}`;
+    const wrongNote = (q.w && q.w[picked]) ? `<p><span class="lbl">Why your answer is wrong:</span> ${q.w[picked]}</p>` : '';
+    html = `<div class="fb bad"><h4>❌ Incorrect</h4>
+      <p><span class="lbl">You chose:</span> ${chosen}</p>
+      ${wrongNote}
+      <p><span class="lbl">Correct answer:</span> ${right}</p>
+      <p><span class="lbl">Why it is correct:</span> ${q.why}</p></div>`;
+  }
+  finish(q, ok, html);
+}
+
+function gradeEnum(q, raw){
+  const lines = raw.split('\n').map(l=>norm(l)).filter(l=>l.length>1);
+  const hits = new Array(q.items.length).fill(false);
+  lines.forEach(line=>{
+    for(let i=0;i<q.items.length;i++){
+      if(hits[i]) continue;
+      const it = q.items[i];
+      if(it.not && it.not.some(k=>line.includes(k))) continue;
+      if(it.keys.some(k=>line.includes(k))){ hits[i]=true; return; }
+    }
+  });
+  const got = hits.filter(Boolean).length, need = q.items.length;
+  const ok = got === need;
+  const cls = ok ? 'ok' : (got>0 ? 'part' : 'bad');
+  const head = ok ? '✅ Correct &mdash; all items found'
+                  : `${got>0?'⚠️':'❌'} ${got} of ${need} items matched`;
+  const list = q.items.map((it,i)=>`<li class="${hits[i]?'hit':'miss'}">${hits[i]?'✔':'✘'} ${it.label}</li>`).join('');
+  const html = `<div class="fb ${cls}"><h4>${head}</h4>
+    <p><span class="lbl">The chapter&rsquo;s items:</span></p>
+    <ul class="items">${list}</ul>
+    <p style="margin-top:10px">${q.why}</p>
+    ${ok?'':'<p class="hint" style="margin-top:6px">If an item you wrote was correct but not matched, use &ldquo;Count as correct&rdquo;.</p>'}
+    </div>`;
+  finish(q, ok, html, !ok);
+}
+
+function finish(q, ok, html, allowOverride){
+  document.getElementById('fb').innerHTML = html;
+  if(ok) S.correct++; else { S.wrong++; S.wrongIdx.push(S.order[S.pos]); }
+  S.log.push({i:S.order[S.pos], ok, topic:q.topic});
+
+  const last = S.pos === S.order.length-1;
+  document.getElementById('ctrl').innerHTML =
+    `<button class="btn" id="next">${last?'See final report':'Next question →'}</button>`
+    + (allowOverride ? `<button class="btn ghost small" id="ovr">Count as correct</button>` : '')
+    + `<button class="btn ghost small" id="quit2">End &amp; see report</button>`;
+
+  document.getElementById('next').onclick = ()=>{ S.pos++; render(); };
+  document.getElementById('quit2').onclick = ()=>{ S.pos++; S.order = S.order.slice(0,S.pos); render(); };
+  const ovr = document.getElementById('ovr');
+  if(ovr) ovr.onclick = ()=>{
+    S.correct++; S.wrong--;
+    S.wrongIdx = S.wrongIdx.filter(x=>x!==S.order[S.pos]);
+    S.log[S.log.length-1].ok = true;
+    ovr.disabled = true; ovr.textContent = 'Counted as correct';
+  };
+  document.getElementById('fb').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function report(){
+  const tot = S.log.length;
+  const pct = tot ? Math.round(S.correct/tot*100) : 0;
+  const mixed = S.mode === 'both';
+  const byTopic = {};
+  S.log.forEach(e=>{
+    const key = mixed ? `Ch.${ALL[e.i].ch} &mdash; ${e.topic}` : e.topic;
+    byTopic[key] = byTopic[key] || {n:0,bad:0};
+    byTopic[key].n++; if(!e.ok) byTopic[key].bad++; });
+  const weak = Object.entries(byTopic).filter(([,v])=>v.bad>0).sort((a,b)=>b[1].bad-a[1].bad);
+
+  const rows = weak.map(([t,v])=>`<tr><td>${t}</td><td>${v.bad} of ${v.n} missed</td></tr>`).join('');
+  const missed = S.wrongIdx.map(i=>{
+    const q = S.bank[i];
+    let right;
+    if(q.t==='mcq') right = `<b>${"ABCD"[q.a]}</b> &mdash; ${q.o[q.a]}`;
+    else if(q.t==='tf') right = q.a ? 'True' : 'False';
+    else right = q.items.map(x=>x.label).join('; ');
+    return `<div class="rev"><div class="q">${mixed?`<span class="tag" style="margin-right:7px">Ch.${q.ch}</span>`:''}${q.q}</div>
+      <div class="a"><span class="lbl">Answer:</span> ${right}</div>
+      <div class="a" style="color:var(--muted)">${q.why}</div></div>`;
+  }).join('');
+
+  app.innerHTML = `
+  <div class="card center">
+    <div class="tag">${S.bankName} &mdash; final report</div>
+    <div class="score">${pct}%</div>
+    <p style="color:var(--muted);margin:0 0 14px">
+      Correct <b style="color:var(--ok)">${S.correct}</b> / ${tot}
+      &nbsp;&middot;&nbsp; Incorrect <b style="color:var(--bad)">${S.wrong}</b> / ${tot}
+    </p>
+    ${weak.length ? `<div class="wk" style="text-align:left">
+        <h4>Topics to review</h4>
+        <table><tr><th>Topic</th><th>Missed</th></tr>${rows}</table>
+      </div>` : `<div class="fb ok" style="text-align:left"><p style="margin:0">
+        No incorrect answers &mdash; nothing flagged for review.</p></div>`}
+    <div class="row" style="justify-content:center">
+      ${S.wrongIdx.length ? `<button class="btn" id="retry">Retry my ${S.wrongIdx.length} wrong answer${S.wrongIdx.length>1?'s':''}</button>` : ''}
+      <button class="btn ghost" id="again">Restart this set</button>
+      <button class="btn ghost small" id="menu">Back to menu</button>
+    </div>
+  </div>
+  ${missed ? `<div class="card" style="margin-top:14px">
+      <h3 style="margin:0 0 4px;font-size:16px">Questions you missed</h3>
+      ${missed}</div>` : ''}`;
+
+  const r = document.getElementById('retry');
+  if(r) r.onclick = ()=>start(S.bankName, S.wrongIdx.slice(), S.mode);
+  document.getElementById('again').onclick = ()=>launch(S.mode);
+  document.getElementById('menu').onclick = ()=>{ S=null; home(); };
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+document.getElementById('theme').onclick = ()=>{
+  const cur = document.documentElement.getAttribute('data-theme');
+  const dark = cur ? cur==='dark'
+    : window.matchMedia('(prefers-color-scheme: dark)').matches;
+  document.documentElement.setAttribute('data-theme', dark ? 'light' : 'dark');
+};
+
+home();
+</script>
+</body>
+</html>

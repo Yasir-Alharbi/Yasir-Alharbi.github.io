@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Disallow: /rme-midterm-2026.html
