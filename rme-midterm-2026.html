@@ -94,6 +94,20 @@ select{font:inherit;padding:7px 10px;border-radius:8px;border:1.5px solid var(--
 .mode:disabled{opacity:.5;cursor:not-allowed}
 .mode .mt{font-weight:700;font-size:16px;margin-bottom:3px}
 .mode .mn{font-size:13px;color:var(--muted)}
+.site-foot{margin-top:26px;padding:16px 18px;border:1px solid var(--line);border-radius:var(--radius);
+  background:var(--card);display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.site-foot .fn{font-weight:700;font-size:15px}
+.site-foot .fd{font-size:12px;color:var(--muted);letter-spacing:.07em;text-transform:uppercase;margin-top:2px}
+.folink{display:inline-flex;align-items:center;gap:7px;text-decoration:none;white-space:nowrap;
+  font-weight:650;font-size:14px;color:#0b7f73;border:1.5px solid #19b3a3;
+  border-radius:9px;padding:9px 15px;transition:.14s}
+.folink:hover{background:#19b3a3;color:#fff}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .folink{color:#33f5df;border-color:#1f6f68}
+  :root:not([data-theme="light"]) .folink:hover{background:#33f5df;color:#06201d}
+}
+:root[data-theme="dark"] .folink{color:#33f5df;border-color:#1f6f68}
+:root[data-theme="dark"] .folink:hover{background:#33f5df;color:#06201d}
 .themeBtn{background:transparent;border:1.5px solid var(--line);color:var(--muted);
   border-radius:8px;padding:6px 11px;font:inherit;font-size:13px;cursor:pointer}
 </style>
@@ -108,6 +122,16 @@ select{font:inherit;padding:7px 10px;border-radius:8px;border:1.5px solid var(--
     <button class="themeBtn" id="theme">Dark / Light</button>
   </header>
   <div id="app"></div>
+
+  <footer class="site-foot">
+    <div>
+      <div class="fn">Built by Yasir Alharbi</div>
+      <div class="fd">DFIR &middot; SOC &middot; AI</div>
+    </div>
+    <a class="folink" href="https://yasir-alharbi.github.io/" target="_blank" rel="noopener">
+      View my portfolio <span aria-hidden="true">&rarr;</span>
+    </a>
+  </footer>
 </div>
 
 <script>
