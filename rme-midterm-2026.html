@@ -458,7 +458,7 @@ const CH1 = [
 {t:"enum",topic:"Hypotheses",
  q:"<b>Name the 2 types of hypotheses</b> the chapter says you should be familiar with.",
  items:[
-  {label:"The null hypothesis &mdash; predicts no difference between the groups",keys:["null"]},
+  {label:"The null hypothesis &mdash; predicts no difference between the groups",keys:["null","nul"]},
   {label:"The alternate (experimental) hypothesis &mdash; predicts a difference between the groups",keys:["alternate","alternative","experimental"]}],
  why:"The chapter names the null hypothesis and the alternate (or experimental) hypothesis."},
 
@@ -789,7 +789,7 @@ const CH2 = [
   {label:"The field within which the researcher works (competence gained through training and experience)",keys:["field","expertise","discipline","training"]},
   {label:"Problem solving &mdash; the motivation to solve a particular problem",keys:["problem solv","solving","solve"]},
   {label:"Previous research &mdash; the results of prior research, whether their own or someone else&rsquo;s",keys:["previous","prior","past research","earlier research"]},
-  {label:"Theory &mdash; a rich source of hypotheses that can be examined empirically",keys:["theor"]}],
+  {label:"Theory &mdash; a rich source of hypotheses that can be examined empirically",keys:["theory"]}],
  why:"The chapter presents these four sources in turn, noting along the way that &ldquo;research begets research,&rdquo; because research tends to raise more questions than it answers."},
 
 {t:"enum",topic:"Formulating the research problem",
@@ -874,6 +874,47 @@ let S = null;
 function esc(s){return String(s).replace(/&(?![a-z#]+;)/g,'&amp;').replace(/</g,'&lt;');}
 function norm(s){return s.toLowerCase().replace(/[^a-z0-9 ]+/g,' ').replace(/\s+/g,' ').trim();}
 
+/* --- typo-tolerant keyword matching ---------------------------------
+   Damerau-Levenshtein (optimal string alignment): counts a swapped pair
+   of letters as ONE mistake, since that is the commonest typo.
+   Allowance scales with key length so short keys stay strict and can't
+   collide with unrelated words.                                      */
+function editDist(a,b){
+  const m=a.length, n=b.length;
+  if(!m) return n;
+  if(!n) return m;
+  const d=[];
+  for(let i=0;i<=m;i++){ d[i]=[i]; }
+  for(let j=0;j<=n;j++){ d[0][j]=j; }
+  for(let i=1;i<=m;i++){
+    for(let j=1;j<=n;j++){
+      const cost = a[i-1]===b[j-1] ? 0 : 1;
+      d[i][j] = Math.min(d[i-1][j]+1, d[i][j-1]+1, d[i-1][j-1]+cost);
+      if(i>1 && j>1 && a[i-1]===b[j-2] && a[i-2]===b[j-1])
+        d[i][j] = Math.min(d[i][j], d[i-2][j-2]+1);   // transposition
+    }
+  }
+  return d[m][n];
+}
+function tolFor(key){ return key.length<=4 ? 0 : key.length<=7 ? 1 : 2; }
+
+/* true if `line` contains `key`, allowing for spelling mistakes */
+function hasKey(line, key){
+  if(line.includes(key)) return true;            // exact substring, cheap path
+  const tol = tolFor(key);
+  if(!tol) return false;
+  const kw = key.split(' '), words = line.split(' ');
+  for(let i=0; i+kw.length<=words.length; i++){
+    const window = words.slice(i, i+kw.length).join(' ');
+    // keys are often stems ("hypothes"), so compare against prefixes
+    for(let L=Math.max(1,key.length-tol); L<=key.length+tol; L++){
+      if(L>window.length) break;
+      if(editDist(window.slice(0,L), key) <= tol) return true;
+    }
+  }
+  return false;
+}
+
 const MODES = {
   ch1:  {label:"Chapter 1",            idx:()=>IDX1,                      all:IDX1},
   ch2:  {label:"Chapter 2",            idx:()=>IDX2,                      all:IDX2},
@@ -947,7 +988,7 @@ function question(){
     body = ['True','False'].map((o,i)=>`<button class="opt" data-i="${i}"><span class="k">${i?'F':'T'}</span><span>${o}</span></button>`).join('');
   } else {
     body = `<textarea id="ta" placeholder="Type one item per line…"></textarea>
-            <div class="hint">Write ${q.items.length} items, one per line. Your wording does not have to match exactly &mdash; key terms are enough.</div>`;
+            <div class="hint">Write ${q.items.length} items, one per line. Your wording does not have to match exactly &mdash; key terms are enough, and small spelling mistakes are accepted.</div>`;
   }
 
   app.innerHTML = `
@@ -1016,8 +1057,8 @@ function gradeEnum(q, raw){
     for(let i=0;i<q.items.length;i++){
       if(hits[i]) continue;
       const it = q.items[i];
-      if(it.not && it.not.some(k=>line.includes(k))) continue;
-      if(it.keys.some(k=>line.includes(k))){ hits[i]=true; return; }
+      if(it.not && it.not.some(k=>hasKey(line,k))) continue;
+      if(it.keys.some(k=>hasKey(line,k))){ hits[i]=true; return; }
     }
   });
   const got = hits.filter(Boolean).length, need = q.items.length;
