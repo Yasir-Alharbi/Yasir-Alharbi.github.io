@@ -1,0 +1,1305 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<title>CS0610 Computer Vision Practice 2026</title>
+<style>
+/* Layout: one centred working column (max 760px). Home = setup + progress; exam = one question card at a time. */
+:root{
+  --bg:#070b10; --surface:#0f161d; --ink:#e6eef2; --muted:#93a3ad; --line:#22303a;
+  --accent:#33f5df; --accent-ink:#03201c; --accent-soft:#0c2b2a;
+  --ok:#5cd68f; --ok-soft:#0f2a1b; --bad:#ff7a72; --bad-soft:#341614; --warn:#f0b84e; --warn-soft:#2e2410;
+  --l1:#b39cf0; --l2:#33f5df; --l3:#f2a06e; --l4:#8fd98f;
+  --f-display:"Segoe UI Variable Display","Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  --f-body:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  --f-mono:"Cascadia Mono",Consolas,"SFMono-Regular",Menlo,"Courier New",monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.55}
+.wrap{max-width:760px;margin:0 auto;padding-inline:16px;padding-block:20px 64px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.15}
+h1{font-size:1.9rem;font-weight:700}
+h2{font-size:1.25rem;font-weight:700}
+.eyebrow{font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.muted{color:var(--muted)}
+.stack{display:flex;flex-direction:column;gap:16px}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px}
+button{font:inherit;cursor:pointer}
+.btn{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:8px;padding:9px 16px;font-weight:700}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn.primary:disabled{opacity:.45;cursor:not-allowed}
+.btn.ghost{background:transparent}
+.btn.small{padding:5px 10px;font-size:.85rem}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+/* header */
+.top{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+.pixels{display:grid;grid-template-columns:repeat(4,9px);gap:2px}
+.pixels i{width:9px;height:9px;border-radius:1px;display:block}
+/* chips */
+.chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:6px 12px;background:var(--surface);user-select:none}
+.chip input{accent-color:var(--accent);margin:0}
+.chip:has(input:checked){border-color:var(--accent);background:var(--accent-soft)}
+.lec{font-weight:700;font-size:.78rem;border-radius:5px;padding:2px 7px;color:#06121a}
+.lec1{background:var(--l1)}.lec2{background:var(--l2)}.lec3{background:var(--l3)}.lec4{background:var(--l4)}
+.tag{font-size:.78rem;color:var(--muted);border:1px solid var(--line);border-radius:5px;padding:1px 7px}
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.stat{border:1px solid var(--line);border-radius:8px;padding:10px 12px;min-width:0}
+.stat b{font-family:var(--f-display);font-size:1.35rem;font-variant-numeric:tabular-nums}
+.bar{height:6px;border-radius:3px;background:var(--line);overflow:hidden;margin-top:6px}
+.bar span{display:block;height:100%;background:var(--accent)}
+/* exam */
+.progress{height:5px;background:var(--line);border-radius:3px;overflow:hidden}
+.progress span{display:block;height:100%;background:var(--accent);transition:width .25s}
+.qhead{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between}
+.qtext{font-size:1.08rem}
+.qtext p{margin:.4em 0}
+.opts{display:flex;flex-direction:column;gap:10px;margin-top:6px}
+.opt{display:grid;grid-template-columns:30px 1fr;gap:10px;align-items:start;text-align:left;width:100%;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:9px;padding:11px 12px}
+.opt:hover:not(:disabled){border-color:var(--accent)}
+.opt .k{font-family:var(--f-mono);font-weight:600;width:26px;height:26px;border-radius:6px;display:grid;place-items:center;background:var(--accent-soft);color:var(--ink);font-size:.9rem}
+.opt .t{min-width:0}
+.opt.sel{border-color:var(--accent);background:var(--accent-soft)}
+.opt.right{border-color:var(--ok);background:var(--ok-soft)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.opt:disabled{cursor:default}
+.why{display:block;font-size:.92rem;margin-top:6px;color:var(--ink)}
+.opt .t>span:first-child{display:block}
+.why .lbl{font-weight:700}
+.right .why .lbl{color:var(--ok)} .wrong .why .lbl,.dim .why .lbl{color:var(--bad)}
+.opt.dim{opacity:.85}
+.src{display:flex;gap:8px;align-items:baseline;border-left:3px solid var(--accent);background:var(--accent-soft);padding:8px 12px;border-radius:0 6px 6px 0;font-size:.92rem}
+.verdict{font-family:var(--f-display);font-weight:700;font-size:1.1rem}
+.verdict.ok{color:var(--ok)} .verdict.bad{color:var(--bad)}
+.note{border:1px solid var(--warn);background:var(--warn-soft);border-radius:8px;padding:10px 12px;font-size:.92rem}
+textarea{width:100%;min-height:110px;font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px}
+.model{border:1px solid var(--line);border-radius:8px;padding:4px 14px;background:var(--bg)}
+.model ul,.model ol{padding-left:1.2em}
+/* matrices */
+.mxrow{display:flex;flex-wrap:wrap;gap:18px;align-items:flex-start}
+.mxw{overflow-x:auto;max-width:100%}
+.mxw .cap{font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:3px}
+table.mx{border-collapse:collapse;font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+table.mx td{border:1px solid var(--muted);min-width:34px;height:30px;text-align:center;padding:2px 6px;background:var(--surface)}
+table.mxi{display:inline-table;vertical-align:middle;margin:2px 0}
+table.mxi td{min-width:24px;height:22px;font-size:.88rem;padding:1px 4px}
+.kbd{font-family:var(--f-mono);font-size:.8rem;border:1px solid var(--line);border-radius:4px;padding:0 5px}
+.miss{border-top:1px solid var(--line);padding-top:10px}
+.foot{font-size:.85rem;color:var(--muted)}
+.confirm{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+@media (prefers-reduced-motion: reduce){.progress span{transition:none}}
+@media (max-width:480px){h1{font-size:1.5rem}.panel{padding:14px}}
+</style>
+<style>
+body{margin:0}
+[hidden]{display:none!important}
+body>footer{max-width:760px;margin:0 auto;padding-inline:16px;padding-block:24px 40px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:6px 18px;align-items:center;justify-content:space-between;color:var(--muted);font-size:.9rem}
+body>footer a{color:var(--accent);font-weight:700;text-decoration:none}
+body>footer a:hover{text-decoration:underline}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+
+<script>
+/* ---------- question-bank helpers ---------- */
+const BANK=[];
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;')}
+function mx(a,cap){return `<div class="mxw">${cap?`<div class="cap">${cap}</div>`:''}<table class="mx">${a.map(r=>`<tr>${r.map(v=>`<td>${String(v).replace('-','−')}</td>`).join('')}</tr>`).join('')}</table></div>`}
+function mxi(a){return `<table class="mx mxi">${a.map(r=>`<tr>${r.map(v=>`<td>${v}</td>`).join('')}</tr>`).join('')}</table>`}
+function hid(s){let h=5381;for(const c of s)h=((h*33)^c.charCodeAt(0))>>>0;return h.toString(36)}
+function add(o){o.id='L'+o.lec+'-'+hid(o.q);BANK.push(o)}
+function mc(lec,topic,src,q,opts){add({lec,topic,src,q,type:topic==='Matrix'?'matrix':'mcq',opts:opts.map(([t,ok,why])=>({t,ok:!!ok,why}))})}
+function tf(lec,topic,src,q,ans,e){add({lec,topic,src,q,type:'tf',opts:[{t:'True',ok:ans===true,why:e},{t:'False',ok:ans===false,why:e}],fixed:true})}
+function wr(lec,topic,src,q,a){add({lec,topic,src,q,type:'written',answer:a})}
+</script>
+<script>
+// L1 — Introduction (CS0610-L1.pdf). Slide numbers = PDF page numbers.
+const T1 = 'Intro';
+mc(1,'What is CV','Slides 14–15 (also Q1 of the professor\'s review sheet)',
+`Computer vision is a discipline that studies how to reconstruct, interpret and understand a 3D scene from its ________.`,[
+['2D images',1,'Correct. Slide 14: CV computes "properties of the 3D world from visual data", and that visual data is the 2D images a camera records.'],
+['3D images',0,'Wrong. The 3D scene is what we want to recover. The input is its images.'],
+['3d images',0,'Wrong. It\'s the same as "3D images", written in lowercase to catch careless readers.'],
+['4d images',0,'Wrong. Nothing in the lecture mentions 4D images.']]);
+
+mc(1,'Course info','Slide 4',`The PRIMARY course textbook is:`,[
+['Reinhard Klette — Concise Computer Vision: An Introduction into Theory and Algorithms',1,'Correct. Slide 4 names Klette as the primary text.'],
+['Richard Szeliski — Computer Vision: Algorithms and Applications',0,'Wrong. Slide 4 lists Szeliski as the SECONDARY text.'],
+['Forsyth and Ponce',0,'Wrong. Forsyth & Ponce appear only as a figure credit (slides 60, 65). They are not a course text.'],
+['Hammond — The Camera Obscura, A Chronicle',0,'Wrong. It\'s only quoted on the camera obscura slide (61).']]);
+
+mc(1,'History','Slide 12',`In 1966, Marvin Minsky at MIT asked a student to "spend the summer linking a camera to a computer and getting the computer to describe what it saw." What does this story show?`,[
+['The problem turned out to be much more difficult than expected',1,'Correct. Slide 12: "We now know that the problem is slightly more difficult than that."'],
+['Computer vision was fully solved in one summer',0,'Wrong. The point of the story is the opposite.'],
+['Connecting a camera to a computer is the hardest part of CV',0,'Wrong. Connecting the camera is the easy part (see slide 13, "Done?"). Understanding the image is the hard part.'],
+['Computer vision started as a branch of computer graphics',0,'Wrong. The story says nothing about graphics.']]);
+
+mc(1,'History','Slide 12',`Which student did Marvin Minsky give the 1966 "summer vision" task to?`,[
+['Gerald Jay Sussman',1,'Correct. Slide 12.'],
+['Noah Snavely',0,'Wrong. Snavely co-developed Photo Tourism (slide 35).'],
+['Amnon Shashua',0,'Wrong. Shashua is credited on the Mobileye smart-cars slides (48–49).'],
+['Rick Szeliski',0,'Wrong. Szeliski is the secondary textbook author and co-developed Photo Tourism.']]);
+
+mc(1,'What is CV','Slide 13',`Slide 13 shows a camcorder plugged into a computer with the caption "Done?". What is the message?`,[
+['Connecting a camera to a computer is not computer vision; the computer still has to understand the images',1,'Correct. This is the same lesson as the Minsky story on slide 12. Getting images into a computer is easy; understanding them is the hard part.'],
+['Computer vision only needs a good camera',0,'Wrong. That is exactly the naive idea the slide questions.'],
+['Video cameras cannot be used for computer vision',0,'Wrong. Slide 15 says image data can be a video sequence.'],
+['Computer vision is finished once images are stored',0,'Wrong. Storing images is not understanding them.']]);
+
+mc(1,'CV system','Slide 17',`Which of the following is NOT one of the components of a computer vision system shown on slide 17?`,[
+['Printer',1,'Correct. The components are Lighting, Scene, Camera, Computer, Scene Interpretation. There is no printer.'],
+['Lighting',0,'Wrong. Lighting is a component.'],
+['Camera',0,'Wrong. Camera is a component.'],
+['Scene interpretation',0,'Wrong. Scene interpretation is the final component.']]);
+
+mc(1,'CV system','Slide 17',`In the computer vision system diagram (Lighting → Scene → Camera → Computer → ?), what comes last?`,[
+['Scene interpretation',1,'Correct. Slide 17 ends with Scene Interpretation, i.e. understanding.'],
+['An enhanced output image',0,'Wrong. An image as output is image processing (L3 slide 9), not the end of a CV system.'],
+['A 3D printout',0,'Wrong. Not on the slide.'],
+['A compressed video file',0,'Wrong. Not on the slide.']]);
+
+mc(1,'Human vs computer','Slide 18',`On the slide "Computer vision vs human vision", the photo of a crashed train is "what we see". What is "what a computer sees"?`,[
+['A grid (matrix) of numbers',1,'Correct. Slide 18 shows a 9×9 grid of numbers next to the photo.'],
+['The same train photo',0,'Wrong. The computer has no direct access to meaning, only numbers.'],
+['A list of object names',0,'Wrong. Producing object names is the GOAL of CV, not its input.'],
+['Only the edges of the train',0,'Wrong. The slide shows numbers, not an edge map.']]);
+
+mc(1,'Vision is hard','Slide 19',`According to slide 19, roughly how much of the Macaque monkey's brain does the visual cortex occupy?`,[
+['About 50%',1,'Correct. "Visual cortex occupies about 50% of Macaque brain."'],
+['About 10%',0,'Wrong. The slide says about 50%.'],
+['About 25%',0,'Wrong. The slide says about 50%.'],
+['About 90%',0,'Wrong. The slide says about 50%.']]);
+
+mc(1,'Vision & graphics','Slide 25',`Vision and graphics are called "inverse problems". Which statement is correct?`,[
+['Vision goes Images → Model (analysis); graphics goes Model → Images (synthesis)',1,'Correct. Slide 25: "Inverse problems: analysis and synthesis."'],
+['Vision goes Model → Images; graphics goes Images → Model',0,'Wrong. The directions are swapped.'],
+['Both go from Images → Model',0,'Wrong. Graphics goes the other way.'],
+['Both go from Model → Images',0,'Wrong. Vision goes the other way.']]);
+
+mc(1,'Measurement vs perception','Slides 14, 16, 22',`"How far is the building?" and computing the 3D structure of a scene are examples of vision for:`,[
+['Measurement',1,'Correct. Slide 14: "Computing properties of the 3D world from visual data (measurement)". Slide 22 gives examples: real-time stereo, structure from motion, multi-view stereo.'],
+['Perception and interpretation',0,'Wrong. That is about recognizing objects, people, scenes and activities.'],
+['Image acquisition',0,'Wrong. Acquisition is capturing the image, not computing 3D properties.'],
+['Computer graphics',0,'Wrong. Graphics synthesizes images from a model (slide 25).']]);
+
+mc(1,'Measurement vs perception','Slides 14, 23',`Labelling a photo with "Ferris wheel", "people waiting in line", "Lake Erie", "umbrellas" is vision for:`,[
+['Perception and interpretation',1,'Correct. Slide 23 is titled "Vision for perception, interpretation" and lists objects, activities, scenes, locations, text, faces, gestures, motions, emotions.'],
+['Measurement',0,'Wrong. Measurement computes 3D properties such as distance and structure.'],
+['Image formation',0,'Wrong. Image formation is how the image is created (slides 56–67).'],
+['Image compression',0,'Wrong. Not covered in the lecture.']]);
+
+mc(1,'Measurement vs perception','Slide 22',`Which of these is shown on slide 22 as an example of VISION FOR MEASUREMENT?`,[
+['Structure from motion',1,'Correct. Slide 22 shows real-time stereo, structure from motion, and multi-view stereo for community photo collections.'],
+['Smile detection',0,'Wrong. That is a recognition application (slide 39).'],
+['Optical character recognition',0,'Wrong. OCR is recognition (slide 37).'],
+['Face detection in cameras',0,'Wrong. That is detection/recognition (slide 38).']]);
+
+mc(1,'Applications','Slide 36',`Photo Tourism (Photosynth) takes many input photographs of a scene. What does it compute?`,[
+['The relative camera positions/orientations and a sparse 3D point cloud of the scene',1,'Correct. Slide 36: it "computes viewpoint of each photo as well as a sparse 3d model of the scene".'],
+['A single high-resolution panorama only',0,'Wrong. It reconstructs camera viewpoints and 3D points.'],
+['The names of the people in the photos',0,'Wrong. That would be face recognition.'],
+['The text written on buildings',0,'Wrong. That would be OCR.']]);
+
+mc(1,'Applications','Slide 37',`Technology that converts scanned documents into text (also used in license-plate readers) is called:`,[
+['Optical character recognition (OCR)',1,'Correct. Slide 37.'],
+['Motion capture',0,'Wrong. Motion capture is a special-effects application (slide 46).'],
+['Structure from motion',0,'Wrong. That is a measurement application (slide 22).'],
+['Biometrics',0,'Wrong. Biometrics identifies people (slides 42–43).']]);
+
+mc(1,'Applications','Slide 40',`LaneHawk by EvolutionRobotics is an example of:`,[
+['Object recognition in supermarkets',1,'Correct. Slide 40: a smart camera in the checkout lane recognizes items left under the basket.'],
+['Face recognition for login',0,'Wrong. That is slide 43.'],
+['Lane detection in smart cars',0,'Wrong. The word "Lane" here means the supermarket checkout lane. Smart cars are Mobileye (slide 48).'],
+['Medical imaging',0,'Wrong. That is slide 53.']]);
+
+mc(1,'Applications','Slide 42',`"How the Afghan Girl was Identified" is an example of vision-based biometrics using:`,[
+['Iris patterns',1,'Correct. Slide 42: "…Identified by Her Iris Patterns".'],
+['Fingerprints',0,'Wrong. Fingerprints appear on slide 43 (laptop login).'],
+['Smile detection',0,'Wrong. That is a camera feature (slide 39).'],
+['Gait',0,'Wrong. Not mentioned in the lecture.']]);
+
+mc(1,'Applications','Slides 48–49',`According to the Mobileye slides, by 2010 vision systems were expected in about what share of car manufacturers?`,[
+['70%',1,'Correct. "By 2010: 70% of car manufacturers."'],
+['10%',0,'Wrong. The slide says 70%.'],
+['50%',0,'Wrong. 50% is the visual cortex figure from slide 19. The car figure is 70%.'],
+['100%',0,'Wrong. The slide says 70%.']]);
+
+mc(1,'Applications','Slides 45–46',`Which movie is the example of "Special effects: MOTION capture"?`,[
+['Pirates of the Caribbean (Industrial Light and Magic)',1,'Correct. Slide 46.'],
+['The Matrix',0,'Wrong. The Matrix is the SHAPE capture example (slide 45).'],
+['Terminator 2',0,'Wrong. Terminator 2 is the "Vision Demo?" slide (29): "we\'re not quite there yet".'],
+['The Wicked Twister',0,'Wrong. That is a ride label in the amusement-park image (slide 23).']]);
+
+mc(1,'Applications','Slide 50',`On slide 50, what does the Nintendo Wii have built in?`,[
+['Camera-based IR tracking',1,'Correct. "Nintendo Wii has camera-based IR tracking built in."'],
+['An iris scanner',0,'Wrong. Iris patterns are slide 42.'],
+['A license-plate reader',0,'Wrong. That is OCR (slide 37).'],
+['A pinhole camera obscura',0,'Wrong. Not related.']]);
+
+mc(1,'Applications','Slide 51',`Which task is NOT listed for the JPL vision systems used in space (Mars rovers)?`,[
+['Smile detection',1,'Correct. JPL tasks: panorama stitching, 3D terrain modeling, obstacle detection, position tracking. Smile detection is a camera feature (slide 39).'],
+['Panorama stitching',0,'Wrong. It is listed on slide 51.'],
+['3D terrain modeling',0,'Wrong. It is listed on slide 51.'],
+['Obstacle detection and position tracking',0,'Wrong. It is listed on slide 51.']]);
+
+mc(1,'Why vision','Slide 26',`Which of the following is NOT a reason given on slide 26 ("Why vision?")?`,[
+['To replace all cameras with human observers',1,'Correct. That is the opposite of a listed reason. The slide wants to relieve humans of boring tasks.'],
+['Relieve humans of boring, easy tasks',0,'Wrong. Listed on slide 26.'],
+['Perception for robotics / autonomous agents',0,'Wrong. Listed on slide 26.'],
+['Organize and give access to visual content',0,'Wrong. Listed on slide 26.']]);
+
+mc(1,'Human vs computer','Slide 31',`"Can computers match (or beat) human vision?" The lecture's answer is:`,[
+['Yes and no (but mostly no!); humans are better at "hard" things, computers can be better at "easy" things',1,'Correct. Slide 31.'],
+['Yes, computers already beat humans at every visual task',0,'Wrong. The slide says "mostly no".'],
+['No, computers are worse at every visual task',0,'Wrong. Computers can be better at "easy" things.'],
+['The question is not discussed',0,'Wrong. It is slide 31.']]);
+
+mc(1,'Image formation','Slide 57',`Focal length, field of view and aperture belong to which category of physical parameters of image formation?`,[
+['Optical',1,'Correct. Slide 57: Optical = sensor\'s lens type, focal length, field of view, aperture.'],
+['Geometric',0,'Wrong. Geometric = type of projection, camera pose.'],
+['Photometric',0,'Wrong. Photometric = type/direction/intensity of light, surface reflectance.'],
+['Statistical',0,'Wrong. Not one of the three categories.']]);
+
+mc(1,'Image formation','Slide 57',`"Type of projection" and "camera pose" are which kind of image-formation parameters?`,[
+['Geometric',1,'Correct. Slide 57.'],
+['Optical',0,'Wrong. Optical = lens, focal length, field of view, aperture.'],
+['Photometric',0,'Wrong. Photometric = light and reflectance.'],
+['Chromatic',0,'Wrong. Not one of the three categories.']]);
+
+mc(1,'Pinhole camera','Slide 59',`In the pinhole camera, the barrier blocks most of the rays. The opening in the barrier is called the:`,[
+['Aperture',1,'Correct. Slide 59: "The opening is known as the aperture".'],
+['Image plane',0,'Wrong. The image plane is where the image forms (the film).'],
+['Focal length',0,'Wrong. Focal length is a parameter, not the opening.'],
+['Virtual image',0,'Wrong. The virtual image is drawn in front of the pinhole on slide 60.']]);
+
+mc(1,'Pinhole camera','Slide 60',`The pinhole camera is a simple model that approximates the imaging process using:`,[
+['Perspective projection',1,'Correct. Slide 60: "…approximate imaging process, perspective projection."'],
+['Histogram equalization',0,'Wrong. That is a point operator in Chapter 2 (L3).'],
+['The Fourier transform',0,'Wrong. That is Chapter 1, frequency domain (L2).'],
+['Unsharp masking',0,'Wrong. That is a sharpening operator (L3).']]);
+
+mc(1,'Camera obscura','Slide 61',`"Camera obscura" is Latin for:`,[
+['Dark room',1,'Correct. Slide 61.'],
+['Small hole',0,'Wrong. Slide 61 says it means dark room.'],
+['Bright image',0,'Wrong. Slide 61 says it means dark room.'],
+['Picture box',0,'Wrong. Slide 61 says it means dark room.']]);
+
+mc(1,'Camera obscura','Slide 61',`Who used an illustration of a solar eclipse (observed at Louvain, 1544) that is thought to be the first published illustration of a camera obscura?`,[
+['Reinerus Gemma-Frisius',1,'Correct. Slide 61. The book was De Radio Astronomica et Geometrica (1545).'],
+['Marvin Minsky',0,'Wrong. Minsky is the 1966 MIT story (slide 12).'],
+['A. Kitaoka',0,'Wrong. Kitaoka made the 2003 illusion image (slide 32).'],
+['Richard Szeliski',0,'Wrong. Szeliski is the secondary textbook author.']]);
+
+mc(1,'Course info','Slide 7',`What is the weight of the Midterm Exam in the grading scheme?`,[
+['30%',1,'Correct. Slide 7: Assignments 10%, Participation 10%, Project 10%, Midterm 30%, Final 40%.'],
+['40%',0,'Wrong. 40% is the Final Exam.'],
+['10%',0,'Wrong. 10% is each of assignments, participation and project.'],
+['50%',0,'Wrong. Not in the grading scheme.']]);
+
+mc(1,'Related fields','Slides 20, 24',`Which of the following does NOT appear among the fields related to computer vision on slides 20/24?`,[
+['Thermodynamics',1,'Correct. It is not on either slide.'],
+['Machine learning',0,'Wrong. It appears on both slides.'],
+['Neurobiology',0,'Wrong. It appears on slide 20.'],
+['Cognitive science',0,'Wrong. It appears on slide 24.']]);
+
+tf(1,'Applications','Slide 34',`Earth viewers (3D modeling), such as Microsoft's Virtual Earth and Google Earth, are shown in the lecture as a current computer vision application.`,true,
+`TRUE. Slide 34: "Earth viewers (3D modeling): Image from Microsoft's Virtual Earth (see also: Google Earth)". Note that your class notes have the professor's T/F item "Google Maps is an example of computer vision". The slides themselves only mention Google Earth / Virtual Earth, so go with what the professor said in class for that exact wording.`);
+tf(1,'What is CV','Slide 15',`In computer vision, image data can only be a single 2D colour photograph.`,false,
+`FALSE. Slide 15: image data "can take many forms, such as a video sequence, depth images, views from multiple cameras, or multi-dimensional data from a medical scanner".`);
+tf(1,'Related fields','Slide 20',`Computer vision is a single-discipline field that belongs only to computer science.`,false,
+`FALSE. Slide 20 is titled "Vision is multidisciplinary": AI, machine learning, robotics, signal processing, graphics, mathematics, neurobiology, HCI, imaging and more.`);
+tf(1,'Pinhole camera','Slide 59',`Adding a barrier with a small opening in front of the film INCREASES blurring.`,false,
+`FALSE. Slide 59: adding a barrier to block off most of the rays "reduces blurring".`);
+tf(1,'Pinhole camera','Slide 60',`If we treat the pinhole as a point, only one ray from any given scene point can enter the camera.`,true,
+`TRUE. This is stated directly on slide 60.`);
+tf(1,'Image formation','Slides 58–59',`Putting a piece of film directly in front of an object (with no barrier) already gives a reasonable, sharp image.`,false,
+`FALSE. Slide 58 asks "Do we get a reasonable image?". The figure shows rays from every object point reaching every film point. Slide 59 then adds a barrier to block most rays and reduce blurring.`);
+tf(1,'Perspective','Slide 65',`Under perspective projection, far-away objects appear larger in the image.`,false,
+`FALSE. Slide 65: "Far away objects appear smaller".`);
+tf(1,'Perspective','Slide 67',`Under perspective projection, parallel lines in the scene intersect in the image and converge on the horizon line.`,true,
+`TRUE. Slide 67.`);
+tf(1,'Image formation','Slide 57',`Surface reflectance properties and the direction of light reaching the sensor are OPTICAL parameters of image formation.`,false,
+`FALSE. They are PHOTOMETRIC parameters (slide 57). Optical = lens type, focal length, field of view, aperture.`);
+tf(1,'Human vs computer','Slide 31',`According to the lecture, humans are much better at "hard" vision tasks, while computers can be better at "easy" ones.`,true,
+`TRUE. Slide 31.`);
+tf(1,'Vision is hard','Slide 19',`More of the human brain is devoted to vision than to anything else.`,true,
+`TRUE. Slide 19: "More human brain devoted to vision than anything else".`);
+tf(1,'Applications','Slide 38',`Many new digital cameras (e.g. Canon, Sony, Fuji) can detect faces.`,true,
+`TRUE. Slide 38. Slide 39 adds smile detection (Sony Cyber-shot T70).`);
+tf(1,'Applications','Slide 43',`Logging in without a password is possible with fingerprint scanners and face-recognition systems.`,true,
+`TRUE. Slide 43: "Login without a password…": fingerprint scanners on laptops and face recognition systems.`);
+tf(1,'State of the art','Slide 29',`The "Vision Demo?" slide (Terminator 2) says computer vision has fully reached the level shown in the movie.`,false,
+`FALSE. Slide 29: "we're not quite there yet…".`);
+tf(1,'Camera obscura','Slide 62',`The camera obscura was a public attraction in the late 19th century (e.g. at the Jetty at Margate, England, 1898).`,true,
+`TRUE. Slide 62.`);
+tf(1,'What is CV','Slide 14',`"Computer Vision aims at using cameras for analyzing or understanding scenes in the real world."`,true,
+`TRUE. This is a direct quote from slide 14.`);
+
+wr(1,'What is CV','Slides 14–16 (and L3 slide 4)',`Explain computer vision. (Give a definition and its two main goals.)`,
+`<p><b>Definition:</b> Computer vision is the science and technology of machines that see. It is concerned with the theory for building artificial systems that obtain information from images (slide 15). It is the automatic understanding of images and video (slide 14), and it tries to do what a human brain does with the retinal data, i.e. understand the scene based on image data (L3 slide 4).</p>
+<p><b>Two goals (slide 14):</b></p><ul><li><b>Measurement:</b> computing properties of the 3D world from visual data (e.g. "How far is the building?", slide 16).</li><li><b>Perception and interpretation:</b> algorithms and representations that let a machine recognize objects, people, scenes and activities (e.g. "What kind of scene? Where are the cars?").</li></ul>
+<p>The image data can be a video sequence, depth images, views from multiple cameras, or multi-dimensional medical scanner data (slide 15).</p>`);
+wr(1,'CV vs IP','L3 slides 9–10; L1 slide 20',`What is the difference between computer vision and image processing? (Your notes say the professor asked this.)`,
+`<p><b>Image processing system</b> (L3 slide 9): input is an image, <b>output is an image</b>. Examples: a blurred car photo becomes a sharper photo where the plate "127-RFS" is readable; a dark zebra photo becomes a brighter, enhanced photo.</p>
+<p><b>Computer vision system</b> (L3 slide 10): input is an image, <b>output is understanding</b>: labels and decisions such as "boy, dog, woman", "SMILE: 62% / 93%", "Strong accident, possibility of death 85%".</p>
+<p>In the Venn diagram on L1 slide 20, image processing overlaps with computer vision and machine vision, but they are not the same field. CV aims at understanding the scene (L3 slide 4).</p>`);
+wr(1,'CV system','Slide 17 (also L3 slide 5)',`List the components of a computer vision system.`,
+`<p>Lighting → Scene → Camera → Computer → Scene Interpretation (slide 17). L3 slide 5 shows the same diagram and adds that image data can be depth images, multiple camera views, medical scanner data, or a video sequence.</p>`);
+wr(1,'Image formation','Slide 57',`List the three categories of physical parameters of image formation, with examples.`,
+`<ul><li><b>Geometric:</b> type of projection, camera pose.</li><li><b>Optical:</b> sensor's lens type, focal length, field of view, aperture.</li><li><b>Photometric:</b> type, direction and intensity of light reaching the sensor; surfaces' reflectance properties.</li></ul>`);
+wr(1,'Vision is hard','Slides 12, 13, 18, 19',`Why is vision "really hard"? Use the examples from the lecture.`,
+`<ul><li>The computer only sees a grid of numbers, while we see a scene, e.g. the crashed train (slide 18).</li><li>In nature, vision is a huge feat of intelligence: the visual cortex is about 50% of the Macaque brain, and more of the human brain is devoted to vision than to anything else (slide 19).</li><li>Recognition can be ambiguous even for humans: "Is that a queen or a bishop?" (slide 19).</li><li>History: Minsky's 1966 one-summer project. "The problem is slightly more difficult than that" (slide 12). Linking a camera to a computer is not "Done" (slide 13).</li></ul>`);
+wr(1,'Perspective','Slides 59–67',`Describe the pinhole camera idea and two perspective effects.`,
+`<p>Film directly in front of an object gives no reasonable image (slide 58). Adding a barrier blocks most rays and reduces blurring. The opening is the <b>aperture</b> (slide 59). If the pinhole is a point, only one ray from each scene point enters, which gives <b>perspective projection</b> (slide 60).</p>
+<p><b>Perspective effects:</b> (1) far-away objects appear smaller (slide 65); (2) parallel lines in the scene intersect in the image and converge on the horizon line (slide 67).</p>`);
+
+// L2 — Chapter 1: Image Data (CS0610-L2.pdf). Slide numbers = PDF page numbers.
+mc(2,'Spatial domain','Slide 5',`A (digital) image is defined by ________ continuous (analog) data in a spatial domain.`,[
+['integrating and sampling',1,'Correct. Slide 5: "A (digital) image is defined by integrating and sampling continuous (analog) data in a spatial domain."'],
+['compressing and encoding',0,'Wrong. Not in the definition.'],
+['smoothing and sharpening',0,'Wrong. Those are local operators (Chapter 2, L3).'],
+['transforming with the DFT',0,'Wrong. The DFT maps an image to the frequency domain (slide 30). It does not define the image.']]);
+mc(2,'Spatial domain','Slide 5',`Each pixel (x, y, u) combines:`,[
+['A location (x, y) and a value u (the sample at that location)',1,'Correct. Slide 5.'],
+['A frequency u and a phase (x, y)',0,'Wrong. Frequencies belong to the Fourier domain (slide 31).'],
+['A hue, a saturation and an intensity',0,'Wrong. That is the HSI colour model (slides 52–57).'],
+['A camera pose and a focal length',0,'Wrong. Those are image-formation parameters (L1 slide 57).']]);
+mc(2,'Spatial domain','Slide 5',`The rectangular set containing all grid points (pixel locations) of an image I is called the:`,[
+['Carrier (Ω)',1,'Correct. Slide 5: "…an image I is defined on a rectangular set, the carrier".'],
+['Kernel',0,'Wrong. A kernel is a filter mask (L3 slide 15).'],
+['Histogram',0,'Wrong. A histogram is a table of value frequencies (slide 22).'],
+['Spectrum',0,'Wrong. The spectrum is the Fourier transform shown as an image (slide 33).']]);
+mc(2,'Pixels','Slides 6, 8',`In MATLAB, the first (top-left) element of an M×N image is indexed as:`,[
+['f(1,1)',1,'Correct. Slide 8 shows the MATLAB array starting at f(1,1).'],
+['f(0,0)',0,'Wrong. f(0,0) is the start of the general M×N representation on slide 6, not MATLAB.'],
+['f(M,N)',0,'Wrong. f(M,N) is the LAST element in MATLAB.'],
+['f(0,1)',0,'Wrong. Not the first element in either notation.']]);
+mc(2,'Pixels','Slide 10',`Fig. 1.1 shows the image coordinate system used in the textbook (x goes right, y goes DOWN). It is called a:`,[
+['Left-hand coordinate system',1,'Correct. Fig. 1.1: "A left-hand coordinate system."'],
+['Right-hand coordinate system',0,'Wrong. The figure caption says left-hand.'],
+['Polar coordinate system',0,'Wrong. Not shown.'],
+['Frenet frame',0,'Wrong. The Frenet frame is for curvature (L4 slide 17).']]);
+mc(2,'Pixels','Slide 11',`Fig. 1.2 shows two ways of thinking about pixels. Which pair is correct?`,[
+['Shaded grid squares (left) and labels at grid points that are the centres of the squares (right)',1,'Correct. Slide 11, Fig. 1.2.'],
+['RGB channels (left) and HSI channels (right)',0,'Wrong. That is colour (slides 19, 61).'],
+['Spatial domain (left) and frequency domain (right)',0,'Wrong. Fig. 1.2 is only about the spatial geometry of pixels.'],
+['4-adjacency (left) and 8-adjacency (right)',0,'Wrong. That is L4 (Chapter 3).']]);
+mc(2,'Pixels','Slide 9',`For k bits per pixel, the discrete intensity interval is:`,[
+['[0, L−1] with L = 2^k',1,'Correct. Slide 9.'],
+['[1, L] with L = 2k',0,'Wrong. It starts at 0, and L = 2 to the power k.'],
+['[0, k]',0,'Wrong. Slide 9 uses L = 2^k.'],
+['[−L, L]',0,'Wrong. Intensities are not negative.']]);
+mc(2,'Pixels','Slide 9',`How many bits are needed to store a 1024 × 1024 digitized image with k = 8 bits per pixel? (b = M × N × k)`,[
+['8,388,608 bits',1,'Correct. 1024 × 1024 × 8 = 8,388,608 (slide 9).'],
+['1,048,576 bits',0,'Wrong. That is only M × N (the number of pixels). You forgot to multiply by k = 8.'],
+['16,777,216 bits',0,'Wrong. 16,777,216 is the number of colours in a 24-bit RGB image (slide 46).'],
+['8,192 bits',0,'Wrong. That would be 1024 × 8.']]);
+mc(2,'Image values','Slide 13',`For a scalar image with a = 8 bits, the maximum grey value Gmax = 2^a − 1 is:`,[
+['255',1,'Correct. 2^8 − 1 = 255 (slide 13).'],
+['256',0,'Wrong. 256 is the NUMBER of grey levels (0…255). Gmax is 255.'],
+['8',0,'Wrong. 8 is the number of bits.'],
+['65,535',0,'Wrong. That is Gmax for a = 16.']]);
+mc(2,'Image values','Slide 13',`According to slide 13, what bit depth recently became the new technological standard for grey-level images?`,[
+['a = 16',1,'Correct. "For many years, it was common to use a = 8; recently a = 16 became the new technological standard."'],
+['a = 8',0,'Wrong. a = 8 was the OLD common choice.'],
+['a = 1',0,'Wrong. a = 1 gives a binary image.'],
+['a = 24',0,'Wrong. 24 bits is a full RGB pixel (slide 46).']]);
+mc(2,'Image values','Slide 16',`An RGB colour image is an example of a:`,[
+['Vector-valued image (more than one channel/band)',1,'Correct. Slide 16: RGB images have three channels, and each channel is a grey-level image.'],
+['Scalar image',0,'Wrong. A scalar image has ONE value per pixel.'],
+['Binary image',0,'Wrong. A binary image has only two values.'],
+['Fourier image',0,'Wrong. Not a term used in the slides.']]);
+mc(2,'Statistics','Slide 21',`Three versions of the Einstein image have σ = 14.3, 31.6 and 49.2. Which one looks the most flat / washed-out (least spread of grey values)?`,[
+['σ = 14.3',1,'Correct. The smallest standard deviation means the grey values are closest to the mean. In the slide 21 figure this is the faded image on the left.'],
+['σ = 31.6',0,'Wrong. This is the middle image.'],
+['σ = 49.2',0,'Wrong. The largest σ has the widest spread: the darkest darks and the brightest brights.'],
+['All three look the same',0,'Wrong. The slide shows them clearly different.']]);
+mc(2,'Statistics','Slide 22',`In Fig. 1.5 (image Neuschwanstein), four versions show means 79.16, 135.14, 40.78 and 127.49. Which version has mean 40.78?`,[
+['The darker version',1,'Correct. Fig. 1.5: lower-left is the darker version, with the lowest mean (40.78).'],
+['The brighter version',0,'Wrong. The brighter version has mean 135.14.'],
+['The original image',0,'Wrong. The original has mean 79.16.'],
+['After histogram equalization',0,'Wrong. The equalized version has mean 127.49.']]);
+mc(2,'Statistics','Slide 22',`A histogram represents:`,[
+['Tabulated frequencies of values (how often each value occurs), typically drawn as bars',1,'Correct. Slide 22. It is used for a scalar image or for one channel/band of a vector-valued image.'],
+['The location of each pixel',0,'Wrong. Locations are not counted in a histogram.'],
+['The Fourier spectrum',0,'Wrong. The spectrum is slides 31–35.'],
+['The edges of the image',0,'Wrong. Edges are slide 27 / L3.']]);
+mc(2,'Statistics','Slide 23',`In Fig. 1.6 (image Yan), the upper window has μ = 133.7, σ = 55.4 and the lower window has μ = 104.6, σ = 89.9. Which statement is correct?`,[
+['The lower window has the larger spread of grey values',1,'Correct. σ = 89.9 > 55.4. This shows that value statistics can be computed per window.'],
+['The upper window is darker on average',0,'Wrong. The upper mean (133.7) is HIGHER, so it is brighter on average.'],
+['Both windows must have identical histograms',0,'Wrong. The slide shows two different histograms.'],
+['Statistics cannot be computed inside a window',0,'Wrong. Slide 23 is titled "Value Statistics in a Window".']]);
+mc(2,'Statistics','Slides 24–25',`Plotting the grey values along a selected image row (a 1D cut through the image) gives a(n):`,[
+['Intensity profile',1,'Correct. Slide 25: "…intensity profiles defined by 1D cuts through the given scalar data arrays". Fig. 1.8 shows two rows of SanMiguel.'],
+['Histogram',0,'Wrong. A histogram counts values and ignores position.'],
+['Co-occurrence matrix',0,'Wrong. That is L4 (Chapter 3).'],
+['Spectrum',0,'Wrong. That is the Fourier domain.']]);
+mc(2,'Statistics','Slide 24',`In Fig. 1.8 the intensity channel of image SanMiguel is computed from the colour channels as:`,[
+['(R + G + B) / 3',1,'Correct. Fig. 1.8 caption: "…intensity channel (i.e. values (R + G + B)/3)". This is the same as I in HSI (slide 57).'],
+['R × G × B',0,'Wrong. Not in the slides.'],
+['max(R, G, B)',0,'Wrong. Not in the slides.'],
+['1 − (R + G + B)',0,'Wrong. Not in the slides. (CMY is 1 − each channel separately, slide 50.)']]);
+mc(2,'Frequency domain','Slide 30',`The 2D Discrete Fourier Transform (DFT) maps a scalar image:`,[
+['From the spatial domain into the frequency domain',1,'Correct. Slide 30. The inverse DFT goes back to the spatial domain.'],
+['From the frequency domain into the spatial domain',0,'Wrong. That is the INVERSE DFT.'],
+['From RGB into HSI',0,'Wrong. That is the colour conversion (slides 55–57).'],
+['From grey-level into binary',0,'Wrong. Not what the DFT does.']]);
+mc(2,'Frequency domain','Slide 31',`In the Fourier domain, HIGH frequencies (u or v far from 0) represent:`,[
+['Short wavelengths: local discontinuities such as edges or intensity outliers',1,'Correct. Slide 31.'],
+['Long wavelengths: homogeneous additive contributions',0,'Wrong. That describes LOW frequencies.'],
+['The colour of the image',0,'Wrong. The DFT on slide 30 is for a scalar image.'],
+['Only the image border',0,'Wrong. Not what the slide says.']]);
+mc(2,'Frequency domain','Slide 32',`Fig. 1.15 shows 2D waves sin(u + nv) for n = 1…5. As n increases, the wave length:`,[
+['Decreases, so the frequency is higher',1,'Correct. Fig. 1.15: "…having decreasing wave length (thus being of higher frequency) for an increase in n".'],
+['Increases, so the frequency is lower',0,'Wrong. It is the opposite.'],
+['Stays the same',0,'Wrong. The figure shows narrower waves as n grows.'],
+['Becomes negative',0,'Wrong. Not meaningful.']]);
+mc(2,'Frequency domain','Slide 34',`Fig. 1.19: the Donkey image after histogram equalization and after inverting grey levels. What happens to the spectra?`,[
+['They do not show significant changes, because the "image structure" remains constant',1,'Correct. Fig. 1.19 caption.'],
+['They change completely',0,'Wrong. The caption says no significant changes.'],
+['They become all black',0,'Wrong. Not shown.'],
+['Only the inverted image has a spectrum',0,'Wrong. All three images have spectra in the figure.']]);
+mc(2,'Frequency domain','Slide 35',`In Fig. 1.21 a diagonal wave pattern is nearly removed from an image. How?`,[
+['A simple mask in the frequency domain blocks the values along a diagonal; then the inverse DFT gives the filtered image',1,'Correct. Fig. 1.21, bottom right.'],
+['By histogram equalization',0,'Wrong. Equalization does not change the spectrum significantly (Fig. 1.19).'],
+['By converting the image to HSI',0,'Wrong. Not shown.'],
+['By increasing the number of bits per pixel',0,'Wrong. Not related.']]);
+mc(2,'Colour','Slide 38',`Fig. 6.2 shows the electromagnetic spectrum. Which ordering is from SHORT to LONG wavelength?`,[
+['Gamma rays → X-rays → UV → visible → infrared → microwaves → TV/radio',1,'Correct. This is the left-to-right order of Fig. 6.2.'],
+['Radio → microwaves → infrared → visible → UV → X-rays → gamma',0,'Wrong. That is long → short (reversed).'],
+['Visible → UV → gamma → radio',0,'Wrong. Not the figure\'s order.'],
+['X-rays → gamma → visible → radio',0,'Wrong. Gamma rays come before X-rays.']]);
+mc(2,'Colour','Slide 38',`Approximately which wavelength range is the VISIBLE spectrum in Fig. 6.2?`,[
+['About 400 to 700 nm',1,'Correct. The visible band in Fig. 6.2 runs from about 400 nm (violet) to 700 nm (red).'],
+['About 0.001 to 1 nm',0,'Wrong. That range is gamma/X-rays.'],
+['About 1000 to 1500 nm',0,'Wrong. That is infrared.'],
+['About 1 ft to 100 ft',0,'Wrong. That is TV/radio.']]);
+mc(2,'Colour','Slide 39',`How are the cones of the human eye split among the three sensing categories?`,[
+['65% red, 33% green, 2% blue',1,'Correct. Slide 39. The 2% blue cones are "the most sensitive".'],
+['33% red, 33% green, 33% blue',0,'Wrong. The slide gives 65/33/2.'],
+['2% red, 33% green, 65% blue',0,'Wrong. Red and blue are swapped.'],
+['50% red, 50% green, 0% blue',0,'Wrong. The slide gives 65/33/2.']]);
+mc(2,'Colour','Slide 39',`About how many cones are in the human eye?`,[
+['6 to 7 million',1,'Correct. Slide 39.'],
+['About 16.7 million',0,'Wrong. 16,777,216 is the number of 24-bit RGB colours (slide 46).'],
+['About 216',0,'Wrong. 216 is the number of safe RGB colours (slide 48).'],
+['About 50 thousand',0,'Wrong. The slide says 6 to 7 million.']]);
+mc(2,'Colour','Slide 40',`In Fig. 6.3 (absorption of light by the cones), the absorption peaks are at about:`,[
+['Blue 445 nm, green 535 nm, red 575 nm',1,'Correct. Fig. 6.3 labels the peaks at 445, 535 and 575 nm.'],
+['Blue 575 nm, green 535 nm, red 445 nm',0,'Wrong. Blue and red are swapped.'],
+['Blue 400 nm, green 500 nm, red 700 nm',0,'Wrong. Those are axis ticks, not the peaks.'],
+['All three at 535 nm',0,'Wrong. The peaks are at different wavelengths.']]);
+mc(2,'Colour','Slide 43',`Which term means "the relative purity, or the amount of white light mixed with its hue"?`,[
+['Saturation',1,'Correct. Slide 43.'],
+['Hue',0,'Wrong. Hue is the dominant wavelength, i.e. the dominant colour as perceived.'],
+['Brightness',0,'Wrong. Brightness is the achromatic notion of intensity.'],
+['Tristimulus',0,'Wrong. Tristimulus values are X, Y, Z (slide 44).']]);
+mc(2,'Colour','Slide 43',`"The dominant wavelength in a mixture of light waves; it represents the dominant colour as perceived by an observer." This defines:`,[
+['Hue',1,'Correct. Slide 43.'],
+['Saturation',0,'Wrong. Saturation is purity (the amount of white light mixed in).'],
+['Brightness',0,'Wrong. Brightness is achromatic intensity.'],
+['Chromaticity',0,'Wrong. The CIE chromaticity diagram is slide 42. This definition is hue.']]);
+mc(2,'Colour','Slide 42',`The CIE chromaticity diagram shows colour composition as a function of:`,[
+['x (red) and y (green)',1,'Correct. Slide 42.'],
+['Hue and saturation',0,'Wrong. That is the HSI model.'],
+['u and v frequencies',0,'Wrong. That is the Fourier domain.'],
+['Cyan and magenta',0,'Wrong. That is the CMY model.']]);
+mc(2,'Colour','Slide 46',`The total number of colours in a 24-bit RGB image is:`,[
+['(2^8)^3 = 16,777,216',1,'Correct. Slide 46.'],
+['256',0,'Wrong. That is the number of values in ONE 8-bit channel.'],
+['216',0,'Wrong. 216 is the number of SAFE RGB colours (slide 48).'],
+['24 × 256',0,'Wrong. Not how the count is computed.']]);
+mc(2,'Colour','Slide 48',`How many "safe RGB colours" (safe Web colours) are shown in Fig. 6.10?`,[
+['216',1,'Correct. Fig. 6.10(a): "The 216 safe RGB colors."'],
+['256',0,'Wrong. 256 is the 256-colour system that contains the safe grays (Fig. 6.10b).'],
+['16,777,216',0,'Wrong. That is all 24-bit colours.'],
+['6',0,'Wrong. 6 is the number of valid values per component (00, 33, 66, 99, CC, FF in Table 6.1).']]);
+mc(2,'Colour','Slide 50',`Why is a fourth colour, black (K), added to CMY to give CMYK?`,[
+['Combining cyan, magenta and yellow in printing produces a muddy-looking black, so true black needs its own ink',1,'Correct. Slide 50.'],
+['Because monitors cannot show black',0,'Wrong. CMYK is for printing, not monitors.'],
+['Because K stands for "key frequency" in the DFT',0,'Wrong. Not related.'],
+['To increase the number of colours to 16.7 million',0,'Wrong. Not the reason given.']]);
+mc(2,'Colour','Slide 54',`In the HSI colour model (Fig. 6.14), the triangles and circles are:`,[
+['Perpendicular to the vertical intensity axis',1,'Correct. Fig. 6.14 caption.'],
+['Parallel to the intensity axis',0,'Wrong. They are perpendicular.'],
+['Located only at the white point',0,'Wrong. They are drawn at different intensity levels (e.g. I = 0.5, 0.75).'],
+['Used only for CMYK',0,'Wrong. They are part of HSI.']]);
+
+tf(2,'Image values','Slide 13',`In a grey-level image, 0 = black and Gmax = white; all other grey levels lie in between.`,true,
+`TRUE. Slide 13: "0 = black and 2^a − 1 = white; all other grey levels are linearly interpolated between black and white."`);
+tf(2,'Image values','Slides 13–14',`According to the textbook text, a binary image traditionally uses 0 = white and 1 = black (black objects on a white background).`,true,
+`TRUE. Slide 13 says exactly this. ⚠ Watch out: the figure on slide 14 ("Pixel Values in a Binary Image") labels the white cells 1 and the black cells 0, which is the opposite. In an exam, quote the textbook definition from slide 13.`);
+tf(2,'Image values','Slide 16',`Each channel of an RGB image is just a grey-level image.`,true,
+`TRUE. Slide 16: "each channel is just a grey-level image". Fig. 1.4 (slide 19) shows the Red, Green and Blue channels of Fountain as grey images.`);
+tf(2,'Image values','Slide 19',`In Fig. 1.4 (Fountain), red objects are shown with high intensity in the red channel and low intensity in the green and blue channels.`,true,
+`TRUE. Fig. 1.4 caption.`);
+tf(2,'Statistics','Slide 20',`The standard deviation σ of an image is the square of its variance.`,false,
+`FALSE. Slide 20: σ is the ROOT of the variance ("Its root σ is the standard deviation").`);
+tf(2,'Statistics','Slide 22',`Histograms can only be computed for scalar images, never for one channel of a colour image.`,false,
+`FALSE. Slide 22: histograms are used "for representing value frequencies of a scalar image, or of one channel or band of a vector-valued image".`);
+tf(2,'Statistics','Slide 26',`The distances d1 and d2 between two functions are metrics: d(f,g) = 0 iff f = g, d(f,g) = d(g,f), and the triangle inequality holds.`,true,
+`TRUE. Slide 26 lists these three axioms of a metric.`);
+tf(2,'Step-edges','Slide 27',`An ideal step-edge is a slow, gradual change of intensity.`,false,
+`FALSE. In Fig. 1.11 the ideal step-edge is an ABRUPT jump. The other profiles are linear edge, smooth edge, noisy edge, thin line, and a discontinuity in a shaded region.`);
+tf(2,'Step-edges','Slide 28',`Edges (visual silhouettes) have been used for thousands of years to show "essential information", e.g. in ancient cave drawings.`,true,
+`TRUE. Fig. 1.10 caption (slide 28): Taroko drawings, shadow silhouettes on building Q1, OldStreet.`);
+tf(2,'Frequency domain','Slide 31',`Low frequencies represent long wavelengths and thus homogeneous additive contributions to the input image.`,true,
+`TRUE. Slide 31.`);
+tf(2,'Frequency domain','Slide 30',`The inverse 2D DFT transforms a Fourier transform back into the spatial domain.`,true,
+`TRUE. Slide 30 (1.2.2).`);
+tf(2,'Colour','Slide 39',`The blue cones are the fewest (about 2%) but the most sensitive.`,true,
+`TRUE. Slide 39: "2%: blue (blue cones are the most sensitive)".`);
+tf(2,'Colour','Slide 50',`In practice, mixing equal amounts of cyan, magenta and yellow pigment gives a perfect, pure black.`,false,
+`FALSE. Slide 50: in theory they should produce black, but "in practice, combining these colors for printing produces a muddy-looking black". That is why K is added (CMYK).`);
+tf(2,'Colour','Slide 41',`In "mixtures of light" (additive primaries) the centre of the Venn diagram is white; in "mixtures of pigments" (subtractive primaries) it is black.`,true,
+`TRUE. Fig. 6.4 (slide 41).`);
+tf(2,'Colour','Slide 48',`Safe RGB colours are reproduced faithfully, reasonably independently of viewer hardware capabilities.`,true,
+`TRUE. Slide 48.`);
+tf(2,'Colour','Slide 44',`In the tristimulus notation, red, green and blue are denoted X, Y and Z, and a colour is defined by its trichromatic coefficients.`,true,
+`TRUE. Slide 44.`);
+
+mc(2,'Matrix','Slides 9, 13, 22',`<p>A 3-bit grey-level image (values 0…7):</p>${mx([[0,1,1,2],[1,2,2,7],[2,2,3,7],[1,2,3,7]])}<p>How many pixels have the value 2 (the histogram count for u = 2)?</p>`,[
+['6',1,'Correct. Count the 2s row by row: 1 + 2 + 2 + 1 = 6. Full histogram: u=0:1, u=1:4, u=2:6, u=3:2, u=4:0, u=5:0, u=6:0, u=7:3 (total 16).'],
+['4',0,'Wrong. 4 is the count of the value 1.'],
+['3',0,'Wrong. 3 is the count of the value 7.'],
+['5',0,'Wrong. Recount: row1 has one 2, row2 two, row3 two, row4 one = 6.']]);
+mc(2,'Matrix','Slides 9, 13',`<p>The same 3-bit image:</p>${mx([[0,1,1,2],[1,2,2,7],[2,2,3,7],[1,2,3,7]])}<p>What is Gmax, and how many bits are needed to store the image (b = M × N × k)?</p>`,[
+['Gmax = 7; b = 48 bits',1,'Correct. Gmax = 2³ − 1 = 7 (slide 13). b = 4 × 4 × 3 = 48 (slide 9).'],
+['Gmax = 8; b = 48 bits',0,'Wrong. Gmax = 2^a − 1 = 7, not 8.'],
+['Gmax = 7; b = 16 bits',0,'Wrong. 16 is only the number of pixels. Multiply by k = 3.'],
+['Gmax = 255; b = 128 bits',0,'Wrong. That would be an 8-bit image.']]);
+mc(2,'Matrix','Slide 22',`<p>The same 3-bit image:</p>${mx([[0,1,1,2],[1,2,2,7],[2,2,3,7],[1,2,3,7]])}<p>Which value is the most frequent (the highest histogram bar)?</p>`,[
+['2',1,'Correct. The value 2 appears 6 times, more than any other value.'],
+['7',0,'Wrong. 7 appears 3 times.'],
+['1',0,'Wrong. 1 appears 4 times.'],
+['0',0,'Wrong. 0 appears once.']]);
+mc(2,'Matrix','Slide 50',`<p>Using C = 1 − R, M = 1 − G, Y = 1 − B (values normalized to [0,1]), what is the CMY of the pure red pixel (R,G,B) = (1, 0, 0)?</p>`,[
+['(C, M, Y) = (0, 1, 1)',1,'Correct. C = 1−1 = 0, M = 1−0 = 1, Y = 1−0 = 1 (slide 50).'],
+['(1, 0, 0)',0,'Wrong. That just copies RGB.'],
+['(0, 0, 0)',0,'Wrong. (0,0,0) in CMY is white, i.e. RGB (1,1,1).'],
+['(1, 1, 1)',0,'Wrong. (1,1,1) in CMY is black, i.e. RGB (0,0,0).']]);
+mc(2,'Matrix','Slides 45, 50, 57',`<p>A pixel has RGB = (1, 1, 0) (normalized). Using the RGB cube (Fig. 1.30), CMY = 1 − RGB, and I = (R+G+B)/3, which row is correct?</p>`,[
+['Colour: yellow; CMY = (0, 0, 1); I = 2/3',1,'Correct. In the RGB cube, Red + Green at maximum is the Yellow corner (Fig. 1.30). CMY = (1−1, 1−1, 1−0) = (0,0,1). I = (1+1+0)/3 = 2/3.'],
+['Colour: cyan; CMY = (1, 0, 0); I = 2/3',0,'Wrong. Cyan is G + B, i.e. RGB (0,1,1).'],
+['Colour: yellow; CMY = (1, 1, 0); I = 1',0,'Wrong. This copies RGB instead of 1 − RGB, and the intensity is 2/3, not 1.'],
+['Colour: magenta; CMY = (0, 1, 0); I = 1/3',0,'Wrong. Magenta is R + B, i.e. RGB (1,0,1).']]);
+mc(2,'Matrix','Slide 45',`<p>In the RGB cube of Fig. 1.30, the colour at (R, G, B) = (0, 0, 0) and the colour at (Gmax, Gmax, Gmax) are:</p>`,[
+['Black and white',1,'Correct. Black is at the origin, white at the opposite corner (Fig. 1.30).'],
+['White and black',0,'Wrong. Reversed.'],
+['Red and cyan',0,'Wrong. Red is (Gmax,0,0); cyan is (0,Gmax,Gmax).'],
+['Grey and yellow',0,'Wrong. Yellow is (Gmax,Gmax,0).']]);
+
+wr(2,'Image types','Slides 13, 16',`Explain the difference between a scalar (grey-level) image, a binary image and a vector-valued (RGB) image.`,
+`<ul><li><b>Scalar image:</b> one integer value u ∈ {0,…,2^a−1} per pixel, identified with grey levels: 0 = black, Gmax = 2^a − 1 = white (slide 13).</li><li><b>Binary image:</b> only two values per pixel, traditionally 0 = white and 1 = black, meaning black objects on a white background (slide 13).</li><li><b>Vector-valued image:</b> more than one channel/band; each pixel value is a vector of length N<sub>channels</sub>. RGB has 3 channels, and each channel is a grey-level image (slide 16).</li></ul>`);
+wr(2,'Frequency domain','Slides 30–31',`Explain the spatial domain vs the frequency domain. What do low and high frequencies represent?`,
+`<p>The 2D DFT maps an image from the <b>spatial domain</b> (pixel values at locations) into the <b>frequency domain</b> (complex values in the uv plane). The inverse DFT maps it back (slide 30).</p><p><b>Low frequencies</b> (u, v close to 0): long wavelengths, i.e. homogeneous additive contributions. <b>High frequencies</b> (far from 0): short wavelengths, i.e. local discontinuities such as edges or intensity outliers (slide 31).</p>`);
+wr(2,'Colour','Slide 43',`Define brightness, hue and saturation.`,
+`<ul><li><b>Brightness:</b> the achromatic notion of intensity.</li><li><b>Hue:</b> the dominant wavelength in a mixture of light waves; it represents the dominant colour as perceived by an observer.</li><li><b>Saturation:</b> relative purity, or the amount of white light mixed with its hue.</li></ul><p>(Slide 43; the same definitions are repeated on slide 52 for the HSI model.)</p>`);
+wr(2,'Colour','Slides 41, 47, 50',`Compare the RGB and CMY/CMYK colour models.`,
+`<ul><li><b>RGB:</b> additive primaries (mixtures of light); all three together give white (Fig. 6.4). An RGB image is shown on a colour monitor by feeding the Red, Green and Blue planes into it (Fig. 6.9). The model is a cube with black at the origin and white at the opposite corner (Fig. 1.30).</li><li><b>CMY:</b> subtractive primaries (pigments): C = 1 − R, M = 1 − G, Y = 1 − B. Equal amounts should produce black, but in printing they give a muddy-looking black.</li><li><b>CMYK:</b> adds black (K) as a fourth colour to produce true black, the predominant colour in printing (slide 50).</li></ul>`);
+wr(2,'Step-edges','Slide 27',`Name the edge types illustrated in the step-edge model (Fig. 1.11).`,
+`<p>From top to bottom: ideal step-edges, linear edge, smooth edge, noisy edge, thin line, and a discontinuity in a shaded region (Fig. 1.11 caption).</p>`);
+
+// L3 — Chapter 2: Image Processing (CS0610-L3.pdf). Slide numbers = PDF page numbers.
+mc(3,'CV vs IP','Slide 4',`On slide 4, computer vision is described as a field of computer science that tries to:`,[
+['Do what a human brain does with the retinal data, i.e. understand the scene based on image data',1,'Correct. Slide 4 (citing Szeliski).'],
+['Only compress images for storage',0,'Wrong. Not the definition.'],
+['Only produce enhanced images',0,'Wrong. Image-to-image is image processing (slide 9).'],
+['Design new camera lenses',0,'Wrong. Not the definition.']]);
+mc(3,'CV vs IP','Slides 9–10',`Which pair correctly describes the OUTPUT of each kind of system?`,[
+['Image processing system: an (enhanced) image. Computer vision system: an interpretation such as labels or decisions',1,'Correct. Slide 9: blurred car becomes a sharper car; dark zebra becomes an enhanced zebra. Slide 10: labels such as "boy, dog", "SMILE: 62%", "Strong accident, possibility of death 85%".'],
+['Both output only images',0,'Wrong. CV outputs understanding (slide 10).'],
+['Image processing outputs labels; computer vision outputs images',0,'Wrong. Reversed.'],
+['Both output only numbers describing the camera',0,'Wrong. Not on the slides.']]);
+mc(3,'Research','Slide 8',`Which of the following is listed on slide 8 as a computer vision research direction?`,[
+['Content-based image retrieval',1,'Correct. Also listed: object detection/recognition, feature extraction, scene classification, segmentation, identity verification, pedestrian detection, 3D reconstruction, video understanding, motion analysis, vehicle tracking, deep learning/CNN.'],
+['Database normalization',0,'Wrong. Not on slide 8.'],
+['Compiler design',0,'Wrong. Not on slide 8.'],
+['Network routing',0,'Wrong. Not on slide 8.']]);
+mc(3,'Noise','Slide 12',`On slide 12, "noise" in the sense used for outdoor driver-assistance images means:`,[
+['Unwanted data, e.g. lighting difficulties, motion blur, or sudden changes in scenes',1,'Correct. Slide 12: "An unwanted data is called noise."'],
+['Only random salt-and-pepper pixels',0,'Wrong. The slide uses noise in the broader sense of "unwanted data".'],
+['High-frequency Fourier coefficients only',0,'Wrong. Not the definition on slide 12.'],
+['Any colour image',0,'Wrong. Not related.']]);
+mc(3,'Noise','Slide 12',`For the case of motion blur in Fig. 2.1, slide 12 suggests:`,[
+['Doing some sharpening to remove the blur',1,'Correct. "In the second case we could try to do some sharpening for removing the blur."'],
+['Transforming the image to be "as taken at uniform illumination"',0,'Wrong. That is the remedy for the lighting case.'],
+['Converting the image to CMYK',0,'Wrong. Not mentioned.'],
+['Increasing the bit depth to 16',0,'Wrong. Not mentioned.']]);
+mc(3,'Point operators','Slide 13',`Histogram equalization transforms a scalar image so that:`,[
+['All grey levels appear equally often in the transformed image',1,'Correct. Slide 13: H_new(u) = const = NcolsNrows/(Gmax+1).'],
+['All pixels get the same grey level',0,'Wrong. It is the COUNTS (histogram bars) that become equal, not the pixel values.'],
+['Only edges are kept',0,'Wrong. That is an edge detector.'],
+['The image is converted to binary',0,'Wrong. Not what equalization does.']]);
+mc(3,'Local operators','Slide 14',`In a local operator, the sliding window W_p has size:`,[
+['(2k+1) × (2k+1), with the reference point p always at the centre',1,'Correct. Slide 14.'],
+['2k × 2k, with p at the top-left corner',0,'Wrong. The window has odd size, so it has a centre pixel.'],
+['The whole image',0,'Wrong. That would be a global operator.'],
+['1 × 1 only',0,'Wrong. A 1 × 1 window is a point operation.']]);
+mc(3,'Local operators','Slide 15',`Fig. 2.4 shows results of local operators on image Set1Seq1. Which is correct?`,[
+['Top-right: local maximum for k = 3; bottom-left: local minimum for k = 5',1,'Correct. Fig. 2.4 caption.'],
+['Top-right: local minimum for k = 3; bottom-left: local maximum for k = 5',0,'Wrong. Max and min are swapped.'],
+['Top-right: median filter; bottom-left: Gauss filter',0,'Wrong. Not in Fig. 2.4.'],
+['Top-right: Fourier spectrum; bottom-left: histogram',0,'Wrong. Not in Fig. 2.4.']]);
+mc(3,'Local operators','Slide 15',`In Fig. 2.5, the middle kernel [1 0 −1; 2 0 −2; 1 0 −1] / 9 is described as:`,[
+['A filter kernel approximating a derivative in the x-direction',1,'Correct. Fig. 2.5 caption. It produced the bottom-right image of Fig. 2.4.'],
+['The 3 × 3 box filter',0,'Wrong. The box filter is the right kernel (all 1s, /9).'],
+['A Laplacian mask',0,'Wrong. The Laplacian masks are in Fig. 2.19.'],
+['A Gauss kernel',0,'Wrong. Gauss kernels sample the Gauss function (slide 26).']]);
+mc(3,'Local operators','Slide 15',`The 3 × 3 box filter in Fig. 2.5 is:`,[
+['All nine weights equal to 1, divided by 9',1,'Correct. Fig. 2.5, right: [1 1 1; 1 1 1; 1 1 1] / 9.'],
+['[1 0 −1; 2 0 −2; 1 0 −1] / 9',0,'Wrong. That is the x-derivative kernel (Fig. 2.5 middle).'],
+['[0 1 0; 1 −4 1; 0 1 0]',0,'Wrong. That is a Laplacian mask (Fig. 2.19).'],
+['[−1 0 1; −2 0 2; −1 0 1]',0,'Wrong. That is a Sobel kernel (Fig. 2.18).']]);
+mc(3,'Local operators','Slide 16',`A LINEAR local operator is defined by:`,[
+['A convolution of the image with a filter kernel W',1,'Correct. Slide 16, Eq. (2.9): J(p) = I * W(p) = (1/S) Σ w_ij · I(x+i, y+j).'],
+['Taking the local maximum',0,'Wrong. The local maximum (Eq. 2.8) is a local operator, but it is not linear.'],
+['Taking the median',0,'Wrong. The median is not a convolution.'],
+['Histogram equalization',0,'Wrong. That is a point (global-statistics) operator.']]);
+mc(3,'Local operators','Slide 17',`Regarding window shape, slide 17 says:`,[
+['With respect to isotropy (rotation invariance), approximately circular windows should be preferred, but rectangular windows are easier to use',1,'Correct. Slide 17, point 1.'],
+['Only rectangular windows are allowed',0,'Wrong. Circular windows are preferred for isotropy.'],
+['Windows must always have even size',0,'Wrong. Typically square and of odd size (2k+1).'],
+['Window shape has no effect on isotropy',0,'Wrong. The slide links circular windows to isotropy.']]);
+mc(3,'Local operators','Slide 17',`How should pixels close to the image border (where the window is not completely inside the image) be handled?`,[
+['There is no general rule, but they should be processed as well',1,'Correct. Slide 17, point 3. (In the professor\'s exam answer grid, the border pixels were simply copied unchanged.)'],
+['They must always be set to 0',0,'Wrong. The slide says there is no general rule.'],
+['They must always be deleted from the image',0,'Wrong. They should be processed as well.'],
+['They are processed with a different operation than the rest',0,'Wrong. Point 4: the operation should be the same at all locations.']]);
+mc(3,'Local operators','Slide 17',`A local operator that writes its results into a SECOND array, leaving the original image unaltered, is called:`,[
+['A parallel local operator',1,'Correct. Slide 17, point 5. It is named so because it can be implemented on specialized parallel hardware.'],
+['A sequential local operator',0,'Wrong. A sequential operator replaces values IN PLACE, so new values propagate like a "wave".'],
+['A global operator',0,'Wrong. Not the term used.'],
+['A Fourier operator',0,'Wrong. Not the term used.']]);
+mc(3,'Fourier filtering','Slide 18',`Slide 18 gives two options for a linear transform of image I. Why do both give identical results?`,[
+['Because of the convolution theorem: I * G equals the inverse 2D DFT of I ∘ G (when G is the DFT of G)',1,'Correct. Slide 18, Eq. (2.11).'],
+['Because both use histogram equalization',0,'Wrong. Not related.'],
+['Because I ∘ G is ordinary matrix multiplication',0,'Wrong. The slide says I ∘ G is position-by-position multiplication, "not to be confused with matrix multiplication".'],
+['They do not give identical results',0,'Wrong. The slide says they do.']]);
+mc(3,'Fourier filtering','Slide 20',`Fig. 2.7 (image Emma): what does the IDEAL LOW-PASS filtered image show?`,[
+['A typical smoothing effect',1,'Correct. Fig. 2.7 caption, lower left.'],
+['Sharper edges than the original',0,'Wrong. Low-pass removes high frequencies (edges), so the image looks smoother.'],
+['Only the edges',0,'Wrong. The exponential-band-pass version shows more higher frequencies.'],
+['No change at all',0,'Wrong. It is visibly blurred.']]);
+mc(3,'Procedural components','Slides 3, 20',`What are the THREE procedural components of Section 2.2?`,[
+['Integral images, regular image pyramids, scan orders',1,'Correct. Slides 3 and 20.'],
+['Smoothing, sharpening, edge detection',0,'Wrong. Those are classes of local operators (Section 2.3).'],
+['RGB, CMYK, HSI',0,'Wrong. Those are colour models (L2).'],
+['LoG, DoG, Kovesi',0,'Wrong. Those are advanced edge detectors (Section 2.4).']]);
+mc(3,'Integral image','Slide 21',`The integral value I_int(p) at pixel p = (x, y) is:`,[
+['The sum of all values I(i, j) at pixel locations that are neither below p nor right of p',1,'Correct. Slide 21, Eq. (2.12): sum over 1 ≤ i ≤ x and 1 ≤ j ≤ y.'],
+['The average of the 3 × 3 window around p',0,'Wrong. That is the box filter (local mean).'],
+['The value of p multiplied by its position',0,'Wrong. Not the definition.'],
+['The sum of all pixels below and right of p',0,'Wrong. It is the pixels above-left (not below, not right).']]);
+mc(3,'Integral image','Slide 21',`If an algorithm needs the sum of all pixel values in a rectangular window, how many values of the integral image does it need (Fig. 2.8, right)?`,[
+['4: the values at the four corners p, q, r and s',1,'Correct. Fig. 2.8 caption.'],
+['All pixel values inside the window',0,'Wrong. Avoiding that is the whole point of the integral image.'],
+['1',0,'Wrong. You need four corner values.'],
+['9',0,'Wrong. You need four corner values.']]);
+mc(3,'Pyramids','Slide 22',`In a regular image pyramid with scaling factor 2, all additional levels together require:`,[
+['Less than one third of the space of the original image',1,'Correct. Slide 22, Eq. (2.14): 1 + 1/4 + 1/16 + … < 4/3.'],
+['Twice the space of the original',0,'Wrong. The series sum is less than 4/3 in total.'],
+['Exactly the same space as the original',0,'Wrong. The extra levels add less than 1/3.'],
+['No extra space',0,'Wrong. They do need some extra space.']]);
+mc(3,'Pyramids','Slide 22',`When building the next pyramid layer bottom-up, why is Gauss smoothing recommended before taking the 2 × 2 means?`,[
+['To avoid spatial aliasing',1,'Correct. Slide 22.'],
+['To increase the image size',0,'Wrong. The pyramid reduces size.'],
+['To convert to HSI',0,'Wrong. Not related.'],
+['To detect corners',0,'Wrong. Not related.']]);
+mc(3,'Scan orders','Slide 23',`Which scan order in Fig. 2.10 is the one used in interlaced scanning (e.g. every second row)?`,[
+['Selective standard',1,'Correct. Fig. 2.10, lower right.'],
+['Inward spiral',0,'Wrong. Inward spiral goes around toward the centre.'],
+['Meander',0,'Wrong. Meander zig-zags row by row in alternating directions.'],
+['Magic square',0,'Wrong. Magic square visits pixels in a magic-square number order.']]);
+mc(3,'Scan orders','Slide 23',`Which of the following is NOT one of the scan orders in Fig. 2.10?`,[
+['Diagonal Hough scan',1,'Correct. Not in Fig. 2.10.'],
+['Inward spiral',0,'Wrong. It is in Fig. 2.10.'],
+['Meander',0,'Wrong. It is in Fig. 2.10.'],
+['Reverse standard',0,'Wrong. It is in Fig. 2.10.']]);
+mc(3,'Smoothing','Slide 25',`Image smoothing aims at:`,[
+['Eliminating "outliers" in image values that are considered to be noise in a given context',1,'Correct. Slide 25.'],
+['Increasing contrast along edges',0,'Wrong. That is sharpening (slide 28).'],
+['Detecting corners',0,'Wrong. That is slide 32.'],
+['Equalizing the histogram',0,'Wrong. That is slide 13.']]);
+mc(3,'Smoothing','Slide 25',`What is the main DRAWBACK of the box filter mentioned on slide 25?`,[
+['It also reduces significantly the contrast C(I) of the image',1,'Correct. "It removes outliers, but it also reduces significantly the contrast."'],
+['It cannot be computed for 3 × 3 windows',0,'Wrong. 3 × 3 or 5 × 5 is usually sufficient.'],
+['It needs the Fourier transform',0,'Wrong. It is a local mean.'],
+['It only works on binary images',0,'Wrong. Not mentioned.']]);
+mc(3,'Smoothing','Slide 25',`How can the local mean for LARGER box-filter kernels be calculated conveniently?`,[
+['By using the integral image of the input image',1,'Correct. Slide 25.'],
+['By using a Laplacian mask',0,'Wrong. Laplacians detect edges.'],
+['By converting to CMYK',0,'Wrong. Not related.'],
+['By border tracing',0,'Wrong. That is L4.']]);
+mc(3,'Smoothing','Slide 25',`What is the median of {4, 7, 3, 1, 8, 7, 4, 5, 2, 3, 8} (the slide's example)?`,[
+['4',1,'Correct. Sorted: 1, 2, 3, 3, 4, 4, 5, 7, 7, 8, 8. 2n+1 = 11 values, so n = 5 and the median is at position n+1 = 6, which is 4.'],
+['5',0,'Wrong. 5 is at position 7 of the sorted list.'],
+['4.73',0,'Wrong. That is roughly the MEAN (52/11), not the median.'],
+['7',0,'Wrong. 7 is at positions 8–9 of the sorted list, not the middle position 6.']]);
+mc(3,'Smoothing','Slide 26',`For the Gauss filter, σ is the standard deviation of the Gauss function. What else is σ called on slide 26?`,[
+['The radius of the function',1,'Correct. "…σ is the standard deviation (σ² is the variance), which is also called the radius of this function."'],
+['The aperture',0,'Wrong. The aperture is the pinhole opening (L1).'],
+['The carrier',0,'Wrong. The carrier is the set of pixel locations (L2).'],
+['The scale factor 2',0,'Wrong. Not related.']]);
+mc(3,'Smoothing','Slide 27',`Fig. 2.14 shows Set1Seq1 smoothed with σ = 0.5, 1, 2, 4, 8, 16. These images define:`,[
+['Six layers of the Gaussian scale space; a larger σ gives a blurrier image',1,'Correct. Fig. 2.14 caption. The figure gets blurrier as σ grows.'],
+['Six layers of an image pyramid with decreasing size',0,'Wrong. The images keep the same size. This is a scale space, not a pyramid.'],
+['Six Laplacian edge maps',0,'Wrong. Those are in Fig. 2.27 (LoG scale space).'],
+['Six HSI channels',0,'Wrong. Not related.']]);
+mc(3,'Sharpening','Slide 28',`Sharpening aims at producing an enhanced image J by:`,[
+['Increasing the contrast of I along edges, without adding too much noise within homogeneous regions',1,'Correct. Slide 28.'],
+['Removing all edges',0,'Wrong. That is closer to smoothing.'],
+['Making all grey levels appear equally often',0,'Wrong. That is histogram equalization.'],
+['Reducing the image size by 2',0,'Wrong. That is a pyramid.']]);
+mc(3,'Sharpening','Slide 28',`In UNSHARP MASKING, what is added to the image?`,[
+['The residual R(p) = I(p) − S(p) relative to a smoothed version S, scaled by λ: J = I + λ[I − S]',1,'Correct. Slide 28, Eq. (2.20).'],
+['A blurred copy of the image',0,'Wrong. The residual (image minus its smoothed version) is added, not the blurred copy.'],
+['The Fourier spectrum',0,'Wrong. Not in Eq. (2.20).'],
+['A constant brightness',0,'Wrong. Not in Eq. (2.20).']]);
+mc(3,'Sharpening','Slide 29',`Fig. 2.16 illustrates unsharp masking on the blurred image Altar with which settings?`,[
+['k = 3 and λ = 1.5; smoothing by median, Gauss (σ = 1) and sigma filter (σ = 25)',1,'Correct. Fig. 2.16 caption.'],
+['k = 5 and λ = 3',0,'Wrong. Not in the caption.'],
+['Only the box filter',0,'Wrong. The caption lists median, Gauss and sigma filter.'],
+['Only the Laplacian',0,'Wrong. Not in the caption.']]);
+mc(3,'Edges','Slide 30',`Basic edge detectors that follow the step-edge model work by approximating:`,[
+['First-order derivatives or second-order derivatives',1,'Correct. Slide 30.'],
+['Only the histogram',0,'Wrong. Not how edge detectors work.'],
+['Only the colour hue',0,'Wrong. Not how edge detectors work.'],
+['Only the median',0,'Wrong. Not how edge detectors work.']]);
+mc(3,'Edges','Slide 30',`In the discrete grid, why do we use a difference quotient instead of a true derivative?`,[
+['Because we are limited by a smallest distance ε = 1 between pixel locations',1,'Correct. Slide 30.'],
+['Because derivatives only exist for colour images',0,'Wrong. Not stated.'],
+['Because the DFT forbids derivatives',0,'Wrong. Not stated.'],
+['Because ε can be made arbitrarily small on a grid',0,'Wrong. That is the opposite: ε cannot be smaller than 1.']]);
+mc(3,'Edges','Slide 31',`Which pair is the Sobel operator (Fig. 2.18)?`,[
+['[−1 0 1; −2 0 2; −1 0 1] and [−1 −2 −1; 0 0 0; 1 2 1]',1,'Correct. Fig. 2.18.'],
+['[0 0 0; −1 0 1; 0 0 0]/2 and [0 −1 0; 0 0 0; 0 1 0]/2',0,'Wrong. Those are the simple difference kernels (Fig. 2.17).'],
+['[0 1 0; 1 −4 1; 0 1 0] and [1 1 1; 1 −8 1; 1 1 1]',0,'Wrong. Those are Laplacian masks (Fig. 2.19).'],
+['All 1s divided by 9',0,'Wrong. That is the box filter.']]);
+mc(3,'Edges','Slide 31',`Which of these is NOT one of the three Laplacian masks in Fig. 2.19?`,[
+['[−1 −2 −1; 0 0 0; 1 2 1]',1,'Correct. That is a Sobel kernel. The three Laplacian masks are [0 1 0; 1 −4 1; 0 1 0], [1 1 1; 1 −8 1; 1 1 1] and [−1 2 −1; 2 −4 2; −1 2 −1].'],
+['[0 1 0; 1 −4 1; 0 1 0]',0,'Wrong. It is a Laplacian mask in Fig. 2.19.'],
+['[1 1 1; 1 −8 1; 1 1 1]',0,'Wrong. It is a Laplacian mask in Fig. 2.19.'],
+['[−1 2 −1; 2 −4 2; −1 2 −1]',0,'Wrong. It is a Laplacian mask in Fig. 2.19.']]);
+mc(3,'Corners','Slide 32',`A corner in an image is a pixel where:`,[
+['Two edges of different directions intersect',1,'Correct. Slide 32. Edges can be defined by the step-edge or the phase-congruency model.'],
+['The intensity is maximal',0,'Wrong. That is a local maximum, not a corner.'],
+['The histogram has a peak',0,'Wrong. Not the definition.'],
+['The image border meets the scan order',0,'Wrong. Not the definition.']]);
+mc(3,'Corners','Slide 33',`In Fig. 2.22, how many pixels make up the discrete circles used by the FAST corner detector?`,[
+['16',1,'Correct. Fig. 2.22: "The shown discrete circles (of 16 pixels) are used in the discussion of the FAST corner detector."'],
+['8',0,'Wrong. 8 is the size of the 8-adjacency set (L4).'],
+['4',0,'Wrong. 4 is the size of the 4-adjacency set (L4).'],
+['9',0,'Wrong. 9 is the number of pixels in a 3 × 3 window.']]);
+mc(3,'Corners','Slide 34',`Fig. 2.23 compares two corner detectors on a window of Set1Seq1. Which ones?`,[
+['Harris (left) and FAST (right)',1,'Correct. Fig. 2.23 caption.'],
+['Sobel and Laplacian',0,'Wrong. Those are edge operators.'],
+['Box and median',0,'Wrong. Those are smoothing filters.'],
+['Canny and Hough',0,'Wrong. Those appear in L4 (Fig. 3.33).']]);
+mc(3,'Illumination','Slide 35',`Which of the following is listed as an ILLUMINATION ARTEFACT on slide 35?`,[
+['Vignetting',1,'Correct. "Illumination artefacts such as differing exposures, shadows, reflections, or vignetting…"'],
+['Spatial aliasing',0,'Wrong. Aliasing is mentioned for pyramids (slide 22).'],
+['Magic square scanning',0,'Wrong. That is a scan order.'],
+['Median filtering',0,'Wrong. That is a smoothing operator.']]);
+mc(3,'Illumination','Slide 35',`In Fig. 2.24, what does the image MainRoad show?`,[
+['A night scene where head-lights cause large bright spots',1,'Correct. Fig. 2.24 caption.'],
+['Trees causing bad shadow effects',0,'Wrong. That is LightAndTrees.'],
+['Illumination differences between two time-synchronized cameras',0,'Wrong. That is NorthLeft / NorthRight.'],
+['A perfectly uniform illumination',0,'Wrong. It shows an artefact.']]);
+mc(3,'Illumination','Slide 35',`In Fig. 2.24, what causes the black pixels at the image borders?`,[
+['Image rectification',1,'Correct. Fig. 2.24 caption: "black pixels at borders are caused by image rectification".'],
+['Vignetting',0,'Wrong. The caption says rectification.'],
+['The median filter',0,'Wrong. The caption says rectification.'],
+['Histogram equalization',0,'Wrong. The caption says rectification.']]);
+mc(3,'Advanced edges','Slide 37',`The LoG edge detector applies the Laplacian to a Gauss-filtered image. Slide 37 says this can be done:`,[
+['In one step of convolution: ∇²(G_σ * I) = I * ∇²G_σ',1,'Correct. Slide 37, Eq. (2.34).'],
+['Only in the frequency domain',0,'Wrong. Not what the slide says.'],
+['Only after histogram equalization',0,'Wrong. Not what the slide says.'],
+['Only on binary images',0,'Wrong. Not what the slide says.']]);
+mc(3,'Advanced edges','Slide 37',`Which edge detector does Section 2.4 discuss for defining edges using the PHASE-CONGRUENCY model?`,[
+['The Kovesi operator (algorithm)',1,'Correct. Slide 37 (and the outline, slide 3).'],
+['Sobel',0,'Wrong. Sobel is a basic edge detector (slide 31).'],
+['Harris',0,'Wrong. Harris is a corner detector.'],
+['Box filter',0,'Wrong. The box filter smooths.']]);
+
+tf(3,'Local operators','Slide 25',`Local operators are time-efficient and easy to implement on usual sequential and parallel hardware.`,true,`TRUE. Slide 25.`);
+tf(3,'Local operators','Slide 17',`In a local operator, the operation inside the window may be different at every location.`,false,
+`FALSE. Slide 17, point 4: "The operation in the window should be the same at all locations, identifying the purpose of the local operator."`);
+tf(3,'Local operators','Slide 17',`In a sequential local operator, new values propagate like a "wave" over the original values.`,true,
+`TRUE. Slide 17, point 5: results replace values in place, so later windows contain both original and already-processed values.`);
+tf(3,'Fourier filtering','Slide 18',`I ∘ G (multiplying two DFTs) means ordinary matrix multiplication.`,false,
+`FALSE. Slide 18: I ∘ G is position-by-position multiplication, "not to be confused with matrix multiplication".`);
+tf(3,'Fourier filtering','Slide 20',`In Fig. 2.7, the exponential-band-pass filtered Emma already shows more higher frequencies than lower frequencies.`,true,`TRUE. Fig. 2.7 caption.`);
+tf(3,'Pyramids','Slide 22',`In a regular image pyramid, the original image is the base layer, and images of reduced size are the subsequent layers.`,true,`TRUE. Slide 22.`);
+tf(3,'Smoothing','Slide 25',`For the box filter, it is often sufficient to use just a 3 × 3 or 5 × 5 kernel.`,true,`TRUE. Slide 25.`);
+tf(3,'Smoothing','Slide 26',`The 2D Gauss function is the product of two 1D Gauss functions.`,true,`TRUE. Slide 26, Eq. (2.16).`);
+tf(3,'Smoothing','Slide 26',`The Gauss filter is a local convolution with a kernel defined by samples of the 2D Gauss function.`,true,`TRUE. Slide 26.`);
+tf(3,'Sharpening','Slide 28',`Unsharp masking subtracts the residual from the image, which makes it blurrier.`,false,
+`FALSE. Slide 28: the residual R = I − S is ADDED to the image, J = I + λ[I − S], which sharpens it.`);
+tf(3,'Corners','Slide 32',`Detected corners provide important information for localizing and understanding shapes in 3D scenes.`,true,`TRUE. Fig. 2.21 caption.`);
+tf(3,'Edges','Slide 30',`The simplest symmetric difference quotient with respect to y uses I(x, y+1) − I(x, y−1), divided by 2.`,true,`TRUE. Slide 30, Eq. (2.24). Fig. 2.17 shows the matching kernels with /2.`);
+tf(3,'Advanced edges','Slide 37',`Advanced edge detectors combine multiple approaches into one algorithm, e.g. edge detection together with pre- or post-processing.`,true,`TRUE. Slide 37.`);
+
+const PROF=[[1,2,3,1],[3,1,2,3],[2,3,1,2],[1,2,3,1]];
+mc(3,'Matrix','Professor\'s midterm screenshot; kernel family: Slide 31 (Fig. 2.19); method: Slides 16–17',`<p><b>The professor's exam question.</b> Apply the kernel to the 4 × 4 grayscale image. Border pixels stay unchanged (as in the professor's answer grid). What are the four INNER output pixels?</p><div class="mxrow">${mx(PROF,'Image')}${mx([[-1,-1,-1],[-1,8,-1],[-1,-1,-1]],'Kernel')}</div><p>Hint: for this kernel, output = 8 × centre − (sum of the 8 neighbours).</p>`,[
+['Row 2: −9, 0 · Row 3: 9, −9',1,'Correct. (2,2): 8·1 − 17 = −9. (2,3): 8·2 − 16 = 0. (3,2): 8·3 − 15 = 9. (3,3): 8·1 − 17 = −9.'],
+['Row 2: 9, 0 · Row 3: −9, 9',0,'Wrong. The signs are flipped. That is what the Fig. 2.19 mask [1 1 1; 1 −8 1; 1 1 1] would give, i.e. the negative of this kernel.'],
+['Row 2: −8, 0 · Row 3: 8, −8',0,'Wrong. Recompute (2,2): its 8 neighbours are 1+2+3+3+2+2+3+1 = 17, so 8·1 − 17 = −9, not −8.'],
+['Row 2: 1, 2 · Row 3: 3, 1',0,'Wrong. These are just the original inner pixels, unchanged.']]);
+mc(3,'Matrix','Slide 31 (Fig. 2.19); Slide 30',`<p>The professor's kernel [−1 −1 −1; −1 8 −1; −1 −1 −1] is the negative of which mask from the slides, and what does it detect?</p>`,[
+['The Laplacian mask [1 1 1; 1 −8 1; 1 1 1] (Fig. 2.19). It approximates second-order derivatives, so it is an edge detector',1,'Correct. Fig. 2.19 lists it as a mask for approximate calculation of the Laplacian. Slide 30: edge detectors approximate first- or second-order derivatives.'],
+['The box filter. It smooths the image',0,'Wrong. The box filter has all weights = 1 (Fig. 2.5).'],
+['The Sobel operator. It computes first-order derivatives',0,'Wrong. Sobel has 0s in the middle column or row (Fig. 2.18).'],
+['The Gauss filter. It blurs the image',0,'Wrong. Gauss kernels have only positive weights (slide 26).']]);
+mc(3,'Matrix','Slides 15, 25',`<p>Apply the 3 × 3 BOX FILTER (all 1s, /9, Fig. 2.5) to the image. What is the output at the inner pixel row 2, column 2 (the pixel with value 8)?</p>${mx([[2,4,6,2],[4,8,2,6],[6,2,4,8],[2,6,8,4]],'Image')}`,[
+['38/9 ≈ 4.22',1,'Correct. 3 × 3 sum = 2+4+6 + 4+8+2 + 6+2+4 = 38, and 38/9 ≈ 4.22. The bright outlier 8 is pulled toward its neighbours, which is smoothing (slide 25). The other inner outputs are 42/9 ≈ 4.67, 42/9 ≈ 4.67 and 48/9 ≈ 5.33.'],
+['8',0,'Wrong. That is the original value. The box filter replaces it with the local mean.'],
+['38',0,'Wrong. You forgot to divide by 9.'],
+['42/9 ≈ 4.67',0,'Wrong. 42 is the sum of the window around (2,3) or (3,2), not (2,2).']]);
+mc(3,'Matrix','Slide 31 (Fig. 2.19)',`<p>Apply the Laplacian mask [0 1 0; 1 −4 1; 0 1 0] to the image (borders unchanged). What are the inner outputs?</p><div class="mxrow">${mx([[3,3,3,3],[3,7,3,3],[3,3,3,3],[3,3,3,3]],'Image')}${mx([[0,1,0],[1,-4,1],[0,1,0]],'Mask')}</div>`,[
+['Row 2: −16, 4 · Row 3: 4, 0',1,'Correct. Output = (up + down + left + right) − 4 × centre. (2,2): 12 − 28 = −16. (2,3): (3+3+7+3) − 12 = 4. (3,2): (7+3+3+3) − 12 = 4. (3,3): 12 − 12 = 0. The flat region gives 0; only the bright spot and its neighbours respond.'],
+['Row 2: 16, −4 · Row 3: −4, 0',0,'Wrong. The signs are flipped.'],
+['Row 2: −32, 4 · Row 3: 4, 4',0,'Wrong. That is the result of the 8-neighbour mask [1 1 1; 1 −8 1; 1 1 1], not the 4-neighbour mask.'],
+['All inner pixels = 0',0,'Wrong. Only the flat pixel (3,3) gives 0.']]);
+mc(3,'Matrix','Slide 31 (Fig. 2.18); Slide 16 (Eq. 2.9)',`<p>Apply the Sobel kernel [−1 0 1; −2 0 2; −1 0 1] (multiply each weight with the pixel under it and sum, Eq. 2.9) to the 4 × 5 image. What are the inner outputs of row 2 (columns 2, 3, 4)?</p>${mx([[10,10,10,50,50],[10,10,10,50,50],[10,10,10,50,50],[10,10,10,50,50]],'Image')}`,[
+['0, 160, 160',1,'Correct. Column 2: left and right columns are both 10, so (−4)·10 + 4·10 = 0. Columns 3 and 4: left = 10, right = 50, so −40 + 200 = 160. The response appears only where intensity changes in the x-direction (a vertical edge).'],
+['160, 160, 160',0,'Wrong. At column 2 there is no change between its left and right neighbours, so the result is 0.'],
+['0, 0, 0',0,'Wrong. That is the result of the OTHER Sobel kernel [−1 −2 −1; 0 0 0; 1 2 1], which looks for changes in y. Every row is the same here, so it gives 0.'],
+['40, 40, 40',0,'Wrong. You need to apply the full weights (1, 2, 1 on each side).']]);
+mc(3,'Matrix','Slides 14, 25',`<p>A 3 × 3 window contains:</p>${mx([[12,5,7],[9,200,6],[8,10,11]],'Window')}<p>What do the MEDIAN operator and the local MAXIMUM operator return for the centre pixel?</p>`,[
+['Median = 9; local maximum = 200',1,'Correct. Sorted: 5, 6, 7, 8, 9, 10, 11, 12, 200. With 9 values, the median is at position 5, which is 9 (slide 25). The maximum is 200 (slide 14, Eq. 2.8). The median removes the outlier 200; the mean would be 268/9 ≈ 29.8.'],
+['Median = 200; local maximum = 200',0,'Wrong. 200 is the outlier. The median is the middle of the sorted values.'],
+['Median = 29.8; local maximum = 200',0,'Wrong. 29.8 is the MEAN (box filter), not the median.'],
+['Median = 9; local maximum = 12',0,'Wrong. The maximum includes the centre value 200.']]);
+mc(3,'Matrix','Slide 21 (Eq. 2.12)',`<p>For the image below (x = column, y = row, both starting at 1), what are the integral image values I_int at (x=2, y=2) and at (x=3, y=3)?</p>${mx([[1,2,3],[4,5,6],[7,8,9]],'Image')}`,[
+['I_int(2,2) = 12; I_int(3,3) = 45',1,'Correct. (2,2): 1+2+4+5 = 12 (not below, not right of p). (3,3): the sum of all pixels = 45. The full integral image is [1 3 6; 5 12 21; 12 27 45].'],
+['I_int(2,2) = 5; I_int(3,3) = 9',0,'Wrong. Those are the original pixel values.'],
+['I_int(2,2) = 28; I_int(3,3) = 45',0,'Wrong. 28 is the sum of the bottom-right 2 × 2 block (5+6+8+9).'],
+['I_int(2,2) = 15; I_int(3,3) = 45',0,'Wrong. Only the pixels with i ≤ 2 and j ≤ 2 count: 1, 2, 4, 5.']]);
+mc(3,'Matrix','Slide 22',`<p>Build the next pyramid layer by taking the mean of each 2 × 2 block (scaling factor 2):</p>${mx([[4,8,1,3],[2,6,5,7],[9,9,0,2],[1,5,4,6]],'Layer 0')}`,[
+['[5 4; 6 3]',1,'Correct. (4+8+2+6)/4 = 5, (1+3+5+7)/4 = 4, (9+9+1+5)/4 = 6, (0+2+4+6)/4 = 3.'],
+['[20 16; 24 12]',0,'Wrong. These are the block SUMS. You must divide by 4.'],
+['[4 1; 9 0]',0,'Wrong. That just keeps the top-left pixel of each block.'],
+['[8 7; 9 6]',0,'Wrong. These are the block MAXIMA.']]);
+
+wr(3,'CV vs IP','Slides 9–10, 4',`Compare an image processing system with a computer vision system, with the slide examples.`,
+`<p><b>Image processing</b> (slide 9): image in, <b>image out</b>. Examples: a blurred car photo becomes a sharper one (plate readable); a dark zebra image becomes an enhanced one.</p><p><b>Computer vision</b> (slide 10): image in, <b>interpretation out</b>. Examples: object labels (boy, dog, woman), "SMILE: 62% / 93%", "Strong accident, possibility of death 85%, car damage No. 6". CV tries to do what the brain does with retinal data: understand the scene (slide 4).</p>`);
+wr(3,'Local operators','Slide 17',`Summarize the general properties of local operators (slide 17).`,
+`<ol><li>Operations are limited to windows, typically square and of odd size (2k+1) × (2k+1). For isotropy, approximately circular windows are preferred, but rectangular ones are easier to use.</li><li>The window moves through the image following a scan order, typically a complete scan.</li><li>There is no general rule for pixels close to the border, but they should be processed as well.</li><li>The operation in the window should be the same at all locations.</li><li>Results either replace values in place (<b>sequential</b> local operator, values propagate like a "wave") or go into a second array (<b>parallel</b> local operator).</li></ol>`);
+wr(3,'Smoothing','Slides 25–27',`Compare the box filter, the median operator and the Gauss filter.`,
+`<ul><li><b>Box filter:</b> (2k+1)×(2k+1) local mean. Simple; removes outliers but significantly reduces contrast. 3 × 3 or 5 × 5 is usually enough; larger kernels via the integral image (slide 25).</li><li><b>Median:</b> the middle value of the sorted 2n+1 values, at position n+1. Example: {4,7,3,1,8,7,4,5,2,3,8} gives 4 (slide 25).</li><li><b>Gauss filter:</b> local convolution with samples of the 2D Gauss function (the product of two 1D Gauss functions); σ is the standard deviation, also called the radius (slide 26). Increasing σ (0.5 … 16) gives the layers of the Gaussian scale space (Fig. 2.14).</li></ul>`);
+wr(3,'Sharpening','Slides 28–29',`What is sharpening, and how does unsharp masking work?`,
+`<p>Sharpening produces an enhanced image J by increasing the contrast of I along edges, without adding too much noise in homogeneous regions (slide 28).</p><p><b>Unsharp masking:</b> first compute a smoothed version S(p), then the residual R(p) = I(p) − S(p), and add it back: J(p) = I(p) + λ[I(p) − S(p)] = [1+λ]I(p) − λS(p) (Eq. 2.20). Fig. 2.16 uses k = 3, λ = 1.5 with median, Gauss (σ = 1) and sigma (σ = 25) smoothing.</p>`);
+wr(3,'Procedural components','Slides 20–23',`Describe the three procedural components of Section 2.2.`,
+`<ul><li><b>Integral images:</b> I_int(p) = the sum of all values not below and not right of p. It speeds up operations on rectangular windows (e.g. feature detection); any rectangle sum needs only the 4 corner values (slide 21).</li><li><b>Regular image pyramids:</b> the same image at different sizes; the original is the base layer. With factor 2, all extra layers need less than 1/3 of the original space. Each new pixel is the mean of 2 × 2 pixels, with Gauss smoothing first to avoid spatial aliasing (slide 22).</li><li><b>Scan orders:</b> the order in which pixels are visited: standard, inward spiral, meander, reverse standard, magic square, selective standard (interlaced) (slide 23).</li></ul>`);
+wr(3,'Corners','Slides 32–34',`What is a corner, and which corner detectors are shown?`,
+`<p>A corner is a pixel where two edges of different directions intersect; edges can be defined by the step-edge or the phase-congruency model (slide 32). Corners give important information for localizing and understanding shapes in 3D scenes (Fig. 2.21). FAST uses discrete circles of 16 pixels around the candidate pixel (Fig. 2.22). Fig. 2.23 compares the Harris detector and FAST.</p>`);
+
+// L4 — Chapter 3: Image Analysis (CS0610-L4.pdf). Slide numbers = PDF page numbers.
+mc(4,'Topology','Slide 5',`Section 3.1 introduces digital topology, which is needed to understand concepts such as:`,[
+['An "image region" or the "border of an image region"',1,'Correct. Slide 5.'],
+['The Fourier spectrum',0,'Wrong. That is L2.'],
+['Colour saturation',0,'Wrong. That is L2.'],
+['Unsharp masking',0,'Wrong. That is L3.']]);
+mc(4,'Topology','Slide 5',`Fig. 3.1 LEFT (the black spiral pattern) shows that:`,[
+['The number of black regions does not depend on the chosen adjacency relation',1,'Correct. Fig. 3.1 caption, left.'],
+['The number of black regions always doubles with 8-adjacency',0,'Wrong. Not stated.'],
+['Spirals cannot be represented digitally',0,'Wrong. Not stated.'],
+['Black regions are counted with the Hough transform',0,'Wrong. Not related.']]);
+mc(4,'Topology','Slide 5',`Fig. 3.1 RIGHT (the checkerboard) shows that in the Euclidean topology, the number of black regions depends on:`,[
+['Whether two diagonally adjacent black squares are connected by the black corner point between them or not',1,'Correct. Fig. 3.1 caption, right.'],
+['The grey-level histogram',0,'Wrong. Not related.'],
+['The colour model used',0,'Wrong. Not related.'],
+['The image size only',0,'Wrong. Not the point of the figure.']]);
+mc(4,'Adjacency','Slide 6',`Assumed pixel adjacency (neighbourhood) in an image defines:`,[
+['Connectedness, and thus regions of pairwise connected pixels',1,'Correct. Slide 6.'],
+['The colour of each pixel',0,'Wrong. Not what adjacency defines.'],
+['The Fourier frequencies',0,'Wrong. Not what adjacency defines.'],
+['The bit depth',0,'Wrong. Not what adjacency defines.']]);
+mc(4,'Adjacency','Slide 6',`The 4-adjacency set A4(p) of p = (x, y) contains:`,[
+['(x+1, y), (x−1, y), (x, y+1), (x, y−1)',1,'Correct. Slide 6, Eq. (3.1).'],
+['Only the four diagonal pixels',0,'Wrong. Diagonals are added only in 8-adjacency.'],
+['All 8 surrounding pixels',0,'Wrong. That is A8.'],
+['p itself plus its 4 neighbours',0,'Wrong. That is the 4-NEIGHBOURHOOD (slide 7), not the adjacency set.']]);
+mc(4,'Adjacency','Slide 6',`In the grid cell model (each pixel is a small shaded square), 4-adjacency corresponds to:`,[
+['Edge-adjacency',1,'Correct. Slide 6: "This type of adjacency corresponds to edge-adjacency…".'],
+['Corner-adjacency only',0,'Wrong. Corner contacts are what 8-adjacency adds.'],
+['No adjacency',0,'Wrong.'],
+['Colour adjacency',0,'Wrong. Not a term in the slides.']]);
+mc(4,'Adjacency','Slide 7',`How many pixels are in the 4-neighbourhood and in the 8-neighbourhood of p?`,[
+['5 and 9 (each includes p itself)',1,'Correct. Slide 7: 4-neighbourhood = A4(p) ∪ {p} (4+1 = 5); 8-neighbourhood = A8(p) ∪ {p} (8+1 = 9).'],
+['4 and 8',0,'Wrong. Those are the ADJACENCY sets A4 and A8, which do not include p.'],
+['5 and 8',0,'Wrong. The 8-neighbourhood also includes p, so it has 9 pixels.'],
+['4 and 9',0,'Wrong. The 4-neighbourhood includes p, so it has 5 pixels.']]);
+mc(4,'Adjacency','Slide 8',`In Fig. 3.4 (binary image of "particles"), how many particles are counted with 4-adjacency and with 8-adjacency?`,[
+['Five with 4-adjacency; three with 8-adjacency',1,'Correct. Fig. 3.4 caption.'],
+['Three with 4-adjacency; five with 8-adjacency',0,'Wrong. Reversed. 8-adjacency merges diagonal contacts, giving FEWER particles.'],
+['Five with both',0,'Wrong. The count depends on adjacency here.'],
+['Three with both',0,'Wrong. The count depends on adjacency here.']]);
+mc(4,'Adjacency','Slide 8',`Fig. 3.3 left: with 4-adjacency, the disconnected black pixels still separate an inner region from an outer region. With 8-adjacency:`,[
+['The black pixels are connected, but all the white pixels remain connected too (inside and outside are joined)',1,'Correct. Fig. 3.3 caption. This is the digital-topology problem; a simple curve in the Euclidean plane always separates interior from exterior.'],
+['The black pixels disappear',0,'Wrong. Not stated.'],
+['The image becomes a colour image',0,'Wrong. Not stated.'],
+['Nothing changes compared to 4-adjacency',0,'Wrong. The caption describes a change.']]);
+mc(4,'Border tracing','Slide 9',`In Fig. 3.10 (two lamps), when does a border-tracing procedure start?`,[
+['When a standard scan (top-down, left to right) arrives at an object of interest for the first time',1,'Correct. Fig. 3.10 caption.'],
+['After the Fourier transform is computed',0,'Wrong. Not related.'],
+['Only at the image centre',0,'Wrong. It starts where the scan line first meets the object.'],
+['After histogram equalization',0,'Wrong. Not related.']]);
+mc(4,'Border tracing','Slide 10',`Which algorithm is shown in Fig. 3.12 for border tracing?`,[
+['The Voss algorithm',1,'Correct. Fig. 3.12: "Voss algorithm". It outputs the border cycle ⟨p0, p1, …, pi⟩.'],
+['The Kovesi algorithm',0,'Wrong. Kovesi is an edge detector (L3).'],
+['The Hough transform',0,'Wrong. Hough detects lines and circles (slides 25–29).'],
+['The FAST detector',0,'Wrong. FAST is a corner detector (L3).']]);
+mc(4,'Border tracing','Slide 11',`In Fig. 3.13 (right), how many border cycles does the object have?`,[
+['One outer border cycle and three inner border cycles',1,'Correct. Fig. 3.13 right: "Outer border cycle", "3 inner border cycles".'],
+['Only one outer border cycle',0,'Wrong. The holes add inner border cycles.'],
+['Three outer and one inner',0,'Wrong. Reversed.'],
+['Four outer border cycles',0,'Wrong. There is only one outer border.']]);
+mc(4,'Geometry','Slide 13',`Section 3.2 measures three basic properties in 2D images. Which ones?`,[
+['Length, area and curvature',1,'Correct. Slide 13. "By measuring we leave topology and enter the area of geometry."'],
+['Mean, variance and histogram',0,'Wrong. Those are image value statistics (L2).'],
+['Hue, saturation and intensity',0,'Wrong. That is the HSI model (L2).'],
+['Edges, corners and lines',0,'Wrong. Those are features (L3 / Section 3.4).']]);
+mc(4,'Area','Slide 13',`For a triangle Π = ⟨p, q, r⟩, the area is ½·|D(p, q, r)|. What does the SIGN of the determinant D(p, q, r) identify?`,[
+['The orientation of the ordered triple (p, q, r)',1,'Correct. Slide 13: "the sign of D(p,q,r) identifies the orientation of the ordered triple".'],
+['Whether the triangle is digital',0,'Wrong. Not stated.'],
+['The colour of the triangle',0,'Wrong. Not stated.'],
+['The curvature of the triangle',0,'Wrong. Not stated.']]);
+mc(4,'Area','Slide 14',`Fig. 3.14 shows different digitizations of a simple polygon. Which statement is correct?`,[
+['Grids from 8 × 8 to 128 × 128 were used; the original polygon was drawn at 512 × 512; all are shown in the grid cell model',1,'Correct. Fig. 3.14 caption.'],
+['All digitizations have exactly the same area',0,'Wrong. A coarse grid approximates the shape poorly.'],
+['The original polygon was 8 × 8',0,'Wrong. The original was 512 × 512.'],
+['The images are shown in the grid point model',0,'Wrong. The caption says grid cell model.']]);
+mc(4,'Length','Slide 15',`How is the length of an arc γ defined on slide 15?`,[
+['As the limit of the lengths of polygonal approximations as n tends to infinity (line segments become smaller and smaller)',1,'Correct. Slide 15.'],
+['As the number of pixels on the arc',0,'Wrong. Not the definition given.'],
+['As the area under the arc',0,'Wrong. That is area.'],
+['As the angle between the endpoints',0,'Wrong. Not the definition given.']]);
+mc(4,'Length','Slide 16',`Fig. 3.19 shows the polygonal approximation of a region border by calculating:`,[
+['Maximum-length DSSs (digital straight segments) in subsequent order, clockwise or counter-clockwise',1,'Correct. Fig. 3.19 caption.'],
+['Hough peaks',0,'Wrong. Not in Fig. 3.19.'],
+['Laplacian zero crossings',0,'Wrong. Not in Fig. 3.19.'],
+['Co-occurrence values',0,'Wrong. Not in Fig. 3.19.']]);
+mc(4,'Curvature','Slide 17',`A Jordan curve is called SMOOTH if:`,[
+['It is continuously differentiable',1,'Correct. Slide 17.'],
+['It has many vertices',0,'Wrong. Vertices are singular (non-smooth) points.'],
+['It is drawn in the grid cell model',0,'Wrong. Not the definition.'],
+['It is a straight line only',0,'Wrong. Not the definition.']]);
+mc(4,'Curvature','Slide 17',`Where can curvature be defined?`,[
+['Only at non-singular points of a curve (e.g. not at the vertices of a polygon)',1,'Correct. Slide 17: "A polygon is not smooth at singular points (i.e. its vertices). Curvature can be defined only at non-singular points."'],
+['Only at the vertices of a polygon',0,'Wrong. Reversed.'],
+['Everywhere, including vertices',0,'Wrong. Not at singular points.'],
+['Only on binary images',0,'Wrong. Not stated.']]);
+mc(4,'Curvature','Slide 17',`The angle ψ that the tangent t(p) makes with the positive x-axis is called the:`,[
+['Slope angle',1,'Correct. Slide 17. Curvature is the rate of change of this tangential angle; Fig. 3.20 shows the Frenet frame.'],
+['Hue angle',0,'Wrong. Hue is a colour property (L2).'],
+['Hough angle d',0,'Wrong. In Hough space, d is a distance and α is the angle.'],
+['Aperture angle',0,'Wrong. Not the term.']]);
+mc(4,'Distance transform','Slide 18',`The distance transform labels each OBJECT pixel (I(p) > 0) with:`,[
+['The Euclidean distance between its location and the nearest non-object pixel location (I(q) = 0)',1,'Correct. Slide 18, Eq. (3.15). D(p) = 0 for all non-object pixels.'],
+['Its grey value',0,'Wrong. Not the definition.'],
+['The distance to the image centre',0,'Wrong. It is the distance to the nearest non-object pixel.'],
+['The number of object pixels',0,'Wrong. Not the definition.']]);
+mc(4,'Distance transform','Slide 18',`What does the ROW–COLUMN COMPONENT MAP store at each pixel p?`,[
+['The signed tuple (Δx, Δy) that defines the shortest distance D(p)',1,'Correct. Slide 18. D(p) alone does not tell the signed row and column components, so the map stores them.'],
+['Only D(p)',0,'Wrong. That is the distance map.'],
+['The grey value histogram',0,'Wrong. Not related.'],
+['The Hough votes',0,'Wrong. Not related.']]);
+mc(4,'Distance transform','Slide 19',`In Fig. 3.25 (distance transform example), what are the numbers in the object region?`,[
+['Squared Euclidean distances: left after the initial row scans, right after the column scans',1,'Correct. Fig. 3.25 caption: "The zeros are all the non-object pixels. The numbers are squared Euclidean distances."'],
+['Grey values',0,'Wrong. Not stated.'],
+['Plain (non-squared) Euclidean distances',0,'Wrong. The caption says squared.'],
+['Co-occurrence counts',0,'Wrong. Not related.']]);
+mc(4,'Co-occurrence','Slide 21',`How does co-occurrence differ from basic statistics such as the mean, variance or histogram?`,[
+['Basic statistics summarize individual pixel values; co-occurrence studies the distribution of values depending on the values at ADJACENT pixels',1,'Correct. Slide 21.'],
+['Co-occurrence only counts the number of pixels',0,'Wrong. That is the image size.'],
+['They are identical',0,'Wrong. Not the same thing.'],
+['Co-occurrence uses colours only',0,'Wrong. It works with scalar values u, v ∈ {0, …, Gmax}.']]);
+mc(4,'Co-occurrence','Slides 21–22',`For an image with Gmax = 3, what is the size of its co-occurrence matrix?`,[
+['4 × 4, i.e. (Gmax+1) × (Gmax+1)',1,'Correct. Slide 21. Fig. 3.28 shows a 5 × 5 image with Gmax = 3 and its 4 × 4 co-occurrence matrix.'],
+['3 × 3',0,'Wrong. Values run from 0 to 3, which is 4 values.'],
+['5 × 5',0,'Wrong. That is the IMAGE size in Fig. 3.28, not the matrix size.'],
+['Ncols × Nrows',0,'Wrong. The matrix size depends on Gmax, not on the image size.']]);
+mc(4,'Co-occurrence','Slide 22',`In Fig. 3.28 the adjacency set is A = {(0, 1)}. This means we look from each pixel to:`,[
+['The pixel one row down',1,'Correct. Fig. 3.28: "…meaning that we look from a pixel location one row down."'],
+['The pixel one column right',0,'Wrong. That would be (1, 0).'],
+['All 8 neighbours',0,'Wrong. A contains only one off-set.'],
+['The image centre',0,'Wrong. Not related.']]);
+mc(4,'Moments','Slide 23',`For moments m_{a,b}(S) of a region S, the sum a + b defines:`,[
+['The order of the moment',1,'Correct. Slide 23.'],
+['The area of S',0,'Wrong. The area is m_{0,0} when I = 1 in S.'],
+['The centroid',0,'Wrong. The centroid uses the first-order moments divided by m_{0,0}.'],
+['The co-occurrence size',0,'Wrong. Not related.']]);
+mc(4,'Moments','Slide 23',`If I(x, y) = 1 for every pixel in region S, then the zero-order moment m_{0,0}(S) equals:`,[
+['The area of S',1,'Correct. Slide 23: m_{0,0}(S) = 𝒜(S), the area of S.'],
+['The centroid of S',0,'Wrong. The centroid is (m_{1,0}/m_{0,0}, m_{0,1}/m_{0,0}).'],
+['Zero',0,'Wrong. It counts the pixels of S.'],
+['The perimeter of S',0,'Wrong. Not stated.']]);
+mc(4,'Moments','Slide 23',`The centroid (x_S, y_S) of region S is computed as:`,[
+['x_S = m_{1,0}/m_{0,0}, y_S = m_{0,1}/m_{0,0}',1,'Correct. Slide 23, Eq. (3.39).'],
+['x_S = m_{0,0}/m_{1,0}, y_S = m_{0,0}/m_{0,1}',0,'Wrong. The fractions are upside down.'],
+['x_S = m_{1,1}, y_S = m_{2,2}',0,'Wrong. Not the formula.'],
+['The centre of the image',0,'Wrong. It depends on region S.']]);
+mc(4,'Lines','Slide 25',`How does line detection start, according to slide 25?`,[
+['An edge detector first maps the image into a binary edge map; then the edge pixels are analysed for subsets that "reasonably" form a line segment',1,'Correct. Slide 25. The detector must be robust to noise.'],
+['The image is converted to CMYK',0,'Wrong. Not stated.'],
+['A pyramid is built first',0,'Wrong. Not stated.'],
+['The co-occurrence matrix is computed first',0,'Wrong. Not stated.']]);
+mc(4,'Lines','Slide 27',`In Fig. 3.33 (standard Hough transform), which operator generated the edge map?`,[
+['The Canny operator',1,'Correct. Slide 27.'],
+['The Sobel operator',0,'Wrong. The slide says Canny.'],
+['The Harris detector',0,'Wrong. Harris detects corners.'],
+['The median operator',0,'Wrong. The median smooths.']]);
+mc(4,'Lines','Slide 27',`What are the axes of the Hough space shown in Fig. 3.33 for detecting lines?`,[
+['d and α',1,'Correct. The Hough space plot in Fig. 3.33 has axes d (vertical) and α (horizontal). Fig. 3.34 calls it the "dα space".'],
+['x and y of the image',0,'Wrong. That is the image space.'],
+['u and v frequencies',0,'Wrong. That is the Fourier domain.'],
+['Hue and saturation',0,'Wrong. Not related.']]);
+mc(4,'Lines','Slide 28',`According to Fig. 3.34, how can a peak be defined in the Hough (dα) counter space?`,[
+['By a local maximum, or by the centroid of a 3 × 3 window of counter values with maximal sum',1,'Correct. Fig. 3.34: top right "Peak defined by local maximum"; bottom left "3 × 3 window … the peak may be defined by the centroid of this window". Bottom right shows "the butterfly of a peak".'],
+['By the median of all counters',0,'Wrong. Not in Fig. 3.34.'],
+['By the minimum counter value',0,'Wrong. Peaks are maxima.'],
+['By the first counter in the scan order',0,'Wrong. Not in Fig. 3.34.']]);
+mc(4,'Circles','Slide 29',`For detecting circles with the Hough transform, a circle is described by its centre (x_c, y_c) and radius r. This defines:`,[
+['A 3D Hough space',1,'Correct. Slide 29.'],
+['A 2D Hough space',0,'Wrong. Three parameters means a 3D space. (Lines use 2D: d, α.)'],
+['A 1D histogram',0,'Wrong. Not stated.'],
+['A co-occurrence matrix',0,'Wrong. Not related.']]);
+mc(4,'Circles','Slide 29',`Which application is used on slide 29 to show why circle detection matters?`,[
+['Detecting stop signs, which are nearly circular',1,'Correct. Fig. 3.36.'],
+['Detecting lane borders',0,'Wrong. That is line detection (Fig. 3.31).'],
+['Detecting fish',0,'Wrong. Fish are the moments example (Fig. 3.30).'],
+['Detecting lamps',0,'Wrong. Lamps are the border tracing example (Fig. 3.10).']]);
+
+tf(4,'Topology','Slide 5',`Digital images have some topological issues that do not occur in the Euclidean plane.`,true,`TRUE. Slide 5.`);
+tf(4,'Adjacency','Slide 6',`The 8-adjacency set A8(p) contains the 4 edge-neighbours plus the 4 diagonal neighbours of p.`,true,`TRUE. Slide 6, Eq. (3.2).`);
+tf(4,'Adjacency','Slide 7',`The 4-neighbourhood of p does NOT contain p itself.`,false,`FALSE. Slide 7: the 4-neighbourhood equals A4(p) ∪ {p}, so it contains p.`);
+tf(4,'Adjacency','Slide 8',`A simple curve in the Euclidean plane always separates the interior from the exterior.`,true,`TRUE. Fig. 3.3, right.`);
+tf(4,'Adjacency','Slide 5',`The selected adjacency relation has significant later impacts on the defined image regions.`,true,`TRUE. Slide 5.`);
+tf(4,'Geometry','Slide 13',`"By measuring, we leave topology and enter the area of geometry."`,true,`TRUE. Slide 13.`);
+tf(4,'Distance transform','Slide 18',`In the distance transform, D(p) = 0 for all non-object pixels.`,true,`TRUE. Slide 18.`);
+tf(4,'Distance transform','Slide 18',`The distance map is smaller than the original image.`,false,`FALSE. Slide 18: "The distance map is a 2D array of the same size as the original image."`);
+tf(4,'Distance transform','Slide 19',`In the row-scan step, f1 gives the distance to the nearest non-object pixel on the LEFT, and f2 replaces it if the nearest non-object pixel on the RIGHT is closer.`,true,`TRUE. Slide 19 (Eqs. 3.17–3.20).`);
+tf(4,'Co-occurrence','Slide 21',`The adjacency set used for a co-occurrence matrix must always be symmetric.`,false,`FALSE. Slide 21: "The adjacency set can also be non-symmetric, for example A = {(0,1), (1,0)}."`);
+tf(4,'Moments','Slide 23',`The centroid of a region depends only on the shape of S, not on the image values I over S.`,false,`FALSE. Slide 23: "Note that the centroid depends on the values of I over S, not just on the shape of S."`);
+tf(4,'Moments','Slide 23',`Fig. 3.30 shows the main axes and centroids for detected fish regions.`,true,`TRUE. Fig. 3.30 caption.`);
+tf(4,'Lines','Slide 25',`Lines or circles appear in images as "noisy objects", and identifying them is an example of identifying patterns in an image.`,true,`TRUE. Slide 25.`);
+tf(4,'Lines','Slide 25',`Real-world examples of straight lines given on slide 25 include edges of buildings, lane borders and power poles.`,true,`TRUE. Slide 25 (Fig. 3.31 shows lane borders).`);
+tf(4,'Circles','Slide 29',`The idea of Hough transforms can be generalized to other geometric objects: parameterize them with a bounded accumulator array, insert pixels into it, and detect peaks.`,true,`TRUE. Slide 29.`);
+
+const CO=[[0,0,1,2],[0,1,1,2],[2,1,0,0],[2,2,1,0]];
+mc(4,'Matrix','Slides 21–22 (Eq. 3.33, Figs. 3.28–3.29)',`<p>Image with Gmax = 2. Use A = {(0,1)}: pair each pixel value u with the value v ONE ROW DOWN (as in Fig. 3.28). How many times does the pair (u = 0, v = 0) occur, i.e. what is C(0,0)?</p>${mx(CO,'Image')}`,[
+['2',1,'Correct. The vertical pairs (top→below) per column are: col 1: 0→0, 0→2, 2→2; col 2: 0→1, 1→1, 1→2; col 3: 1→1, 1→0, 0→1; col 4: 2→2, 2→0, 0→0. The pair 0→0 occurs in column 1 and column 4, so C(0,0) = 2.'],
+['3',0,'Wrong. Only 2 vertical pairs are 0→0. Did you count a horizontal pair? A = {(0,1)} means one row DOWN only.'],
+['1',0,'Wrong. You missed one: 0→0 appears in column 1 (rows 1→2) AND column 4 (rows 3→4).'],
+['4',0,'Wrong. 4 is not the count of any 0→0 pairs here.']]);
+mc(4,'Matrix','Slides 21–22',`<p>Same image and A = {(0,1)} (one row down). Laid out like Fig. 3.29 (columns = u, rows = v), which co-occurrence matrix is correct?</p>${mx(CO,'Image')}`,[
+[`${mxi([[2,1,1],[2,2,0],[1,1,2]])}`,1,'Correct. Rows v = 0,1,2; columns u = 0,1,2. The total is 12, which is right: 4 columns × 3 vertical pairs each.'],
+[`${mxi([[2,2,1],[1,2,1],[1,0,2]])}`,0,'Wrong. This is the transpose (u and v swapped). In Fig. 3.29, u runs along the columns and v down the rows.'],
+[`${mxi([[3,1,1],[2,2,0],[1,1,2]])}`,0,'Wrong. C(0,0) = 2, not 3. Only vertical pairs count.'],
+[`${mxi([[2,1,1],[2,2,1],[1,1,2]])}`,0,'Wrong. This sums to 13, but there are only 12 vertical pairs. C(u=2, v=1) is 0: no 2 has a 1 directly below it.']]);
+mc(4,'Matrix','Slide 19 (Eqs. 3.17–3.20, Fig. 3.25)',`<p>One image row (0 = non-object, 1 = object):</p>${mx([[0,1,1,1,1,1,0,0,1,1,0]],'Row')}<p>After the row scans, each object pixel holds its SQUARED distance to the nearest non-object pixel in the same row (as in Fig. 3.25). What is the result?</p>`,[
+[`${mxi([[0,1,4,9,4,1,0,0,1,1,0]])}`,1,'Correct. In the run of five 1s, the distances to the nearest 0 (left or right) are 1, 2, 3, 2, 1, which squared give 1, 4, 9, 4, 1. In the run of two 1s, the distances are 1, 1. Zeros stay 0.'],
+[`${mxi([[0,1,2,3,2,1,0,0,1,1,0]])}`,0,'Wrong. These are the plain distances. Fig. 3.25 stores SQUARED Euclidean distances.'],
+[`${mxi([[0,1,4,9,16,25,0,0,1,4,0]])}`,0,'Wrong. This only uses f1 (distance to the LEFT). f2 replaces the value when the right neighbour 0 is closer.'],
+[`${mxi([[0,1,1,1,1,1,0,0,1,1,0]])}`,0,'Wrong. This is just the binary input.']]);
+mc(4,'Matrix','Slides 6, 8 (Fig. 3.4)',`<p>Count the connected regions of 1-pixels using 4-adjacency and 8-adjacency:</p>${mx([[1,0,0,0,1],[0,1,0,1,0],[0,0,0,0,0],[1,1,0,0,1],[1,0,0,1,0]],'Binary image')}`,[
+['7 with 4-adjacency; 4 with 8-adjacency',1,'Correct. 4-adjacency (edge contacts only): {(1,1)}, {(1,5)}, {(2,2)}, {(2,4)}, {(4,1),(4,2),(5,1)}, {(4,5)}, {(5,4)} = 7. With 8-adjacency the diagonal contacts merge: {(1,1),(2,2)}, {(1,5),(2,4)}, {(4,1),(4,2),(5,1)}, {(4,5),(5,4)} = 4. As in Fig. 3.4, 8-adjacency gives fewer regions.'],
+['4 with 4-adjacency; 7 with 8-adjacency',0,'Wrong. Reversed. 8-adjacency joins MORE pixels, so it gives FEWER regions.'],
+['9 with 4-adjacency; 4 with 8-adjacency',0,'Wrong. 9 is the number of 1-pixels. The three pixels in the bottom-left corner touch by edges, so they form one region.'],
+['7 with both',0,'Wrong. The diagonal contacts merge regions under 8-adjacency.']]);
+mc(4,'Matrix','Slide 23 (Eqs. 3.37–3.39)',`<p>A binary image (x = column, y = row, both starting at 1); I = 1 on region S:</p>${mx([[0,1,1,0],[0,1,1,0],[0,1,1,0],[0,0,0,0]],'Image')}<p>What are the area m₀,₀ and the centroid (x_S, y_S)?</p>`,[
+['Area = 6; centroid = (2.5, 2)',1,'Correct. m₀,₀ = 6 pixels. m₁,₀ = Σx = 2+3+2+3+2+3 = 15, so x_S = 15/6 = 2.5. m₀,₁ = Σy = 1+1+2+2+3+3 = 12, so y_S = 12/6 = 2.'],
+['Area = 6; centroid = (2, 2.5)',0,'Wrong. x and y are swapped. x is the column (2 and 3), y is the row (1 to 3).'],
+['Area = 16; centroid = (2.5, 2.5)',0,'Wrong. 16 is the whole image. m₀,₀ only counts pixels in S.'],
+['Area = 6; centroid = (15, 12)',0,'Wrong. You forgot to divide m₁,₀ and m₀,₁ by m₀,₀.']]);
+
+wr(4,'Adjacency','Slides 6–8',`Explain 4-adjacency vs 8-adjacency, and why the choice matters.`,
+`<p><b>4-adjacency:</b> p = (x,y) is adjacent to (x±1, y) and (x, y±1); this is edge-adjacency in the grid cell model. <b>8-adjacency:</b> adds the 4 diagonal pixels (slide 6). The 4-/8-<b>neighbourhoods</b> also include p itself (slide 7).</p><p><b>Why it matters:</b> adjacency defines connectedness and therefore regions (slide 6). In Fig. 3.4, the same particles count 5 with 4-adjacency and 3 with 8-adjacency. Fig. 3.3 shows a topological problem: with 4-adjacency a disconnected black curve still separates inner from outer white regions; with 8-adjacency the black curve is connected but the white pixels inside and outside also stay connected. A simple curve in the Euclidean plane always separates interior from exterior (slide 8).</p>`);
+wr(4,'Distance transform','Slides 18–19',`Explain the distance transform, the distance map and the row–column component map.`,
+`<p>The distance transform labels every object pixel (I(p) > 0) with the Euclidean distance to the nearest non-object pixel (I(q) = 0); D(p) = 0 for non-object pixels (slide 18). The <b>distance map</b> is a 2D array of the same size as the image storing D(p). Because D(p) does not tell the signed components, the <b>row–column component map</b> stores (Δx, Δy) at each p. Computation (slide 19): row scans first (f1 = distance to the nearest 0 on the left; f2 replaces it if the nearest 0 on the right is closer), then column scans. Fig. 3.25 shows squared Euclidean distances after the row scans and after the column scans.</p>`);
+wr(4,'Co-occurrence','Slides 21–22',`What is a co-occurrence matrix, and how is it built?`,
+`<p>Basic statistics summarize individual pixel values; co-occurrence studies the distribution of values in dependence on values at adjacent pixels (slide 21). For an adjacency set A, the (Gmax+1) × (Gmax+1) matrix C counts, for each pixel p and offset q ∈ A, how often I(p) = u and I(p+q) = v (Eq. 3.33). Example (Fig. 3.28): A = {(0,1)} means looking one row down; at (x,y) = (3,2) the value u = 2 has v = 1 below it, so C(2,1) increases by one. A can be non-symmetric, e.g. {(0,1),(1,0)}.</p>`);
+wr(4,'Hough','Slides 25–29',`Describe how lines and circles are detected with the Hough transform.`,
+`<p><b>Lines:</b> an edge detector first maps the image into a binary edge map (Fig. 3.33 uses Canny). The edge pixels then vote in a Hough space with axes d and α. Peaks in this counter space correspond to lines (Fig. 3.33 finds three line segments). A peak may be a local maximum, or the centroid of the 3 × 3 window with the maximal sum; Fig. 3.34 also shows the "butterfly" of a peak. The detector must be robust to noise (slide 25).</p><p><b>Circles:</b> generalize the idea with a bounded accumulator array. A circle is (x_c, y_c, r), which gives a 3D Hough space. Example: stop signs are nearly circular (slide 29).</p>`);
+wr(4,'Moments','Slide 23',`Define the moments of a region and the centroid.`,
+`<p>m_{a,b}(S) = Σ x^a y^b I(x,y) over S; the order is a + b. The zero-order moment m_{0,0}(S) = Σ I(x,y) equals the area when I = 1 on S. The first-order moments m_{1,0}, m_{0,1} give the centroid x_S = m_{1,0}/m_{0,0}, y_S = m_{0,1}/m_{0,0}; it depends on the values of I over S, not just the shape. Central moments μ_{a,b} use (x − x_S)^a (y − y_S)^b. Fig. 3.30 shows the main axes and centroids of fish regions.</p>`);
+
+</script>
+<script>
+(function(){
+const LECS={1:'Introduction',2:'Ch 1 · Image Data',3:'Ch 2 · Image Processing',4:'Ch 3 · Image Analysis'};
+const TYPES={mcq:'Multiple choice',tf:'True / False',matrix:'Matrix',written:'Conceptual (written)'};
+const KEY='cs0610-sim-v1';
+let store=load();
+function load(){try{const s=JSON.parse(localStorage.getItem(KEY)||'{}');return {hist:s.hist||{},runs:s.runs||[],prefs:s.prefs||null}}catch(e){return {hist:{},runs:[],prefs:null}}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(store))}catch(e){}}
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+const $=s=>document.querySelector(s);
+const app=$('#app');
+let prefs=store.prefs||{lecs:[1,2,3,4],types:['mcq','tf','matrix','written'],count:'25',order:'random'};
+let run=null, confirmReset=false;
+
+function statsFor(filter){let seen=0,ok=0;for(const q of BANK){if(filter&&!filter(q))continue;const h=store.hist[q.id];if(h&&h.n){seen++;if(h.last)ok++}}return {seen,ok}}
+function wrongIds(){return BANK.filter(q=>store.hist[q.id]&&store.hist[q.id].n&&!store.hist[q.id].last).map(q=>q.id)}
+
+function home(){
+  const total=BANK.length;
+  const per=[1,2,3,4].map(l=>{const n=BANK.filter(q=>q.lec===l).length;const s=statsFor(q=>q.lec===l);return {l,n,...s}});
+  const all=statsFor();
+  const wrong=wrongIds().length;
+  const pool=poolFrom(prefs).length;
+  app.innerHTML=`
+  <header class="top"><div class="stack" style="gap:6px">
+    <div class="row" style="gap:10px"><div class="pixels" aria-hidden="true">${[1,2,3,4,3,4,1,2,4,1,2,3,2,3,4,1].map(v=>`<i style="background:var(--l${v})"></i>`).join('')}</div><span class="eyebrow">CS0610 · Advanced Computer Vision</span></div>
+    <h1>Midterm Simulator</h1>
+    <div class="muted">${total} questions written only from your slides L1–L4. Every answer cites its slide.</div></div>
+  </header>
+  <div class="stack">
+    <section class="panel stack" aria-labelledby="setup-h">
+      <h2 id="setup-h">Build an exam</h2>
+      <div class="stack" style="gap:8px"><div class="eyebrow">Lectures</div><div class="row">
+        ${per.map(p=>`<label class="chip"><input type="checkbox" id="lec${p.l}" data-lec="${p.l}" ${prefs.lecs.includes(p.l)?'checked':''}><span class="lec lec${p.l}">L${p.l}</span>${LECS[p.l]} <span class="muted">(${p.n})</span></label>`).join('')}
+      </div></div>
+      <div class="stack" style="gap:8px"><div class="eyebrow">Question types</div><div class="row">
+        ${Object.entries(TYPES).map(([k,v])=>`<label class="chip"><input type="checkbox" id="type-${k}" data-type="${k}" ${prefs.types.includes(k)?'checked':''}>${v} <span class="muted">(${BANK.filter(q=>q.type===k).length})</span></label>`).join('')}
+      </div></div>
+      <div class="row" style="gap:16px">
+        <label class="stack" style="gap:4px"><span class="eyebrow">Number of questions</span>
+          <select id="count" class="btn">${['10','25','50','all'].map(c=>`<option value="${c}" ${prefs.count===c?'selected':''}>${c==='all'?'All matching':c}</option>`).join('')}</select></label>
+        <label class="stack" style="gap:4px"><span class="eyebrow">Order</span>
+          <select id="order" class="btn"><option value="random" ${prefs.order==='random'?'selected':''}>Random</option><option value="slides" ${prefs.order==='slides'?'selected':''}>By lecture</option></select></label>
+      </div>
+      <div class="row"><button class="btn primary" id="start" ${pool?'':'disabled'}>Start exam · ${prefs.count==='all'?pool:Math.min(+prefs.count,pool)} questions</button>
+        <button class="btn" id="retry" ${wrong?'':'disabled'}>${wrong?`Practise my ${wrong} missed`:'No missed questions yet'}</button></div>
+      <div class="foot">Answer choices are shuffled every time, so the position of the right answer never gives it away. Keyboard: <span class="kbd">1</span>–<span class="kbd">4</span> to choose, <span class="kbd">Enter</span> to submit or go on.</div>
+    </section>
+    <section class="panel stack" aria-labelledby="prog-h">
+      <div class="row" style="justify-content:space-between"><h2 id="prog-h">Your progress</h2>
+        <div class="confirm">${confirmReset?`<span class="muted">Erase all progress?</span><button class="btn small" id="reset-yes">Erase</button><button class="btn small ghost" id="reset-no">Keep</button>`:`<button class="btn small ghost" id="reset">Reset progress</button>`}</div></div>
+      <div class="stats">
+        <div class="stat"><div class="eyebrow">Answered</div><b>${all.seen}</b><span class="muted"> / ${total}</span><div class="bar"><span style="width:${total?all.seen/total*100:0}%"></span></div></div>
+        <div class="stat"><div class="eyebrow">Right on last try</div><b>${all.seen?Math.round(all.ok/all.seen*100):0}%</b><div class="bar"><span style="width:${all.seen?all.ok/all.seen*100:0}%;background:var(--ok)"></span></div></div>
+        ${per.map(p=>`<div class="stat"><div class="eyebrow"><span class="lec lec${p.l}">L${p.l}</span></div><b>${p.seen?Math.round(p.ok/p.seen*100)+'%':'–'}</b><span class="muted"> · ${p.seen}/${p.n} seen</span><div class="bar"><span style="width:${p.n?p.seen/p.n*100:0}%;background:var(--l${p.l})"></span></div></div>`).join('')}
+      </div>
+      ${store.runs.length?`<div class="stack" style="gap:4px"><div class="eyebrow">Recent exams</div>${store.runs.slice(-5).reverse().map(r=>`<div class="row" style="justify-content:space-between"><span>${new Date(r.t).toLocaleString()}</span><span style="font-variant-numeric:tabular-nums"><b>${r.ok}/${r.n}</b> (${Math.round(r.ok/r.n*100)}%)</span></div>`).join('')}</div>`:`<div class="muted">No exams taken yet. Your scores will appear here.</div>`}
+    </section>
+    <div class="note"><b>About the binary-image convention.</b> L2 slide 13 (textbook text) says 0 = white and 1 = black, but the figure on slide 14 shows 1 = white and 0 = black. Questions follow the slide 13 text.</div>
+  </div>`;
+  app.querySelectorAll('[data-lec]').forEach(el=>el.onchange=()=>{prefs.lecs=[...app.querySelectorAll('[data-lec]:checked')].map(e=>+e.dataset.lec);persist();home()});
+  app.querySelectorAll('[data-type]').forEach(el=>el.onchange=()=>{prefs.types=[...app.querySelectorAll('[data-type]:checked')].map(e=>e.dataset.type);persist();home()});
+  $('#count').onchange=e=>{prefs.count=e.target.value;persist();home()};
+  $('#order').onchange=e=>{prefs.order=e.target.value;persist();home()};
+  $('#start').onclick=()=>startRun(poolFrom(prefs));
+  $('#retry').onclick=()=>{const ids=new Set(wrongIds());startRun(BANK.filter(q=>ids.has(q.id)),true)};
+  if($('#reset'))$('#reset').onclick=()=>{confirmReset=true;home()};
+  if($('#reset-yes'))$('#reset-yes').onclick=()=>{store={hist:{},runs:[],prefs};save();confirmReset=false;home()};
+  if($('#reset-no'))$('#reset-no').onclick=()=>{confirmReset=false;home()};
+}
+function persist(){store.prefs=prefs;save()}
+function poolFrom(p){return BANK.filter(q=>p.lecs.includes(q.lec)&&p.types.includes(q.type))}
+
+function startRun(pool,all){
+  let qs=prefs.order==='slides'&&!all?pool.slice().sort((a,b)=>a.lec-b.lec):shuffle(pool);
+  if(!all&&prefs.count!=='all'){qs=shuffle(pool).slice(0,+prefs.count);if(prefs.order==='slides')qs.sort((a,b)=>a.lec-b.lec)}
+  run={qs:qs.map(q=>({q,opts:!q.opts||q.fixed?q.opts:shuffle(q.opts)})),i:0,answers:[],t:Date.now()};
+  ask();
+}
+let sel=null,done=false,revealed=false;
+function ask(){
+  sel=null;done=false;revealed=false;
+  const {q,opts}=run.qs[run.i];
+  const n=run.qs.length;
+  app.innerHTML=`
+  <div class="stack">
+    <div class="row" style="justify-content:space-between"><button class="btn small ghost" id="quit">← End exam</button><span class="muted" style="font-variant-numeric:tabular-nums">Question ${run.i+1} of ${n} · Score ${run.answers.filter(a=>a.ok).length}</span></div>
+    <div class="progress" aria-hidden="true"><span style="width:${run.i/n*100}%"></span></div>
+    <article class="panel stack" aria-live="polite">
+      <div class="qhead"><div class="row"><span class="lec lec${q.lec}">L${q.lec}</span><span class="tag">${TYPES[q.type]}</span><span class="tag">${esc(q.topic)}</span></div></div>
+      <div class="qtext">${q.type==='tf'?`<p><b>True or False?</b></p><p>${q.q}</p>`:q.q.startsWith('<')?q.q:`<p>${q.q}</p>`}</div>
+      ${q.type==='written'?`
+        <label for="mine" class="eyebrow">Your answer (optional; write it as you would in the exam)</label>
+        <textarea id="mine" placeholder="Type your answer here, then reveal the model answer."></textarea>
+        <div id="fb"></div>
+        <div class="row"><button class="btn primary" id="go">Show model answer</button></div>`:`
+        <div class="opts" role="radiogroup">${opts.map((o,k)=>`<button class="opt" role="radio" aria-checked="false" data-k="${k}"><span class="k">${q.type==='tf'?(k?'F':'T'):'abcd'[k]}</span><span class="t"><span>${o.t}</span><span class="why" hidden></span></span></button>`).join('')}</div>
+        <div id="fb"></div>
+        <div class="row"><button class="btn primary" id="go" disabled>Submit answer</button></div>`}
+    </article>
+  </div>`;
+  $('#quit').onclick=finish;
+  if(q.type==='written'){$('#go').onclick=revealWritten;return}
+  app.querySelectorAll('.opt').forEach(b=>b.onclick=()=>pick(+b.dataset.k));
+  $('#go').onclick=()=>done?next():submit();
+}
+function pick(k){if(done)return;sel=k;app.querySelectorAll('.opt').forEach((b,i)=>{b.classList.toggle('sel',i===k);b.setAttribute('aria-checked',i===k)});$('#go').disabled=false}
+function submit(){
+  if(sel===null||done)return;done=true;
+  const {q,opts}=run.qs[run.i];const ok=opts[sel].ok;
+  record(q,ok);
+  app.querySelectorAll('.opt').forEach((b,i)=>{
+    b.disabled=true;b.classList.remove('sel');const o=opts[i];const w=b.querySelector('.why');
+    if(q.type==='tf'){ if(o.ok){b.classList.add('right');w.innerHTML=`<span class="lbl">Correct answer.</span> ${o.why}`;w.hidden=false} else if(i===sel){b.classList.add('wrong')} }
+    else{ if(o.ok){b.classList.add('right');w.innerHTML=`<span class="lbl">Correct answer.</span> ${o.why.replace(/^Correct\.\s*/,'')}`}
+      else{b.classList.add(i===sel?'wrong':'dim');w.innerHTML=`<span class="lbl">${i===sel?'Your choice: wrong.':'Not this one.'}</span> ${o.why.replace(/^Wrong\.\s*/,'')}`}
+      w.hidden=false}
+  });
+  $('#fb').innerHTML=`<div class="stack" style="gap:10px"><div class="verdict ${ok?'ok':'bad'}">${ok?'Right.':'Not quite.'}</div><div class="src"><b>Source</b><span>L${q.lec} (${LECS[q.lec]}) · ${q.src}</span></div></div>`;
+  const g=$('#go');g.textContent=run.i+1<run.qs.length?'Next question →':'See results';g.focus();
+}
+function revealWritten(){
+  const {q}=run.qs[run.i];
+  if(!revealed){revealed=true;
+    $('#fb').innerHTML=`<div class="stack" style="gap:10px"><div class="eyebrow">Model answer</div><div class="model">${q.answer}</div><div class="src"><b>Source</b><span>L${q.lec} (${LECS[q.lec]}) · ${q.src}</span></div><div class="eyebrow">Mark yourself</div><div class="row"><button class="btn" id="got">I had the key points</button><button class="btn" id="missed">I missed key points</button></div></div>`;
+    $('#go').hidden=true;
+    $('#got').onclick=()=>{record(q,true);next()};$('#missed').onclick=()=>{record(q,false);next()};
+  }
+}
+function record(q,ok){
+  run.answers[run.i]={id:q.id,ok};
+  const h=store.hist[q.id]||{n:0,ok:0};h.n++;if(ok)h.ok++;h.last=ok;store.hist[q.id]=h;save();
+}
+function next(){if(run.i+1<run.qs.length){run.i++;ask();window.scrollTo(0,0)}else finish()}
+function finish(){
+  const ans=run.answers.filter(Boolean);const n=ans.length;const ok=ans.filter(a=>a.ok).length;
+  if(n){store.runs.push({t:Date.now(),n,ok});store.runs=store.runs.slice(-30);save()}
+  const byL=[1,2,3,4].map(l=>{const a=ans.filter(x=>BANK.find(q=>q.id===x.id).lec===l);return {l,n:a.length,ok:a.filter(x=>x.ok).length}}).filter(x=>x.n);
+  const missed=ans.filter(a=>!a.ok).map(a=>BANK.find(q=>q.id===a.id));
+  app.innerHTML=`<div class="stack">
+    <section class="panel stack"><span class="eyebrow">Exam finished</span>
+      <h1 style="font-variant-numeric:tabular-nums">${ok} / ${n}${n?` · ${Math.round(ok/n*100)}%`:''}</h1>
+      ${n?`<div class="stats">${byL.map(b=>`<div class="stat"><div class="eyebrow"><span class="lec lec${b.l}">L${b.l}</span> ${LECS[b.l]}</div><b>${b.ok}/${b.n}</b><div class="bar"><span style="width:${b.ok/b.n*100}%;background:var(--l${b.l})"></span></div></div>`).join('')}</div>`:'<div class="muted">No questions were answered.</div>'}
+      <div class="row"><button class="btn primary" id="home">Back to setup</button>${missed.length?`<button class="btn" id="again">Practise these ${missed.length} missed</button>`:''}</div>
+    </section>
+    ${missed.length?`<section class="panel stack"><h2>Review what you missed</h2>${missed.map(q=>`<div class="miss stack" style="gap:6px"><div class="row"><span class="lec lec${q.lec}">L${q.lec}</span><span class="tag">${esc(q.topic)}</span></div><div>${q.type==='tf'?'True or False: ':''}${q.q}</div>${q.type==='written'?`<div class="model">${q.answer}</div>`:`<div><b>Answer:</b> ${q.opts.find(o=>o.ok).t}${q.type==='tf'?'':''}</div><div class="why">${q.opts.find(o=>o.ok).why}</div>`}<div class="src"><b>Source</b><span>L${q.lec} · ${q.src}</span></div></div>`).join('')}</section>`:''}
+  </div>`;
+  $('#home').onclick=()=>{run=null;home();window.scrollTo(0,0)};
+  if($('#again'))$('#again').onclick=()=>startRun(missed,true);
+}
+document.addEventListener('keydown',e=>{
+  if(!run||e.target.tagName==='TEXTAREA'||e.target.tagName==='SELECT')return;
+  const q=run.qs[run.i]&&run.qs[run.i].q;if(!q||q.type==='written')return;
+  if(/^[1-4]$/.test(e.key)){const k=+e.key-1;if(k<run.qs[run.i].opts.length){pick(k);e.preventDefault()}}
+  else if(/^[a-d]$/i.test(e.key)&&q.type!=='tf'){pick('abcd'.indexOf(e.key.toLowerCase()));e.preventDefault()}
+  else if(/^[tf]$/i.test(e.key)&&q.type==='tf'){pick(e.key.toLowerCase()==='t'?0:1);e.preventDefault()}
+  else if(e.key==='Enter'&&(!document.activeElement||document.activeElement.tagName!=='BUTTON')){if(done)next();else if(sel!==null)submit();e.preventDefault()}
+});
+window.__BANK=BANK;
+home();
+})();
+</script>
+<footer>
+  <div>Built by Yasir Alharbi</div>
+  <div>DFIR · SOC · AI</div>
+  <a href="https://yasir-alharbi.github.io/" target="_blank"
+     rel="noopener">View my portfolio →</a>
+</footer>
+</body>
+</html>

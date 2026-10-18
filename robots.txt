@@ -1,3 +1,4 @@
 User-agent: *
 Allow: /
 Disallow: /rme-midterm-2026.html
+Disallow: /cs0610-computer-vision-practice-2026.html
