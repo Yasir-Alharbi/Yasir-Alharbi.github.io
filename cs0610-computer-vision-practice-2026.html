@@ -111,6 +111,9 @@ table.mx td.in{padding:3px}
 <style>
 body{margin:0}
 [hidden]{display:none!important}
+body>footer{max-width:760px;margin:0 auto;padding-inline:16px;padding-block:24px 40px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:6px 18px;align-items:center;justify-content:space-between;color:var(--muted);font-size:.9rem}
+body>footer a{color:var(--accent);font-weight:700;text-decoration:none}
+body>footer a:hover{text-decoration:underline}
 </style>
 </head>
 <body>
@@ -1596,5 +1599,12 @@ window.__BANK=BANK;
 home();
 })();
 </script>
+<footer id="portfolio-foot">
+  <div>Built by Yasir Alharbi</div>
+  <div>Cybersecurity · AI</div>
+  <a href="https://yasir-alharbi.github.io/" target="_blank"
+     rel="noopener">View my portfolio →</a>
+</footer>
+<script>(function(){var f=document.getElementById('portfolio-foot'),a=document.getElementById('app');function u(){f.hidden=!a.querySelector('#setup-h')}u();new MutationObserver(u).observe(a,{childList:true})})();</script>
 </body>
 </html>
