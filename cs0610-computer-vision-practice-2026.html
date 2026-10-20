@@ -99,15 +99,18 @@ input.cell.right{border-color:var(--ok);background:var(--ok-soft)}
 input.cell.wrong{border-color:var(--bad);background:var(--bad-soft)}
 .fix{display:block;font-size:.78rem;font-weight:700;color:var(--ok)}
 table.mx td.in{padding:3px}
+.navgrid{display:flex;flex-wrap:wrap;gap:4px}
+.nav{min-width:36px;height:32px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:5px;font-family:var(--f-mono);font-size:.8rem;padding:0 4px;cursor:pointer}
+.nav.ok{background:var(--ok-soft);border-color:var(--ok)}.nav.bad{background:var(--bad-soft);border-color:var(--bad)}.nav.cur{outline:2px solid var(--accent);outline-offset:1px}
+.jump{display:flex;gap:6px;align-items:center;flex-wrap:wrap}.jump input{width:76px;font:inherit;padding:5px 8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink)}
+.kp{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:4px}.kp li{display:flex;gap:8px;align-items:baseline}.kp .y{color:var(--ok);font-weight:700}.kp .n{color:var(--bad);font-weight:700}
+.resume{border:1.5px solid var(--accent);background:var(--accent-soft)}
 @media (prefers-reduced-motion: reduce){.progress span{transition:none}}
 @media (max-width:480px){h1{font-size:1.5rem}.panel{padding:14px}}
 </style>
 <style>
 body{margin:0}
 [hidden]{display:none!important}
-body>footer{max-width:760px;margin:0 auto;padding-inline:16px;padding-block:24px 40px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:6px 18px;align-items:center;justify-content:space-between;color:var(--muted);font-size:.9rem}
-body>footer a{color:var(--accent);font-weight:700;text-decoration:none}
-body>footer a:hover{text-decoration:underline}
 </style>
 </head>
 <body>
@@ -1193,20 +1196,174 @@ mc(4,'Matrix','Constructed practice example; method from Slides 18–19 (distanc
 const RATE={"L1-17hxtro": "H", "L1-dnmgla": "M", "L1-7t34a0": "H", "L1-ti0u2a": "H", "L1-tqfwgc": "H", "L1-b22e6o": "H", "L1-1lrfo8f": "H", "L1-c30yxp": "H", "L1-1mhe88v": "H", "L1-tno3ft": "H", "L1-579fcp": "M", "L1-9lc70c": "H", "L1-v2t1if": "M", "L1-14nfy88": "M", "L1-1jc1zfc": "L", "L1-vyrl5m": "M", "L1-18wnqlj": "M", "L1-10tc4y9": "H", "L1-tmqf1l": "H", "L1-19vuiko": "H", "L1-11fslb0": "H", "L1-t9tmsf": "H", "L1-1a1dmqo": "H", "L1-1p9uf42": "L", "L1-14dcrk2": "M", "L1-wu6ek7": "H", "L1-149yb1q": "H", "L1-q5smkn": "M", "L1-ok5jl6": "H", "L1-tqy2uk": "H", "L1-3afetw": "H", "L1-uvr6sv": "H", "L1-5j34r4": "H", "L1-hwbxri": "H", "L1-1p26et4": "H", "L1-9h8v8w": "H", "L1-1u5s1cr": "H", "L1-orn5a4": "L", "L1-1goxwcv": "H", "L1-1n68t7h": "H", "L1-1jqjv3c": "H", "L1-d9lpc2": "H", "L1-14yee6": "H", "L1-dd438u": "H", "L1-17hlmm1": "H", "L1-1j358he": "H", "L1-144hhey": "M", "L1-yzo6m0": "H", "L1-a4gbp3": "H", "L1-n2rl4p": "H", "L2-c963h0": "H", "L2-6t2x9b": "H", "L2-1bodt1b": "M", "L2-i0uhuo": "M", "L2-uqg5ae": "M", "L2-1err2tf": "H", "L2-fogmmg": "H", "L2-1sn3gy1": "H", "L2-3rb1tv": "H", "L2-16apvbx": "H", "L2-ivn9qy": "H", "L2-iqmnc3": "H", "L2-11nnlcx": "H", "L2-1w7s5b3": "H", "L2-1j97ly0": "H", "L2-1dt0d3j": "H", "L2-ygb7c7": "H", "L2-1hj3gap": "H", "L2-1bgpg9u": "M", "L2-1utykrz": "M", "L2-8slj2x": "H", "L2-9gszdj": "M", "L2-oj9njt": "M", "L2-z9w5jz": "L", "L2-2olqam": "H", "L2-1tt70md": "H", "L2-kdvmsk": "M", "L2-1gkpzxp": "H", "L2-1q67z2s": "L", "L2-lrjh8m": "H", "L2-w50c0q": "M", "L2-1blp7oj": "H", "L2-14mrhfk": "M", "L2-fs3bdz": "H", "L2-1vtuji7": "H", "L2-12a3gi0": "H", "L2-15a5ru": "H", "L2-1cb8m6d": "H", "L2-1ncqowl": "H", "L2-1obs7vg": "H", "L2-f9ozqh": "L", "L2-1tmikjb": "H", "L2-18t3hts": "H", "L2-1qg1txj": "L", "L2-c4451x": "M", "L2-1ythlct": "H", "L2-i9rkhz": "H", "L2-13lhexm": "H", "L2-m28oid": "H", "L2-qai09x": "H", "L2-2887xe": "H", "L2-1sm0ut2": "H", "L2-9qarxq": "H", "L2-1bac6n8": "H", "L2-b5swwp": "H", "L2-rdd91x": "H", "L2-1uydz0d": "H", "L2-1hcx68": "M", "L2-1nwbxt6": "M", "L2-ufqnaf": "H", "L2-1fnyrck": "H", "L2-bvot1z": "H", "L2-1uk8gmp": "H", "L3-afk0jl": "H", "L3-5leybg": "H", "L3-6bfasd": "M", "L3-3ts055": "H", "L3-beggr8": "H", "L3-15h6f9k": "H", "L3-15xbd08": "H", "L3-ku531": "L", "L3-4xjjdz": "H", "L3-15wcxue": "H", "L3-115mr4e": "H", "L3-mgijby": "M", "L3-qk9zd2": "H", "L3-1dw5exs": "M", "L3-hmic8q": "H", "L3-1mcpfnt": "H", "L3-j2hxja": "L", "L3-105yu6p": "H", "L3-39n6kt": "H", "L3-1az3ugg": "M", "L3-1egghsh": "H", "L3-17j04s3": "M", "L3-109zu77": "L", "L3-a228ih": "H", "L3-1tkh20s": "H", "L3-1p2jkqy": "H", "L3-5x4smr": "H", "L3-spo52t": "H", "L3-1y6aq5j": "H", "L3-1tuf60j": "H", "L3-iy3b9u": "H", "L3-2xejqt": "M", "L3-mlhvsb": "H", "L3-neho5v": "H", "L3-iphft4": "H", "L3-kh379j": "L", "L3-p39b3n": "L", "L3-ddm4r": "M", "L3-1pdts2c": "L", "L3-1fus2o4": "L", "L3-1ozh91r": "H", "L3-17xthvk": "L", "L3-yw0x97": "M", "L3-18hqaob": "H", "L3-16t6ekz": "M", "L3-f46un1": "H", "L3-9f7gyc": "L", "L3-1i5a0mx": "H", "L3-2zu98c": "M", "L3-1vd8l5b": "M", "L3-p3n955": "M", "L3-1a97ymb": "H", "L3-t4xx8r": "M", "L3-811oix": "M", "L3-19iagde": "M", "L3-1um6gdc": "H", "L3-1ko6bsf": "H", "L3-2lzuw3": "H", "L3-1rc3h4g": "H", "L3-pr32tv": "H", "L3-1098esn": "H", "L3-1oqhmj7": "H", "L3-1gm3z3b": "H", "L3-1nyme5w": "H", "L3-18a7q4h": "M", "L3-3qitcu": "H", "L3-31u7fp": "H", "L3-njwr0m": "M", "L3-1yaj85f": "H", "L3-pd9hon": "H", "L3-yt5iit": "H", "L3-1o8613p": "H", "L3-1cvoh4q": "H", "L3-11jl7kw": "H", "L4-17emu1s": "H", "L4-76n105": "L", "L4-a060v": "H", "L4-683db4": "H", "L4-12r9ff2": "H", "L4-rnf3nm": "H", "L4-c2fqqq": "M", "L4-1l72iee": "L", "L4-me76xy": "M", "L4-y317xh": "M", "L4-1t3m41y": "L", "L4-oe9u77": "H", "L4-14qfejr": "M", "L4-9enq1v": "M", "L4-3dhlof": "L", "L4-1u9wlcx": "L", "L4-x4tqoo": "M", "L4-13jy07v": "H", "L4-teqhh": "M", "L4-1gds2p9": "M", "L4-ck07tj": "H", "L4-13yqwrg": "H", "L4-m9b24h": "H", "L4-k7d45p": "M", "L4-ajzp5p": "H", "L4-66n7zx": "H", "L4-j3tcjt": "H", "L4-1hllrud": "L", "L4-1bsocdl": "H", "L4-qvn5fu": "H", "L4-1h0kj3d": "H", "L4-1g9hy2e": "M", "L4-699nxl": "M", "L4-wzkji0": "H", "L4-1t1nwy8": "M", "L4-1gc6zyf": "M", "L4-1tcevzw": "H", "L4-8aafov": "L", "L4-16s96yg": "H", "L4-gvk62z": "H", "L4-1c7fqhc": "M", "L4-1chqira": "H", "L4-gsj9n4": "H", "L4-h84ag8": "L", "L4-3sxv9n": "H", "L4-l8jng1": "H", "L4-1u78n3m": "H", "L4-1xl5n3d": "H", "L4-nvoec": "H", "L4-1c9ozf": "H", "L4-1nmstkh": "H", "L4-1fvxjzf": "H", "L4-1psxrb2": "H", "L4-1i3jtjy": "H", "L4-v96p8w": "H", "L4-4dix3v": "H", "L4-80dvru": "H", "L4-1cgqv3c": "M", "L4-12cli4a": "M", "L4-vho4y3": "M", "L4-15ces8v": "H", "L4-1wx144v": "H"};
 BANK.forEach(q=>{q.rate=RATE[q.id]||"H"});
 
+// Key points for written questions: 'Label shown to the student|accepted phrase|accepted phrase…'
+// Matching ignores case and tolerates small spelling mistakes (see checkKeys in the app).
+const WKEYS=[
+['Explain computer vision.',[
+ 'Automatic understanding of images or video (machines that see)|understand|understanding|interpret|machines that see|machine see|computer see|obtain information',
+ 'Goal 1: measurement of 3D-world properties|measurement|measure|3d world|3d properties|distance|depth|how far',
+ 'Goal 2: perception / recognition of objects, people, scenes, activities|recognize|recognition|perception|identify objects|detect objects|object recognition',
+ 'Image data can be video, depth images, multiple cameras or medical data|video|depth image|multiple camera|medical|scanner']],
+['What is the difference between computer vision and image processing?',[
+ 'Image processing: image in, image out (enhancement)|image out|output image|output is an image|returns an image|enhance|enhanced|improve the image',
+ 'Computer vision: output is understanding, labels or decisions|understanding|understand|interpret|interpretation|label|decision|description|meaning',
+ 'A slide example (blurred car / zebra vs labels, smile %, accident)|blur|blurred|zebra|plate|smile|accident|dog|boy']],
+['List the components of a computer vision system.',[
+ 'Lighting|lighting|light|illumination','Scene|scene','Camera|camera','Computer|computer|pc','Scene interpretation|interpretation|interpret']],
+['List the three categories of physical parameters',[
+ 'Geometric (projection, camera pose)|geometric|geometry','Optical (lens, focal length, field of view, aperture)|optical|optic|lens|focal length|aperture|field of view',
+ 'Photometric (light type/direction/intensity, reflectance)|photometric|reflectance|reflection|light direction|intensity of light']],
+['Why is vision "really hard"?',[
+ 'The computer only sees numbers (a grid of pixel values)|numbers|matrix|grid|pixel values|pixels',
+ 'Vision takes a huge part of the brain (visual cortex)|brain|cortex|natural intelligence',
+ 'Recognition can be ambiguous (queen or bishop?)|ambiguous|ambiguity|queen|bishop|confus',
+ 'Minsky\'s summer project / camera + computer is not "done"|minsky|summer|not done|camera to a computer|more difficult']],
+['Describe the pinhole camera idea',[
+ 'A barrier with a small opening reduces blurring|barrier|blur|blurring|block',
+ 'The opening is the aperture; one ray per scene point|aperture|one ray|single ray|pinhole',
+ 'It gives perspective projection|perspective|projection',
+ 'Far-away objects appear smaller|smaller|far away|distant',
+ 'Parallel lines converge on the horizon line|parallel|converge|horizon|vanish']],
+['Explain the difference between a scalar',[
+ 'Scalar: one grey value per pixel (0 = black, Gmax = white)|scalar|grey|gray|one value|single value|grey level|gray level',
+ 'Binary: only two values per pixel|binary|two values|0 and 1|black and white',
+ 'Vector-valued: several channels, e.g. RGB with 3 channels|vector|channel|channels|rgb|band|three']],
+['Explain the spatial domain vs the frequency domain.',[
+ 'The DFT maps the image to the frequency domain; the inverse DFT maps back|dft|fourier|transform|inverse',
+ 'Spatial domain = pixel values at their locations|spatial|pixel|location|x y',
+ 'Low frequencies = long wavelengths, homogeneous regions|low frequency|low frequencies|long wavelength|homogeneous|uniform|smooth region',
+ 'High frequencies = short wavelengths: edges, outliers, details|high frequency|high frequencies|short wavelength|edge|edges|outlier|detail|discontinuit']],
+['Define brightness, hue and saturation.',[
+ 'Brightness = achromatic notion of intensity|achromatic|intensity|light intensity',
+ 'Hue = dominant wavelength / dominant colour seen|dominant|wavelength',
+ 'Saturation = purity, amount of white light mixed with the hue|purity|pure|white light|amount of white']],
+['Compare the RGB and CMY/CMYK colour models.',[
+ 'RGB is additive (mixtures of light); all three give white|additive|light|white',
+ 'RGB is used by colour monitors / displays|monitor|display|screen',
+ 'CMY is subtractive (pigments); C = 1 − R, M = 1 − G, Y = 1 − B|subtractive|pigment|pigments|1 r|1 minus|ink',
+ 'CMY mix gives a muddy black, so K (black) is added: CMYK|muddy|black|key|cmyk',
+ 'CMYK is used for printing|print|printing|printer']],
+['Name the edge types illustrated',[
+ 'Ideal step-edge|step','Linear edge|linear|ramp','Smooth edge|smooth','Noisy edge|noisy|noise','Thin line|thin line|line',
+ 'Discontinuity in a shaded region|discontinuity|shaded']],
+['Compare an image processing system with a computer vision system',[
+ 'Image processing: image in, image out|image out|output image|output is an image|returns an image|enhance|enhanced',
+ 'Computer vision: interpretation out (labels, decisions)|interpret|interpretation|understand|understanding|label|decision',
+ 'A slide example (car plate / zebra vs boy, dog, smile %, accident)|blur|plate|zebra|smile|accident|dog|boy',
+ 'CV tries to do what the brain does with retinal data|brain|retina|retinal|human']],
+['Summarize the general properties of local operators',[
+ 'Windows of odd size (2k+1) × (2k+1); circular is better for isotropy|window|odd|2k|isotropy|circular',
+ 'The window moves through the image in a scan order|scan|scan order|moves',
+ 'Border pixels: no general rule, but they must be processed|border|edge of the image|boundary',
+ 'The same operation is applied at every location|same operation|same at all|every location|all locations',
+ 'Sequential (in place) vs parallel (second array) operators|sequential|parallel|second array|in place']],
+['Compare the box filter, the median operator and the Gauss filter.',[
+ 'Box filter = local mean of the window|mean|average|box',
+ 'Box filter also reduces contrast|contrast',
+ 'Median = middle value of the sorted window|middle|sorted|sort|median',
+ 'Gauss filter = kernel sampled from the Gauss function, with σ|gauss|gaussian|sigma|σ|standard deviation',
+ 'Larger σ gives more smoothing (scale space)|larger sigma|more blur|blurrier|scale space|more smoothing']],
+['What is sharpening, and how does unsharp masking work?',[
+ 'Sharpening increases contrast along edges|contrast|edge|edges',
+ 'First compute a smoothed version S of the image|smooth|smoothed|blur|blurred',
+ 'Residual R = I − S|residual|difference|i s|subtract',
+ 'Add the residual back, scaled by λ: J = I + λ(I − S)|add|added|lambda|λ|scaled']],
+['Describe the three procedural components',[
+ 'Integral images|integral',
+ 'Regular image pyramids|pyramid|pyramids',
+ 'Scan orders|scan|scan order',
+ 'A detail: rectangle sum from 4 corner values / extra layers < 1/3 space / Gauss smoothing against aliasing / spiral, meander…|four|4 corner|corner values|rectangle|third|alias|aliasing|spiral|meander|interlaced']],
+['What is a corner, and which corner detectors are shown?',[
+ 'A pixel where two edges of different directions intersect|two edges|intersect|intersection|edges meet|different directions',
+ 'Harris detector|harris',
+ 'FAST detector|fast',
+ 'Corners help localize and understand shapes in 3D scenes|locali|3d|shape|shapes']],
+['Explain 4-adjacency vs 8-adjacency',[
+ '4-adjacency: the 4 edge-neighbours (left, right, up, down)|left|right|up|down|edge neighbo|horizontal|vertical|four neighbo|4 neighbo',
+ '8-adjacency adds the 4 diagonal neighbours|diagonal|diagonals|corner',
+ 'A neighbourhood also includes p itself (5 or 9 pixels)|itself|include p|includes p|neighbourhood|neighborhood',
+ 'The choice changes connectedness and region counts (5 vs 3 particles)|connect|connected|connectedness|region|regions|count|particle']],
+['Explain the distance transform',[
+ 'Each object pixel gets the distance to the nearest non-object pixel|nearest|non object|background|zero pixel',
+ 'The distance is Euclidean|euclid|euclidean',
+ 'D(p) = 0 for non-object pixels|zero|0',
+ 'The distance map has the same size as the image|same size|distance map',
+ 'Row–column component map stores (Δx, Δy)|row column|component|delta|Δx|signed',
+ 'Computed with row scans, then column scans|row scan|rows|column scan|columns|scan']],
+['What is a co-occurrence matrix',[
+ 'Counts pairs of values at adjacent pixels (u at p, v at p+q)|pair|pairs|adjacent|neighbo|next to|below',
+ 'Size (Gmax + 1) × (Gmax + 1)|gmax|size|grey levels|gray levels',
+ 'Uses an adjacency set / offset, e.g. (0,1) = one row down|offset|0 1|row down|one row|adjacency set',
+ 'Unlike a histogram, it uses values of neighbouring pixels, not single pixels|histogram|individual|single pixel']],
+['Describe how lines and circles are detected',[
+ 'First compute a binary edge map (e.g. Canny)|edge map|edge|edges|canny',
+ 'Edge pixels vote in a Hough (parameter) space with counters|vote|votes|accumulator|counter|parameter space|hough space',
+ 'Lines use parameters d and α|d and α|d alpha|alpha|α|angle|distance',
+ 'Peaks (local maxima) in Hough space give the lines|peak|peaks|maximum|maxima',
+ 'Circles use centre and radius, a 3D Hough space|radius|centre|center|3d']],
+['Define the moments of a region',[
+ 'm_ab = sum of x^a · y^b · I(x,y) over the region|sum|moment|moments|x a y b',
+ 'The order of a moment is a + b|order',
+ 'm00 = area when I = 1 on the region|area|m00|zero order',
+ 'Centroid = (m10/m00, m01/m00)|centroid|m10|m01|center of mass|centre of mass',
+ 'The centroid depends on the image values, not only the shape|values|intensity|weighted|not only the shape']],
+];
+BANK.forEach(q=>{if(q.type==='written'){const k=WKEYS.find(([p])=>q.q.startsWith(p));if(k)q.keys=k[1]}});
+
 </script>
 <script>
 (function(){
 const LECS={1:'Introduction',2:'Ch 1 · Image Data',3:'Ch 2 · Image Processing',4:'Ch 3 · Image Analysis'};
 const TYPES={mcq:'Multiple choice',tf:'True / False',matrix:'Matrix',written:'Conceptual (written)'};
+const RATES={H:'High likelihood',M:'Medium likelihood',L:'Low (recall detail)'};
 const KEY='cs0610-sim-v1';
 let store=load();
-function load(){try{const s=JSON.parse(localStorage.getItem(KEY)||'{}');return {hist:s.hist||{},runs:s.runs||[],prefs:s.prefs||null}}catch(e){return {hist:{},runs:[],prefs:null}}}
+function load(){try{const s=JSON.parse(localStorage.getItem(KEY)||'{}');return {hist:s.hist||{},runs:s.runs||[],prefs:s.prefs||null,run:s.run||null}}catch(e){return {hist:{},runs:[],prefs:null,run:null}}}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(store))}catch(e){}}
 function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 const $=s=>document.querySelector(s);
 const app=$('#app');
+const byId=new Map(BANK.map(q=>[q.id,q]));
 let prefs=store.prefs||{lecs:[1,2,3,4],types:['mcq','tf','matrix','written'],count:'25',order:'random'};
 let run=null, confirmReset=false;
+
+/* ---------- fuzzy, case-insensitive answer checking ---------- */
+function norm(s){return String(s).toLowerCase().normalize('NFKD').replace(/[̀-ͯ]/g,'').replace(/[^\p{L}\p{N}]+/gu,' ').trim()}
+function lev(a,b){if(a===b)return 0;const m=a.length,n=b.length;if(!m)return n;if(!n)return m;let p=Array.from({length:n+1},(_,j)=>j);for(let i=1;i<=m;i++){const c=[i];for(let j=1;j<=n;j++)c[j]=Math.min(p[j]+1,c[j-1]+1,p[j-1]+(a[i-1]===b[j-1]?0:1));p=c}return p[n]}
+function tol(k){return k.length<=3?0:k.length<=5?1:2}
+function tokMatch(u,k){
+  if(u===k)return true;
+  const t=tol(k);if(!t)return false;
+  for(let L=Math.max(1,k.length-t);L<=Math.min(u.length,k.length+t);L++){
+    const pre=u.slice(0,L);
+    if(L!==u.length&&k.length<4)continue;          // short keys must match the whole word
+    if(lev(pre,k)<=t)return true;                  // handles typos, plurals and word endings
+  }
+  return false;
+}
+function phraseIn(words,phrase){const p=norm(phrase).split(' ').filter(Boolean);if(!p.length)return false;
+  for(let i=0;i+p.length<=words.length;i++){let ok=true;for(let j=0;j<p.length;j++)if(!tokMatch(words[i+j],p[j])){ok=false;break}if(ok)return true}return false}
+function checkKeys(q,text){const words=norm(text).split(' ').filter(Boolean);
+  return q.keys.map(k=>{const [label,...alts]=k.split('|');return {label,hit:alts.some(a=>phraseIn(words,a))}})}
+window.__check=(text,keys)=>checkKeys({keys},text);
+
+/* ---------- saved exam (resume) ---------- */
+function saveRun(){
+  if(!run){store.run=null;save();return}
+  store.run={ids:run.qs.map(x=>x.q.id),ord:run.qs.map(x=>x.q.opts&&!x.q.fixed?x.opts.map(o=>x.q.opts.indexOf(o)):null),i:run.i,answers:run.answers,t:run.t};
+  save();
+}
+function restoreRun(){
+  const s=store.run;if(!s||!Array.isArray(s.ids))return null;
+  const qs=[],answers=[];
+  s.ids.forEach((id,k)=>{const q=byId.get(id);if(!q)return;
+    const ord=s.ord&&s.ord[k];const opts=ord&&q.opts&&ord.length===q.opts.length?ord.map(j=>q.opts[j]):q.opts;
+    qs.push({q,opts});answers.push(s.answers&&s.answers[k]||null)});
+  if(!qs.length)return null;
+  return {qs,answers,i:Math.min(s.i||0,qs.length-1),t:s.t||Date.now()};
+}
+function runStats(r){const a=r.answers.filter(Boolean);return {done:a.length,ok:a.filter(x=>x.ok).length,n:r.qs.length}}
+function firstOpen(r){const k=r.answers.findIndex((a,i)=>!a&&i>=0);return k<0?r.qs.findIndex((_,i)=>!r.answers[i]):k}
 
 function statsFor(filter){let seen=0,ok=0;for(const q of BANK){if(filter&&!filter(q))continue;const h=store.hist[q.id];if(h&&h.n){seen++;if(h.last)ok++}}return {seen,ok}}
 function wrongIds(){return BANK.filter(q=>store.hist[q.id]&&store.hist[q.id].n&&!store.hist[q.id].last).map(q=>q.id)}
@@ -1217,6 +1374,7 @@ function home(){
   const all=statsFor();
   const wrong=wrongIds().length;
   const pool=poolFrom(prefs).length;
+  const saved=restoreRun();const ss=saved&&runStats(saved);
   app.innerHTML=`
   <header class="top"><div class="stack" style="gap:6px">
     <div class="row" style="gap:10px"><div class="pixels" aria-hidden="true">${[1,2,3,4,3,4,1,2,4,1,2,3,2,3,4,1].map(v=>`<i style="background:var(--l${v})"></i>`).join('')}</div><span class="eyebrow">CS0610 · Advanced Computer Vision</span></div>
@@ -1224,6 +1382,11 @@ function home(){
     <div class="muted">${total} questions written only from your slides L1–L4. Every answer cites its slide.</div></div>
   </header>
   <div class="stack">
+    ${saved?`<section class="panel stack resume" aria-labelledby="resume-h">
+      <h2 id="resume-h">Continue where you left off</h2>
+      <div style="font-variant-numeric:tabular-nums">You stopped at <b>question ${saved.i+1} of ${ss.n}</b> · ${ss.done} answered · score ${ss.ok}/${ss.done}. Saved ${new Date(saved.t).toLocaleDateString()}.</div>
+      <div class="row"><button class="btn primary" id="resume">Continue at question ${saved.i+1}</button><button class="btn ghost" id="discard">Discard this exam</button></div>
+    </section>`:''}
     <section class="panel stack" aria-labelledby="setup-h">
       <h2 id="setup-h">Build an exam</h2>
       <div class="stack" style="gap:8px"><div class="eyebrow">Lectures</div><div class="row">
@@ -1241,9 +1404,9 @@ function home(){
         <label class="stack" style="gap:4px"><span class="eyebrow">Order</span>
           <select id="order" class="btn"><option value="random" ${prefs.order==='random'?'selected':''}>Random</option><option value="slides" ${prefs.order==='slides'?'selected':''}>By lecture</option></select></label>
       </div>
-      <div class="row"><button class="btn primary" id="start" ${pool?'':'disabled'}>Start exam · ${prefs.count==='all'?pool:Math.min(+prefs.count,pool)} questions</button>
+      <div class="row"><button class="btn ${saved?'':'primary'}" id="start" ${pool?'':'disabled'}>${saved?'Start a new exam':'Start exam'} · ${prefs.count==='all'?pool:Math.min(+prefs.count,pool)} questions</button>
         <button class="btn" id="retry" ${wrong?'':'disabled'}>${wrong?`Practise my ${wrong} missed`:'No missed questions yet'}</button></div>
-      <div class="foot">Answer choices are shuffled every time, so the position of the right answer never gives it away. Keyboard: <span class="kbd">1</span>–<span class="kbd">4</span> to choose, <span class="kbd">Enter</span> to submit or go on.</div>
+      <div class="foot">${saved?'Starting a new exam replaces your unfinished one. ':''}Your exam is saved after every answer, so you can close the page and continue later. Answer choices are shuffled, so the position of the right answer never gives it away. Keyboard: <span class="kbd">1</span>–<span class="kbd">4</span> to choose, <span class="kbd">Enter</span> to submit or go on.</div>
     </section>
     <section class="panel stack" aria-labelledby="prog-h">
       <div class="row" style="justify-content:space-between"><h2 id="prog-h">Your progress</h2>
@@ -1253,7 +1416,7 @@ function home(){
         <div class="stat"><div class="eyebrow">Right on last try</div><b>${all.seen?Math.round(all.ok/all.seen*100):0}%</b><div class="bar"><span style="width:${all.seen?all.ok/all.seen*100:0}%;background:var(--ok)"></span></div></div>
         ${per.map(p=>`<div class="stat"><div class="eyebrow"><span class="lec lec${p.l}">L${p.l}</span></div><b>${p.seen?Math.round(p.ok/p.seen*100)+'%':'–'}</b><span class="muted"> · ${p.seen}/${p.n} seen</span><div class="bar"><span style="width:${p.n?p.seen/p.n*100:0}%;background:var(--l${p.l})"></span></div></div>`).join('')}
       </div>
-      ${store.runs.length?`<div class="stack" style="gap:4px"><div class="eyebrow">Recent exams</div>${store.runs.slice(-5).reverse().map(r=>`<div class="row" style="justify-content:space-between"><span>${new Date(r.t).toLocaleString()}</span><span style="font-variant-numeric:tabular-nums"><b>${r.ok}/${r.n}</b> (${Math.round(r.ok/r.n*100)}%)</span></div>`).join('')}</div>`:`<div class="muted">No exams taken yet. Your scores will appear here.</div>`}
+      ${store.runs.length?`<div class="stack" style="gap:4px"><div class="eyebrow">Recent exams</div>${store.runs.slice(-5).reverse().map(r=>`<div class="row" style="justify-content:space-between"><span>${new Date(r.t).toLocaleString()}</span><span style="font-variant-numeric:tabular-nums"><b>${r.ok}/${r.n}</b> (${Math.round(r.ok/r.n*100)}%)</span></div>`).join('')}</div>`:`<div class="muted">No exams finished yet. Your scores will appear here.</div>`}
     </section>
     <div class="note"><b>About the binary-image convention.</b> L2 slide 13 (textbook text) says 0 = white and 1 = black, but the figure on slide 14 shows 1 = white and 0 = black. In the exam, use whatever convention the question gives, or say which one you are using.</div>
   </div>`;
@@ -1264,39 +1427,50 @@ function home(){
   $('#order').onchange=e=>{prefs.order=e.target.value;persist();home()};
   $('#start').onclick=()=>startRun(poolFrom(prefs));
   $('#retry').onclick=()=>{const ids=new Set(wrongIds());startRun(BANK.filter(q=>ids.has(q.id)),true)};
+  if(saved){$('#resume').onclick=()=>{run=saved;ask();window.scrollTo(0,0)};$('#discard').onclick=()=>{run=null;saveRun();home()}}
   if($('#reset'))$('#reset').onclick=()=>{confirmReset=true;home()};
-  if($('#reset-yes'))$('#reset-yes').onclick=()=>{store={hist:{},runs:[],prefs};save();confirmReset=false;home()};
+  if($('#reset-yes'))$('#reset-yes').onclick=()=>{store={hist:{},runs:[],prefs,run:null};save();confirmReset=false;home()};
   if($('#reset-no'))$('#reset-no').onclick=()=>{confirmReset=false;home()};
 }
 function persist(){store.prefs=prefs;save()}
 function likeOf(p){return p.like||'HM'}
 function poolFrom(p){const l=likeOf(p);return BANK.filter(q=>p.lecs.includes(q.lec)&&p.types.includes(q.type)&&(l==='all'||l.includes(q.rate)))}
 function srcText(q){return /^L\d/.test(q.src)?q.src:`L${q.lec} · ${q.src}`}
-function gridHtml(q,inputs){return `<div class="mxw"><div class="cap">Output image</div><table class="mx">${q.grid.map((r,i)=>`<tr>${r.map((v,j)=>q.blanks.some(([a,b])=>a===i+1&&b===j+1)?(inputs?`<td class="in"><input class="cell" id="cell-${i+1}-${j+1}" data-r="${i+1}" data-c="${j+1}" inputmode="text" autocomplete="off" aria-label="Row ${i+1}, column ${j+1}"></td>`:`<td><b>${String(v).replace('-','−')}</b></td>`):`<td>${String(v).replace('-','−')}</td>`).join('')}</tr>`).join('')}</table></div>`}
+function fmt(v){return String(v).replace('-','−')}
+function gridHtml(q,inputs){return `<div class="mxw"><div class="cap">Output image</div><table class="mx">${q.grid.map((r,i)=>`<tr>${r.map((v,j)=>q.blanks.some(([a,b])=>a===i+1&&b===j+1)?(inputs?`<td class="in"><input class="cell" id="cell-${i+1}-${j+1}" data-r="${i+1}" data-c="${j+1}" inputmode="text" autocomplete="off" aria-label="Row ${i+1}, column ${j+1}"></td>`:`<td><b>${fmt(v)}</b></td>`):`<td>${fmt(v)}</td>`).join('')}</tr>`).join('')}</table></div>`}
 
 function startRun(pool,all){
   let qs=prefs.order==='slides'&&!all?pool.slice().sort((a,b)=>a.lec-b.lec):shuffle(pool);
   if(!all&&prefs.count!=='all'){qs=shuffle(pool).slice(0,+prefs.count);if(prefs.order==='slides')qs.sort((a,b)=>a.lec-b.lec)}
-  run={qs:qs.map(q=>({q,opts:!q.opts||q.fixed?q.opts:shuffle(q.opts)})),i:0,answers:[],t:Date.now()};
-  ask();
+  run={qs:qs.map(q=>({q,opts:!q.opts||q.fixed?q.opts:shuffle(q.opts)})),i:0,answers:qs.map(()=>null),t:Date.now()};
+  saveRun();ask();
 }
-let sel=null,done=false,revealed=false;
+let sel=null,done=false,navOpen=false;
+function navHtml(){
+  return `<div class="navgrid" role="list" aria-label="All questions">${run.qs.map((_,k)=>{const a=run.answers[k];return `<button class="nav ${a?(a.ok?'ok':'bad'):''} ${k===run.i?'cur':''}" data-go="${k}" role="listitem" aria-label="Question ${k+1}${a?(a.ok?', right':', wrong'):', not answered'}">${k+1}</button>`}).join('')}</div>`;
+}
 function ask(){
-  sel=null;done=false;revealed=false;
+  sel=null;done=false;
   const {q,opts}=run.qs[run.i];
-  const n=run.qs.length;
+  const n=run.qs.length;const st=runStats(run);
+  const prev=run.answers[run.i];
   app.innerHTML=`
   <div class="stack">
-    <div class="row" style="justify-content:space-between"><button class="btn small ghost" id="quit">← End exam</button><span class="muted" style="font-variant-numeric:tabular-nums">Question ${run.i+1} of ${n} · Score ${run.answers.filter(a=>a.ok).length}</span></div>
-    <div class="progress" aria-hidden="true"><span style="width:${run.i/n*100}%"></span></div>
+    <div class="row" style="justify-content:space-between"><div class="row"><button class="btn small ghost" id="exit">← Save and exit</button><button class="btn small ghost" id="quit">Finish exam</button></div><span class="muted" style="font-variant-numeric:tabular-nums">Question ${run.i+1} of ${n} · ${st.done} answered · Score ${st.ok}</span></div>
+    <div class="progress" aria-hidden="true"><span style="width:${st.done/n*100}%"></span></div>
+    <div class="row" style="justify-content:space-between">
+      <form class="jump" id="jump"><label for="jump-n" class="muted">Go to question</label><input id="jump-n" type="number" min="1" max="${n}" inputmode="numeric" placeholder="#"><button class="btn small" type="submit">Go</button></form>
+      <button class="btn small ghost" id="navtoggle" aria-expanded="${navOpen}">${navOpen?'Hide':'Show'} all questions</button>
+    </div>
+    <div id="nav" ${navOpen?'':'hidden'}>${navHtml()}<div class="foot" style="margin-top:6px">Green = right, red = wrong, outlined = current. Click a number to jump there.</div></div>
     <article class="panel stack" aria-live="polite">
-      <div class="qhead"><div class="row"><span class="lec lec${q.lec}">L${q.lec}</span><span class="tag">${TYPES[q.type]}</span><span class="tag">${esc(q.topic)}</span><span class="tag rate-${q.rate}">${{H:'High likelihood',M:'Medium likelihood',L:'Low (recall detail)'}[q.rate]}</span></div></div>
+      <div class="qhead"><div class="row"><span class="lec lec${q.lec}">L${q.lec}</span><span class="tag">${TYPES[q.type]}</span><span class="tag">${esc(q.topic)}</span><span class="tag rate-${q.rate}">${RATES[q.rate]}</span></div></div>
       <div class="qtext">${q.type==='tf'?`<p><b>True or False?</b></p><p>${q.q}</p>`:q.q.startsWith('<')?q.q:`<p>${q.q}</p>`}</div>
       ${q.type==='written'?`
-        <label for="mine" class="eyebrow">Your answer (optional; write it as you would in the exam)</label>
-        <textarea id="mine" placeholder="Type your answer here, then reveal the model answer."></textarea>
+        <label for="mine" class="eyebrow">Your answer (write it as you would in the exam)</label>
+        <textarea id="mine" placeholder="Type your answer. Capital letters and small spelling mistakes are fine."></textarea>
         <div id="fb"></div>
-        <div class="row"><button class="btn primary" id="go">Show model answer</button></div>`:q.grid?`
+        <div class="row"><button class="btn primary" id="go">${q.keys?'Check my answer':'Show model answer'}</button></div>`:q.grid?`
         ${gridHtml(q,true)}
         <div class="foot">Type each value, e.g. <span class="kbd">-9</span>. Press Enter to check.</div>
         <div id="fb"></div>
@@ -1304,19 +1478,40 @@ function ask(){
         <div class="opts" role="radiogroup">${opts.map((o,k)=>`<button class="opt" role="radio" aria-checked="false" data-k="${k}"><span class="k">${q.type==='tf'?(k?'F':'T'):'abcd'[k]}</span><span class="t"><span>${o.t}</span><span class="why" hidden></span></span></button>`).join('')}</div>
         <div id="fb"></div>
         <div class="row"><button class="btn primary" id="go" disabled>Submit answer</button></div>`}
+      <div class="row" style="justify-content:space-between;border-top:1px solid var(--line);padding-top:12px">
+        <button class="btn small ghost" id="prev" ${run.i?'':'disabled'}>← Previous</button>
+        <button class="btn small ghost" id="skip" ${run.i+1<n?'':'disabled'}>${prev?'Next':'Skip for now'} →</button>
+      </div>
     </article>
   </div>`;
+  $('#exit').onclick=()=>{saveRun();run=null;home();window.scrollTo(0,0)};
   $('#quit').onclick=finish;
-  if(q.type==='written'){$('#go').onclick=revealWritten;return}
-  if(q.grid){$('#go').onclick=()=>done?next():submitGrid();app.querySelectorAll('input.cell').forEach(el=>el.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();done?next():submitGrid()}}));const f=app.querySelector('input.cell');if(f)f.focus();return}
+  $('#prev').onclick=()=>go(run.i-1);
+  $('#skip').onclick=()=>go(run.i+1);
+  $('#navtoggle').onclick=()=>{navOpen=!navOpen;$('#nav').hidden=!navOpen;$('#navtoggle').textContent=(navOpen?'Hide':'Show')+' all questions';$('#navtoggle').setAttribute('aria-expanded',navOpen)};
+  app.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>go(+b.dataset.go));
+  $('#jump').onsubmit=e=>{e.preventDefault();const k=parseInt($('#jump-n').value,10);if(k>=1&&k<=n)go(k-1);else{$('#jump-n').value='';$('#jump-n').placeholder=`1–${n}`}};
+  if(q.type==='written'){
+    if(prev){$('#mine').value=prev.mine||'';showWritten(prev);return}
+    $('#go').onclick=checkWritten;return}
+  if(q.grid){
+    if(prev){showGrid(prev.cells||{});return}
+    $('#go').onclick=()=>done?next():submitGrid();app.querySelectorAll('input.cell').forEach(el=>el.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();done?next():submitGrid()}}));return}
+  if(prev&&prev.sel!=null){sel=prev.sel;showOpts();return}
   app.querySelectorAll('.opt').forEach(b=>b.onclick=()=>pick(+b.dataset.k));
   $('#go').onclick=()=>done?next():submit();
 }
+function go(k){if(k<0||k>=run.qs.length)return;run.i=k;saveRun();ask();window.scrollTo(0,0)}
 function pick(k){if(done)return;sel=k;app.querySelectorAll('.opt').forEach((b,i)=>{b.classList.toggle('sel',i===k);b.setAttribute('aria-checked',i===k)});$('#go').disabled=false}
+function nextLabel(){return run.answers.every(Boolean)?'See results':(run.i+1<run.qs.length?'Next question →':'Go to first unanswered →')}
+function armNext(){const g=$('#go');g.disabled=false;g.hidden=false;g.textContent=nextLabel();g.onclick=next;g.focus()}
 function submit(){
-  if(sel===null||done)return;done=true;
-  const {q,opts}=run.qs[run.i];const ok=opts[sel].ok;
-  record(q,ok);
+  if(sel===null||done)return;
+  const {q,opts}=run.qs[run.i];
+  record(q,opts[sel].ok,{sel});showOpts();
+}
+function showOpts(){
+  done=true;const {q,opts}=run.qs[run.i];const ok=opts[sel].ok;
   app.querySelectorAll('.opt').forEach((b,i)=>{
     b.disabled=true;b.classList.remove('sel');const o=opts[i];const w=b.querySelector('.why');
     if(q.type==='tf'){ if(o.ok){b.classList.add('right');w.innerHTML=`<span class="lbl">Correct answer.</span> ${o.why}`;w.hidden=false} else if(i===sel){b.classList.add('wrong')} }
@@ -1325,48 +1520,74 @@ function submit(){
       w.hidden=false}
   });
   $('#fb').innerHTML=`<div class="stack" style="gap:10px"><div class="verdict ${ok?'ok':'bad'}">${ok?'Right.':'Not quite.'}</div><div class="src"><b>Source</b><span>${srcText(q)}</span></div></div>`;
-  const g=$('#go');g.textContent=run.i+1<run.qs.length?'Next question →':'See results';g.focus();
+  armNext();
 }
 function submitGrid(){
-  if(done)return;const {q}=run.qs[run.i];let ok=true;
-  app.querySelectorAll('input.cell').forEach(el=>{const want=q.grid[+el.dataset.r-1][+el.dataset.c-1];const got=Number(el.value.trim().replace(/[−–]/g,'-'));const good=el.value.trim()!==''&&got===want;if(!good)ok=false;el.classList.add(good?'right':'wrong');el.readOnly=true;if(!good){const s=document.createElement('span');s.className='fix';s.textContent='→ '+String(want).replace('-','−');el.after(s)}});
-  done=true;record(q,ok);
+  if(done)return;const {q}=run.qs[run.i];const cells={};let ok=true;
+  app.querySelectorAll('input.cell').forEach(el=>{const v=el.value.trim();cells[el.dataset.r+'-'+el.dataset.c]=v;const want=q.grid[+el.dataset.r-1][+el.dataset.c-1];if(!(v!==''&&Number(v.replace(/[−–]/g,'-').replace(/\s/g,''))===want))ok=false});
+  record(q,ok,{cells});showGrid(cells);
+}
+function showGrid(cells){
+  done=true;const {q}=run.qs[run.i];let ok=true;
+  app.querySelectorAll('input.cell').forEach(el=>{const v=(cells[el.dataset.r+'-'+el.dataset.c]||'');el.value=v;const want=q.grid[+el.dataset.r-1][+el.dataset.c-1];const good=v!==''&&Number(v.replace(/[−–]/g,'-').replace(/\s/g,''))===want;if(!good)ok=false;el.classList.add(good?'right':'wrong');el.readOnly=true;if(!good){const s=document.createElement('span');s.className='fix';s.textContent='→ '+fmt(want);el.after(s)}});
   $('#fb').innerHTML=`<div class="stack" style="gap:10px"><div class="verdict ${ok?'ok':'bad'}">${ok?'Right.':'Not quite.'}</div><div class="eyebrow">Working</div><div class="model">${q.work}</div><div class="src"><b>Source</b><span>${srcText(q)}</span></div></div>`;
-  const g=$('#go');g.textContent=run.i+1<run.qs.length?'Next question →':'See results';g.focus();
+  armNext();
 }
-function revealWritten(){
-  const {q}=run.qs[run.i];
-  if(!revealed){revealed=true;
-    $('#fb').innerHTML=`<div class="stack" style="gap:10px"><div class="eyebrow">Model answer</div><div class="model">${q.answer}</div><div class="src"><b>Source</b><span>${srcText(q)}</span></div><div class="eyebrow">Mark yourself</div><div class="row"><button class="btn" id="got">I had the key points</button><button class="btn" id="missed">I missed key points</button></div></div>`;
-    $('#go').hidden=true;
-    $('#got').onclick=()=>{record(q,true);next()};$('#missed').onclick=()=>{record(q,false);next()};
-  }
+function checkWritten(){
+  const {q}=run.qs[run.i];const mine=$('#mine').value;
+  const hits=q.keys?checkKeys(q,mine):null;
+  const got=hits?hits.filter(h=>h.hit).length:0;const suggest=hits?(got>0&&got/hits.length>=0.6):null;
+  $('#go').hidden=true;$('#mine').readOnly=true;
+  $('#fb').innerHTML=`<div class="stack" style="gap:10px">
+    ${hits?`<div class="verdict ${suggest?'ok':'bad'}">${got} of ${hits.length} key points found${suggest?' · looks right':' · some key points missing'}</div>
+    <ul class="kp">${hits.map(h=>`<li><span class="${h.hit?'y':'n'}">${h.hit?'✓':'✗'}</span><span>${h.label}</span></li>`).join('')}</ul>
+    <div class="foot">Checked without caring about capital letters, and small spelling mistakes still count. It matches key words, so read the model answer and change the mark if it got you wrong.</div>`:''}
+    <div class="eyebrow">Model answer</div><div class="model">${q.answer}</div><div class="src"><b>Source</b><span>${srcText(q)}</span></div>
+    <div class="eyebrow">Mark this answer</div><div class="row"><button class="btn ${suggest!==false?'primary':''}" id="got">Count as right</button><button class="btn ${suggest===false?'primary':''}" id="missed">Count as wrong</button></div></div>`;
+  $('#got').onclick=()=>{record(q,true,{mine,hits:hits&&hits.map(h=>h.hit)});showWritten(run.answers[run.i])};
+  $('#missed').onclick=()=>{record(q,false,{mine,hits:hits&&hits.map(h=>h.hit)});showWritten(run.answers[run.i])};
 }
-function record(q,ok){
-  run.answers[run.i]={id:q.id,ok};
-  const h=store.hist[q.id]||{n:0,ok:0};h.n++;if(ok)h.ok++;h.last=ok;store.hist[q.id]=h;save();
+function showWritten(a){
+  done=true;const {q}=run.qs[run.i];$('#mine').readOnly=true;
+  const hits=q.keys&&a.hits?q.keys.map((k,i)=>({label:k.split('|')[0],hit:!!a.hits[i]})):null;
+  $('#fb').innerHTML=`<div class="stack" style="gap:10px"><div class="verdict ${a.ok?'ok':'bad'}">Marked ${a.ok?'right':'wrong'}.</div>
+    ${hits?`<ul class="kp">${hits.map(h=>`<li><span class="${h.hit?'y':'n'}">${h.hit?'✓':'✗'}</span><span>${h.label}</span></li>`).join('')}</ul>`:''}
+    <div class="eyebrow">Model answer</div><div class="model">${q.answer}</div><div class="src"><b>Source</b><span>${srcText(q)}</span></div></div>`;
+  armNext();
 }
-function next(){if(run.i+1<run.qs.length){run.i++;ask();window.scrollTo(0,0)}else finish()}
+function record(q,ok,extra){
+  run.answers[run.i]=Object.assign({id:q.id,ok},extra||{});
+  const h=store.hist[q.id]||{n:0,ok:0};h.n++;if(ok)h.ok++;h.last=ok;store.hist[q.id]=h;
+  run.t=Date.now();saveRun();
+}
+function next(){
+  if(run.answers.every(Boolean))return finish();
+  for(let k=run.i+1;k<run.qs.length;k++)if(!run.answers[k])return go(k);
+  for(let k=0;k<run.qs.length;k++)if(!run.answers[k])return go(k);
+}
 function finish(){
-  const ans=run.answers.filter(Boolean);const n=ans.length;const ok=ans.filter(a=>a.ok).length;
-  if(n){store.runs.push({t:Date.now(),n,ok});store.runs=store.runs.slice(-30);save()}
-  const byL=[1,2,3,4].map(l=>{const a=ans.filter(x=>BANK.find(q=>q.id===x.id).lec===l);return {l,n:a.length,ok:a.filter(x=>x.ok).length}}).filter(x=>x.n);
-  const missed=ans.filter(a=>!a.ok).map(a=>BANK.find(q=>q.id===a.id));
+  const ans=run.answers.filter(Boolean);const n=ans.length;const ok=ans.filter(a=>a.ok).length;const total=run.qs.length;
+  if(n){store.runs.push({t:Date.now(),n,ok});store.runs=store.runs.slice(-30)}
+  const missed=ans.filter(a=>!a.ok).map(a=>byId.get(a.id)).filter(Boolean);
+  const byL=[1,2,3,4].map(l=>{const a=ans.filter(x=>byId.get(x.id)&&byId.get(x.id).lec===l);return {l,n:a.length,ok:a.filter(x=>x.ok).length}}).filter(x=>x.n);
+  run=null;saveRun();
   app.innerHTML=`<div class="stack">
     <section class="panel stack"><span class="eyebrow">Exam finished</span>
       <h1 style="font-variant-numeric:tabular-nums">${ok} / ${n}${n?` · ${Math.round(ok/n*100)}%`:''}</h1>
+      ${n<total?`<div class="muted">${total-n} question${total-n>1?'s were':' was'} not answered and ${total-n>1?'are':'is'} not counted.</div>`:''}
       ${n?`<div class="stats">${byL.map(b=>`<div class="stat"><div class="eyebrow"><span class="lec lec${b.l}">L${b.l}</span> ${LECS[b.l]}</div><b>${b.ok}/${b.n}</b><div class="bar"><span style="width:${b.ok/b.n*100}%;background:var(--l${b.l})"></span></div></div>`).join('')}</div>`:'<div class="muted">No questions were answered.</div>'}
       <div class="row"><button class="btn primary" id="home">Back to setup</button>${missed.length?`<button class="btn" id="again">Practise these ${missed.length} missed</button>`:''}</div>
     </section>
-    ${missed.length?`<section class="panel stack"><h2>Review what you missed</h2>${missed.map(q=>`<div class="miss stack" style="gap:6px"><div class="row"><span class="lec lec${q.lec}">L${q.lec}</span><span class="tag">${esc(q.topic)}</span></div><div>${q.type==='tf'?'True or False: ':''}${q.q}</div>${q.type==='written'?`<div class="model">${q.answer}</div>`:q.grid?`<div><b>Answer:</b></div>${gridHtml(q,false)}<div class="model">${q.work}</div>`:`<div><b>Answer:</b> ${q.opts.find(o=>o.ok).t}${q.type==='tf'?'':''}</div><div class="why">${q.opts.find(o=>o.ok).why}</div>`}<div class="src"><b>Source</b><span>${srcText(q)}</span></div></div>`).join('')}</section>`:''}
+    ${missed.length?`<section class="panel stack"><h2>Review what you missed</h2>${missed.map(q=>`<div class="miss stack" style="gap:6px"><div class="row"><span class="lec lec${q.lec}">L${q.lec}</span><span class="tag">${esc(q.topic)}</span></div><div>${q.type==='tf'?'True or False: ':''}${q.q}</div>${q.type==='written'?`<div class="model">${q.answer}</div>`:q.grid?`<div><b>Answer:</b></div>${gridHtml(q,false)}<div class="model">${q.work}</div>`:`<div><b>Answer:</b> ${q.opts.find(o=>o.ok).t}</div><div class="why">${q.opts.find(o=>o.ok).why}</div>`}<div class="src"><b>Source</b><span>${srcText(q)}</span></div></div>`).join('')}</section>`:''}
   </div>`;
-  $('#home').onclick=()=>{run=null;home();window.scrollTo(0,0)};
+  $('#home').onclick=()=>{home();window.scrollTo(0,0)};
   if($('#again'))$('#again').onclick=()=>startRun(missed,true);
+  window.scrollTo(0,0);
 }
 document.addEventListener('keydown',e=>{
   if(!run||e.target.tagName==='TEXTAREA'||e.target.tagName==='SELECT'||e.target.tagName==='INPUT')return;
-  const q=run.qs[run.i]&&run.qs[run.i].q;if(!q||q.type==='written'||q.grid)return;
-  if(/^[1-4]$/.test(e.key)){const k=+e.key-1;if(k<run.qs[run.i].opts.length){pick(k);e.preventDefault()}}
+  const cur=run.qs[run.i];const q=cur&&cur.q;if(!q||q.type==='written'||q.grid)return;
+  if(/^[1-4]$/.test(e.key)){const k=+e.key-1;if(k<cur.opts.length){pick(k);e.preventDefault()}}
   else if(/^[a-d]$/i.test(e.key)&&q.type!=='tf'){pick('abcd'.indexOf(e.key.toLowerCase()));e.preventDefault()}
   else if(/^[tf]$/i.test(e.key)&&q.type==='tf'){pick(e.key.toLowerCase()==='t'?0:1);e.preventDefault()}
   else if(e.key==='Enter'&&(!document.activeElement||document.activeElement.tagName!=='BUTTON')){if(done)next();else if(sel!==null)submit();e.preventDefault()}
@@ -1375,11 +1596,5 @@ window.__BANK=BANK;
 home();
 })();
 </script>
-<footer>
-  <div>Built by Yasir Alharbi</div>
-  <div>DFIR · SOC · AI</div>
-  <a href="https://yasir-alharbi.github.io/" target="_blank"
-     rel="noopener">View my portfolio →</a>
-</footer>
 </body>
 </html>
