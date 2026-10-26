@@ -1,0 +1,240 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; connect-src 'none'; form-action 'none'; base-uri 'none'">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>Sirr</title><style>
+:root{color-scheme:dark;--bg:#07111f;--panel:#0d1b2b;--line:#263a50;--text:#e8f0f7;--muted:#9eb0c2;--accent:#46d3aa;--warn:#ffcb6b;--bad:#ff7185}*{box-sizing:border-box}body{margin:0;background:linear-gradient(145deg,#07111f,#101b29);color:var(--text);font:15px/1.45 system-ui,sans-serif}main{max-width:1500px;margin:auto;padding:22px}h1{margin:0;font-size:25px;letter-spacing:.04em}h2{font-size:17px;margin:0 0 12px}h3{font-size:15px}.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}.badge{color:var(--accent);font-size:13px}.card{background:rgba(13,27,43,.96);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:16px;box-shadow:0 10px 30px #0004}.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.grow{flex:1}.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}@media(max-width:900px){.grid{grid-template-columns:1fr}}textarea,input,select,button{font:inherit;color:var(--text)}textarea,input,select{background:#071421;border:1px solid #36506a;border-radius:7px;padding:9px}textarea{width:100%;min-height:260px;resize:vertical;font:13px/1.4 ui-monospace,Consolas,monospace;tab-size:4}button{background:#183047;border:1px solid #3b5872;border-radius:7px;padding:8px 12px;cursor:pointer}button.primary{background:#087a64;border-color:#17b695}button.danger{border-color:#8a3445;color:#ffabb7}button:hover{filter:brightness(1.15)}button:disabled{opacity:.45;cursor:not-allowed}.status{min-height:22px;color:var(--muted);margin:8px 0}.error{color:var(--bad)}.warning{color:var(--warn)}.hidden{display:none!important}.preview{white-space:pre-wrap;overflow:auto;min-height:120px;max-height:330px;background:#071421;border:1px solid #36506a;border-radius:7px;padding:10px;font:13px/1.4 ui-monospace,Consolas,monospace;word-break:break-word}.preview mark{background:#765d16;color:#fff2b8;border-radius:2px}.summary{color:var(--muted);min-height:22px;margin-top:7px}.profile{display:grid;grid-template-columns:160px 1fr auto;gap:10px;margin:10px 0}.profile textarea{min-height:160px}.help{color:#c1ceda}.help strong{color:#fff}dialog{background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:12px;max-width:450px}dialog::backdrop{background:#000b}#gate{max-width:520px;margin:12vh auto}.small{font-size:12px;color:var(--muted)}
+</style></head><body>
+<div id="gate" class="card">
+  <h1>Sirr</h1><p class="help">Private in-browser masking. Data stays in this browser and is stored only as encrypted local data.</p>
+  <label>Passphrase<br><input id="passphrase" type="password" autocomplete="current-password" class="grow"></label>
+  <div id="firstFields" class="hidden"><label>Confirm passphrase<br><input id="confirmPassphrase" type="password" autocomplete="new-password" class="grow"></label><p class="small">Use a strong passphrase and keep it safe. It cannot be recovered.</p></div>
+  <div class="row"><button id="unlock" class="primary">Unlock</button></div><div id="gateStatus" class="status"></div>
+</div>
+<main id="app" class="hidden">
+ <div class="top"><div><h1>Sirr</h1><div class="badge">Offline browser workspace · encrypted at rest</div></div><div class="row"><button id="exportBackup">Export backup</button><button id="importBackup">Import backup</button><input id="backupFile" type="file" accept="application/json,.sirrbackup" class="hidden"><button id="lock">Lock</button></div></div>
+ <section class="card"><div class="row"><label>Notebook (case) <select id="caseSelect"></select></label><input id="newCaseName" placeholder="New case name" maxlength="64"><button id="newCase">New case</button><button id="forgetCase" class="danger">Forget case</button><label><input id="allIps" type="checkbox"> Mask all IPs (logs)</label></div><div id="caseStatus" class="status"></div></section>
+ <div class="grid">
+  <section class="card"><h2>Mask before sharing</h2><textarea id="maskInput" spellcheck="false" placeholder="Paste investigation text here"></textarea><div class="row"><button id="maskButton" class="primary">Mask</button><button id="copyMasked">Copy masked</button></div><div id="maskStatus" class="summary"></div><textarea id="maskOutput" readonly spellcheck="false" placeholder="Masked text"></textarea><h3>Replacement preview</h3><div id="preview" class="preview"></div></section>
+  <section class="card"><h2>Restore an AI answer</h2><textarea id="unmaskInput" spellcheck="false" placeholder="Paste the AI answer here"></textarea><div class="row"><button id="unmaskButton" class="primary">Unmask</button><button id="copyUnmasked">Copy</button></div><div id="unmaskStatus" class="summary"></div><textarea id="unmaskOutput" readonly spellcheck="false" placeholder="Restored text"></textarea></section>
+ </div>
+ <section class="card"><h2>Mask local text files</h2><p class="small">Files are read locally and masked downloads are created in this browser. Original line endings are preserved.</p><div class="row"><input id="textFiles" type="file" multiple><button id="maskFiles" class="primary">Mask and download</button></div><div id="fileStatus" class="status"></div></section>
+ <section class="card"><div class="row"><h2 class="grow">Client profiles</h2><button id="addProfile">Add client</button><button id="saveProfiles" class="primary">Save profiles</button></div><div id="profiles"></div><div id="profileStatus" class="status"></div></section>
+ <section class="card help"><h2>How to use Sirr safely</h2><p>A <strong>notebook (case)</strong> remembers stable masked values so Sirr can restore answers later. Use one case per investigation and do not mix investigations in the same case.</p><p>Keep your passphrase: Sirr never stores it and cannot recover it. Export an encrypted backup regularly; it contains profiles and notebooks and uses the same passphrase.</p><p>For normal investigations, public IOC addresses remain visible. Enable “Mask all IPs” for whole logs when every address must change. Forgetting a case permanently removes its mapping, so its masked text can no longer be restored.</p></section>
+</main>
+<dialog id="importDialog"><form method="dialog"><h2>Import encrypted backup</h2><p>Enter the passphrase that encrypted this backup.</p><label>Backup passphrase<br><input id="backupPassphrase" type="password" autocomplete="current-password"></label><div id="importError" class="error"></div><div class="row"><button value="cancel">Cancel</button><button id="mergeImport" value="merge">Merge</button><button id="replaceImport" class="danger" value="replace">Replace</button></div></form></dialog>
+<script>/* Sirr browser engine. No I/O: callers own persistence and presentation. */
+(() => {
+  "use strict";
+
+  const INTERNAL_TLDS = new Set(["local", "lan", "corp", "internal", "intranet", "ad", "home"]);
+  const enc = new TextEncoder();
+
+  function esc(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }
+  function b64(bytes) { let s = ""; for (const b of bytes) s += String.fromCharCode(b); return btoa(s); }
+  function unb64(s) { const v = atob(s), out = new Uint8Array(v.length); for (let i=0;i<v.length;i++) out[i]=v.charCodeAt(i); return out; }
+  function randomKey() { return b64(crypto.getRandomValues(new Uint8Array(32))); }
+  function newVault() { return {version:1,key:randomKey(),forward:{},reverse:{},counters:{},settings:{all_ips:false}}; }
+  function nextNumber(vault, key) { const n=(Number(vault.counters[key])||0)+1; vault.counters[key]=n; return n; }
+
+  function parseProfiles(items) {
+    const out=[];
+    for (const item of items) {
+      const p={id:item.id,names:[],domains:[],netbios:[],host_prefixes:[],public_ranges:[],users:[],words:[]};
+      if (!/^[A-Za-z0-9][A-Za-z0-9_.-]{0,63}$/.test(p.id)) throw new Error("Invalid client identifier");
+      const dest={name:"names",domain:"domains",netbios:"netbios",host_prefix:"host_prefixes",user:"users",word:"words"};
+      const lines=String(item.text).replace(/^\uFEFF/,"").split(/\r?\n/);
+      lines.forEach((raw,i) => {
+        const line=raw.trim(); if (!line || line.startsWith("#")) return;
+        const at=line.indexOf(":");
+        if (at<0) throw new Error(`Invalid profile line ${i+1}`);
+        const key=line.slice(0,at).trim(), value=line.slice(at+1).trim();
+        if (!value || /[\x00-\x1f\x7f]/.test(value) || (!dest[key] && key!=="public_range")) throw new Error(`Invalid profile line ${i+1}`);
+        if (key==="public_range") p.public_ranges.push(parseNetwork(value)); else p[dest[key]].push(value);
+      });
+      if (!p.names.length) throw new Error("Profile has no name");
+      for (const d of p.domains) if (!d.includes(".") || !/^[A-Za-z0-9.-]+$/.test(d)) throw new Error("Invalid profile domain");
+      out.push(p);
+    }
+    if (!out.length) throw new Error("Add at least one client profile");
+    return out;
+  }
+
+  function parseIPv4(s) {
+    const a=s.split("."); if(a.length!==4) throw new Error("ip");
+    let v=0n; for(const x of a){ if(!/^\d{1,3}$/.test(x)||Number(x)>255) throw new Error("ip"); v=(v<<8n)|BigInt(Number(x)); }
+    return {version:4,bits:32,value:v};
+  }
+  function parseIPv6(s) {
+    let text=s.toLowerCase(), tail=[];
+    if(text.includes(".")){
+      const k=text.lastIndexOf(":"), v4=parseIPv4(text.slice(k+1)).value;
+      tail=[Number((v4>>16n)&65535n).toString(16),Number(v4&65535n).toString(16)]; text=text.slice(0,k)+":"+tail.join(":");
+    }
+    const sides=text.split("::"); if(sides.length>2) throw new Error("ip");
+    const left=sides[0]?sides[0].split(":"):[], right=sides.length===2&&sides[1]?sides[1].split(":"):[];
+    if(sides.length===1 && left.length!==8) throw new Error("ip");
+    const fill=sides.length===2 ? 8-left.length-right.length : 0; if(fill<1&&sides.length===2) throw new Error("ip");
+    const parts=[...left,...Array(fill).fill("0"),...right]; if(parts.length!==8) throw new Error("ip");
+    let v=0n; for(const x of parts){if(!/^[0-9a-f]{1,4}$/.test(x))throw new Error("ip");v=(v<<16n)|BigInt(parseInt(x,16));}
+    return {version:6,bits:128,value:v};
+  }
+  function parseAddress(s){ return s.includes(":")?parseIPv6(s):parseIPv4(s); }
+  function maskBits(bits,prefix){ return prefix===0?0n:((1n<<BigInt(prefix))-1n)<<BigInt(bits-prefix); }
+  function parseNetwork(s){
+    const [a,p]=s.split("/"), ip=parseAddress(a), prefix=p===undefined?ip.bits:Number(p);
+    if(!Number.isInteger(prefix)||prefix<0||prefix>ip.bits)throw new Error("network");
+    return {version:ip.version,bits:ip.bits,prefix,value:ip.value&maskBits(ip.bits,prefix)};
+  }
+  function contains(net,ip){ return net.version===ip.version && (ip.value&maskBits(ip.bits,net.prefix))===net.value; }
+  function ipv4(v){ return [24n,16n,8n,0n].map(n=>Number((v>>n)&255n)).join("."); }
+  function ipv6(v, exploded=false){
+    const p=[];for(let i=7;i>=0;i--)p.push(Number((v>>BigInt(i*16))&65535n).toString(16));
+    if(exploded)return p.map(x=>x.padStart(4,"0")).join(":");
+    let best=-1,len=0;for(let i=0;i<8;){if(p[i]!=="0"){i++;continue;}let j=i;while(j<8&&p[j]==="0")j++;if(j-i>len){best=i;len=j-i;}i=j;}
+    if(len<2)return p.join(":");
+    const l=p.slice(0,best).join(":"),r=p.slice(best+len).join(":");return l+"::"+r;
+  }
+  function formatAddress(ip,exploded=false){return ip.version===4?ipv4(ip.value):ipv6(ip.value,exploded);}
+  function formatNetwork(n, exploded=false){return `${formatAddress(n,exploded)}/${n.prefix}`;}
+  const PRIVATE=["10.0.0.0/8","172.16.0.0/12","192.168.0.0/16","100.64.0.0/10","169.254.0.0/16","fd00::/8","fe80::/10"].map(parseNetwork);
+  const PUBLIC_TARGET={4:parseNetwork("198.18.0.0/15"),6:parseNetwork("2001:db8::/32")};
+
+  function classify(ip,ranges,client,allIps){
+    for(const n of PRIVATE)if(contains(n,ip))return {source:n,target:n,namespace:`private:${client}:${formatNetwork(n)}`};
+    for(const n of ranges)if(contains(n,ip))return {source:n,target:PUBLIC_TARGET[ip.version],namespace:`public:${client}:${formatNetwork(n)}`};
+    if(allIps){const n=ip.version===4?parseNetwork("0.0.0.0/0"):parseNetwork("2000::/3");return {source:n,target:n,namespace:`all-public:${ip.version}`};}
+    return null;
+  }
+  async function hbit(key,namespace,prefix,length){
+    const size=Math.max(1,Math.ceil(length/8)), tail=new Uint8Array(size), dv=new DataView(tail.buffer); let x=prefix;
+    for(let i=size-1;i>=0;i--){tail[i]=Number(x&255n);x>>=8n;}
+    const ns=enc.encode(namespace), data=new Uint8Array(ns.length+3+size);data.set(ns);data[ns.length]=0;data[ns.length+1]=(length>>8)&255;data[ns.length+2]=length&255;data.set(tail,ns.length+3);
+    const sig=new Uint8Array(await crypto.subtle.sign("HMAC",key,data));return sig[0]>>7;
+  }
+  async function transform(ip,ctx,key){
+    const bits=ip.bits, sp=ctx.source.prefix,tp=ctx.target.prefix, variable=Math.min(bits-sp,bits-tp);
+    let known=ctx.source.value>>BigInt(bits-sp), result=ctx.target.value;
+    for(let off=0;off<variable;off++){
+      const spos=bits-sp-off-1,tpos=bits-tp-off-1,original=Number((ip.value>>BigInt(spos))&1n), pad=await hbit(key,ctx.namespace,known,sp+off),mapped=original^pad;
+      known=(known<<1n)|BigInt(original);if(mapped)result|=1n<<BigInt(tpos);
+    }
+    return {version:ip.version,bits,value:result};
+  }
+  function normalPublic4(v){
+    const bad=["0.0.0.0/8","10.0.0.0/8","100.64.0.0/10","127.0.0.0/8","169.254.0.0/16","172.16.0.0/12","192.0.0.0/24","192.0.2.0/24","192.168.0.0/16","198.18.0.0/15","198.51.100.0/24","203.0.113.0/24","224.0.0.0/4","240.0.0.0/4"].map(parseNetwork);
+    return !bad.some(n=>contains(n,{version:4,bits:32,value:v}));
+  }
+  function normalPublic(ip){if(ip.version===4)return normalPublic4(ip.value);return contains(parseNetwork("2000::/3"),ip)&&!contains(parseNetwork("2001:db8::/32"),ip);}
+  function blockOkay(ip){const p=ip.version===4?24:64,n={...ip,prefix:p,value:ip.value&maskBits(ip.bits,p)};return normalPublic(n)&&normalPublic({...n,value:n.value+((1n<<BigInt(ip.bits-p))-1n)});}
+  async function mapAddress(ip,ctx,key,allPublic){
+    if(!allPublic)return transform(ip,ctx,key);const original=ip.value&maskBits(ip.bits,ip.version===4?24:64);let cur=ip,seen=new Set();
+    for(;;){cur=await transform(cur,ctx,key);const block=cur.value&maskBits(cur.bits,cur.version===4?24:64),s=cur.value.toString();if(block!==original&&blockOkay(cur))return cur;if(seen.has(s))throw new Error("Unable to map IP into public address space");seen.add(s);}
+  }
+  async function mapText(value,ranges,client,allIps,key){
+    const defanged=value.includes("[.]"), plain=value.replaceAll("[.]",".");let network=null,ip;
+    try{if(plain.includes("/")){network=parseNetwork(plain);ip={version:network.version,bits:network.bits,value:network.value};}else ip=parseAddress(plain);}catch{return null;}
+    const ctx=classify(ip,ranges,client,allIps);if(!ctx)return null;let mapped=await mapAddress(ip,ctx,key,ctx.namespace.startsWith("all-public:"));let result;
+    if(network){
+      let prefix;if(ctx.source.prefix===ctx.target.prefix)prefix=network.prefix;else prefix=Math.max(ctx.target.prefix,Math.min(ip.bits,ctx.target.prefix+(network.prefix-ctx.source.prefix)));
+      const mn={...mapped,prefix,value:mapped.value&maskBits(mapped.bits,prefix)};result=formatNetwork(mn);
+      if(ctx.source.prefix===ctx.target.prefix&&result===formatNetwork(network))result=network.version===4?`${ipv4(network.value)}/${ipv4(maskBits(32,network.prefix))}`:`${formatAddress(network,true)}/${network.prefix}`;
+    }else result=formatAddress(mapped);
+    return defanged?result.replaceAll(".","[.]"):result;
+  }
+
+  function overlaps(a,b,ranges){return ranges.some(x=>a<x[1]&&b>x[0]);}
+  function clientForDomain(domain,profiles){const f=domain.toLowerCase().replace(/\.$/,"");for(const p of profiles)if(p.domains.some(d=>f===d.toLowerCase()||f.endsWith("."+d.toLowerCase())))return p.id;return null;}
+  function lineClient(text,pos,profiles){const l=text.lastIndexOf("\n",pos-1)+1,r=text.indexOf("\n",pos),line=text.slice(l,r<0?text.length:r).toLowerCase();for(const p of profiles)if([...p.names,...p.domains,...p.netbios,...p.host_prefixes].some(x=>line.includes(x.toLowerCase())))return p.id;return profiles[0]?.id||null;}
+  function matches(re,text,fn){for(const m of text.matchAll(re))fn(m);}
+  function findSpans(text,profiles,allIps=false){
+    const candidates=[], protectedRanges=[];
+    matches(/hxxps?:\/\/\S+|(?:[A-Za-z0-9-]+\[\.\])+(?:[A-Za-z]{2,})/gi,text,m=>protectedRanges.push([m.index,m.index+m[0].length]));
+    const add=(s,e,kind,client,force=false)=>{if(force||!overlaps(s,e,protectedRanges))candidates.push({start:s,end:e,kind,client,value:text.slice(s,e)});};
+    const email=/(?<![\w.+-])[\w.+-]+@[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)+(?![\w.-])/gi;
+    matches(email,text,m=>{const d=m[0].split("@").pop(),c=clientForDomain(d,profiles);if(c||INTERNAL_TLDS.has(d.toLowerCase().split(".").pop()))add(m.index,m.index+m[0].length,"email",c||lineClient(text,m.index,profiles));});
+    matches(/http[s]?:\/\/[A-Za-z0-9.-]+(?::\d+)?(?:\/[^\s"'<>]*)?/gi,text,m=>{const h=m[0].replace(/^http[s]?:\/\//i,"").split(/[/:]/)[0],c=clientForDomain(h,profiles);if(c||INTERNAL_TLDS.has(h.toLowerCase().split(".").pop()))add(m.index,m.index+m[0].length,"url",c||lineClient(text,m.index,profiles));});
+    const learned=new Map();
+    matches(/(?<![\w])([A-Za-z][\w.-]*)(\\{1,2})([A-Za-z0-9_.-]+)/g,text,m=>{const c=profiles.find(p=>p.netbios.some(n=>n.toLowerCase()===m[1].toLowerCase()))?.id;if(c){add(m.index,m.index+m[0].length,"domain_user",c);learned.set(m[3].toLowerCase(),c);}});
+    matches(/(C:\\{1,2}Users\\{1,2})([^\\\s"']+)/gi,text,m=>{const c=lineClient(text,m.index,profiles);add(m.index,m.index+m[0].length,"user_path",c);learned.set(m[2].toLowerCase(),c);});
+    const learnGroup=(re,group=1)=>matches(re,text,m=>{if(m[group]!=="-"&&m[group]!=="SYSTEM"){const s=m.index+m[0].indexOf(m[group]),c=lineClient(text,s,profiles);add(s,s+m[group].length,"user",c);learned.set(m[group].toLowerCase(),c);}});
+    learnGroup(/(?:\buser(?:name)?\b|\baccount\s+name\b|\bcs-username\b|\/user)\s*[:=]\s*([A-Za-z0-9_.-]+)/gi);
+    learnGroup(/(?:-Identity\s+|\bconfirmed\s+|\baccount\s+(?!Name\b)|\((?=[A-Za-z0-9_.-]+\)\s+reports\b))([A-Za-z0-9_.-]+)/gi);
+    matches(/^proxy:.*?\shttp[s]?:\/\/\S+\s+([A-Za-z0-9_.-]+)\s+HIER_/gim,text,m=>{const s=m.index+m[0].lastIndexOf(m[1]),c=lineClient(text,s,profiles);add(s,s+m[1].length,"user",c);learned.set(m[1].toLowerCase(),c);});
+    matches(/(?<![\w./])(?:svc[_-][A-Za-z0-9_.-]+|adm[_-][A-Za-z0-9_.-]+)(?![\w.])/gi,text,m=>{const c=lineClient(text,m.index,profiles);add(m.index,m.index+m[0].length,"user",c);learned.set(m[0].toLowerCase(),c);});
+    matches(/\b([A-Z][a-z]{2,}\s+[A-Z][a-z]{2,})\s+\([A-Za-z0-9_.-]+\)\s+reports\b/g,text,m=>{const s=m.index+m[0].indexOf(m[1]);add(s,s+m[1].length,"person",lineClient(text,s,profiles));});
+    matches(email,text,m=>{const c=clientForDomain(m[0].split("@").pop(),profiles);if(c)learned.set(m[0].split("@")[0].toLowerCase(),c);});for(const p of profiles)for(const u of p.users)learned.set(u.toLowerCase(),p.id);
+    for(const [u,c] of learned){matches(new RegExp(`(?<![\\w])${esc(u)}(?![\\w])`,"gi"),text,m=>add(m.index,m.index+m[0].length,"user",c));if(u.includes(".")){const d=u.split(".").filter(Boolean).map(x=>x[0].toUpperCase()+x.slice(1)).join(" ");matches(new RegExp(`(?<![\\w])${esc(d)}(?![\\w])`,"gi"),text,m=>add(m.index,m.index+m[0].length,"person",c));}}
+    matches(/(?<![\w@-])(?:[A-Za-z0-9-]+\.)+[A-Za-z][A-Za-z0-9-]*(?![\w-])/g,text,m=>{const c=clientForDomain(m[0],profiles),internal=INTERNAL_TLDS.has(m[0].toLowerCase().split(".").pop());if(c||internal){const kind=profiles.some(p=>p.domains.some(d=>d.toLowerCase()===m[0].toLowerCase()))?"domain":"hostname";add(m.index,m.index+m[0].length,kind,c||lineClient(text,m.index,profiles));}});
+    for(const p of profiles){for(const pre of p.host_prefixes)matches(new RegExp(`(?<![\\w-])${esc(pre)}[A-Za-z0-9-]*(?![\\w-])`,"gi"),text,m=>add(m.index,m.index+m[0].length,"host",p.id));for(const name of p.names)matches(new RegExp(`(?<![\\w])${esc(name)}(?=(?:['’]s|s)?(?![\\w]))`,"gi"),text,m=>add(m.index,m.index+m[0].length,"client",p.id));for(const n of p.netbios)matches(new RegExp(`(?<![\\w])${esc(n)}(?![\\w])`,"gi"),text,m=>add(m.index,m.index+m[0].length,"netbios",p.id));for(const w of p.words)matches(new RegExp(`(?<![\\w])${esc(w)}(?![\\w])`,"gi"),text,m=>add(m.index,m.index+m[0].length,"word",p.id));}
+    const addIp=(m,force=false)=>{let value=m[0],parsed;try{parsed=value.includes("/")?parseNetwork(value.replaceAll("[.]",".")):parseAddress(value.replaceAll("[.]","."));}catch{return;}const ip={version:parsed.version,bits:parsed.bits,value:parsed.value},p=profiles.find(x=>x.public_ranges.some(n=>contains(n,ip))),priv=PRIVATE.some(n=>contains(n,ip));if(allIps||p||priv)add(m.index,m.index+value.length,value.includes("/")?"cidr":"ip",p?.id||lineClient(text,m.index,profiles),force);};
+    matches(/(?<![\w.])\d{1,3}(?:\.\d{1,3}){3}(?:\/\d{1,3})?(?!\w)|(?<![\w:])[0-9A-Fa-f]*:[0-9A-Fa-f:]+(?:\/\d{1,3})?(?![\w:.])/g,text,m=>addIp(m));
+    if(allIps)matches(/(?<![\w.])\d{1,3}(?:\[\.\]\d{1,3}){3}(?:\/\d{1,3})?(?!\w)/gi,text,m=>addIp(m,true));
+    const simple=[[/((?:[0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2})/g,"mac"],[/S-1-5-21-(?:\d+-){2}\d+(?:-\d+)?/gi,"sid"],[/(?<!\w)(?:(?:\+?\d{1,3}\s*)?\(\d{3}\)\s*\d{3}-\d{4}|\d{3}-\d{4})(?!\w)/g,"phone"],[/\b[A-Z]{2,10}-\d{3,}\b/g,"ticket"]];
+    for(const [re,k] of simple)matches(re,text,m=>add(m.index,m.index+m[0].length,k,lineClient(text,m.index,profiles)));
+    matches(/ConvertTo-SecureString\s+(["'])([^"'\r\n]+)\1/gi,text,m=>{const s=m.index+m[0].indexOf(m[2]);add(s,s+m[2].length,"secret",lineClient(text,s,profiles));});
+    const pri={url:0,email:1,domain_user:2,client:9};candidates.sort((a,b)=>(b.end-b.start)-(a.end-a.start)||a.start-b.start||((a.kind==="netbios"&&profiles.find(p=>p.id===a.client)?.netbios.includes(a.value))?3:(pri[a.kind]??5))-((b.kind==="netbios"&&profiles.find(p=>p.id===b.client)?.netbios.includes(b.value))?3:(pri[b.kind]??5)));
+    const selected=[],used=[];for(const s of candidates)if(!overlaps(s.start,s.end,used)){selected.push(s);used.push([s.start,s.end]);}return selected.sort((a,b)=>a.start-b.start);
+  }
+
+  class Factory{
+    constructor(vault,profiles,source){this.v=vault;this.p=new Map(profiles.map(x=>[x.id,x]));this.labels=new Map(profiles.map((x,i)=>[x.id,String.fromCharCode(65+i)]));this.real=source.toLowerCase();}
+    remember(kind,c,real,proposed){const k=`${c||"_"}|${kind}|${real}`;if(this.v.forward[k]!=null)return this.v.forward[k];let f=proposed,n=2;while(this.real.includes(f.toLowerCase())||this.v.reverse[f]!=null)f=`${proposed}-${n++}`;this.v.forward[k]=f;this.v.reverse[f]=real;return f;}
+    numbered(kind,c,real,stem,width=2){const k=`${c||"_"}|${kind}|${real}`;if(this.v.forward[k]!=null)return this.v.forward[k];for(;;){const f=stem+String(nextNumber(this.v,`${c||"_"}|${kind}`)).padStart(width,"0");if(!this.real.includes(f.toLowerCase())&&!Object.keys(this.v.reverse).some(x=>x.toLowerCase()===f.toLowerCase()))return this.remember(kind,c,real,f);}}
+    client(real,c){const k=`${c||"_"}|client|@name`;if(this.v.forward[k]!=null)return this.v.forward[k];const f=`CLIENT_${this.labels.get(c)||"X"}`;this.v.forward[k]=f;if(this.v.reverse[f]==null)this.v.reverse[f]=real;return f;}
+    netbios(real,c){return this.remember("netbios",c,real,`DOMAIN_${this.labels.get(c)||"X"}`);} user(real,c,email=false){return this.numbered(email?"email_user":"user",c,real,email?"user":"USER_");} host(real,c){return this.numbered("host",c,real,"HOST-");}
+    domain(real,c){const folded=real.toLowerCase().replace(/\.$/,""),label=(this.labels.get(c)||"X").toLowerCase(),p=this.p.get(c);if(p)for(const d of [...p.domains].sort((a,b)=>b.length-a.length)){const base=d.toLowerCase();if(folded===base||folded.endsWith("."+base)){const lead=folded.slice(0,-base.length).replace(/\.$/,""),suffix=INTERNAL_TLDS.has(base.split(".").pop())?base.split(".").pop():"example",mapped=`client-${label}.${suffix}`,proposed=lead?[this.host(lead.split(".")[0],c),lead.split(".").slice(1).join("."),mapped].filter(Boolean).join("."):mapped;return this.remember("domain",c,real,proposed);}}const parts=folded.split(".");return this.remember("domain",c,real,`${this.host(parts[0],c)}.client-${label}.${parts.at(-1)}`);}
+    transform(kind,real,c){if(kind==="client")return this.client(real,c);if(kind==="netbios")return this.netbios(real,c);if(["host","hostname","domain"].includes(kind))return real.includes(".")?this.domain(real,c):this.host(real,c);if(kind==="email"){const at=real.lastIndexOf("@"),f=`${this.user(real.slice(0,at),c,true)}@${this.domain(real.slice(at+1),c)}`;return this.remember(kind,c,real,f);}if(kind==="url"){const u=new URL(real),host=this.domain(u.hostname,c),path=u.pathname.replace(/\b[A-Z]{2,10}-\d{3,}\b/g,x=>this.numbered("ticket",c,x,"TICKET_")),f=`${u.protocol}//${host}${u.port?":"+u.port:""}${path}${u.search}${u.hash}`;return this.remember(kind,c,real,f);}if(kind==="domain_user"){const m=real.match(/^([^\\]+)(\\{1,2})(.+)$/),f=this.netbios(m[1],c)+m[2]+this.user(m[3],c);return this.remember(kind,c,real,f);}if(kind==="user_path"){const m=real.match(/^(C:\\{1,2}Users\\{1,2})(.+)$/i),f=m[1]+this.user(m[2],c);return this.remember(kind,c,real,f);}if(kind==="user")return this.user(real,c);if(["word","person"].includes(kind))return this.numbered("word",c,real,"WORD_");if(kind==="sid"){const n=nextNumber(this.v,`${c||"_"}|sid`);return this.remember(kind,c,real,`S-1-5-21-100000000${n}-200000000${n}-300000000${n}-1001`);}return this.numbered(kind,c,real,{mac:"MAC_",phone:"PHONE_",ticket:"TICKET_",secret:"SECRET_"}[kind]||"VALUE_");}
+  }
+  function warningsFor(text,profiles,spans){const out=new Set(),ranges=spans.map(s=>[s.start,s.end]);for(const p of profiles){const starts=new Set(p.names.map(n=>n.split(/\s+/)[0].toLowerCase()));matches(/\b[A-Z][a-z]{2,}\b/g,text,m=>{if(starts.has(m[0].toLowerCase())&&!overlaps(m.index,m.index+m[0].length,ranges))out.add("possible profile-name fragment remains");});}matches(/(?<![\w@-])(?:[A-Za-z0-9-]+\.)+[A-Za-z][A-Za-z0-9-]*(?![\w-])/g,text,m=>{if(INTERNAL_TLDS.has(m[0].toLowerCase().split(".").pop())&&!overlaps(m.index,m.index+m[0].length,ranges))out.add("unknown internal-looking domain remains");});return [...out].sort();}
+  async function mask(text,profiles,vault,allIps=false){
+    vault.settings.all_ips=!!allIps;const spans=findSpans(text,profiles,allIps),factory=new Factory(vault,profiles,text),key=await crypto.subtle.importKey("raw",unb64(vault.key),{name:"HMAC",hash:"SHA-256"},false,["sign"]),byId=new Map(profiles.map(p=>[p.id,p])),pieces=[],preview=[],counts={},ranges=[];let cursor=0,outLen=0;
+    for(const s of spans){const plain=text.slice(cursor,s.start);pieces.push(plain);outLen+=plain.length;let fake;if(s.kind==="ip"||s.kind==="cidr"){fake=await mapText(s.value,byId.get(s.client)?.public_ranges||[],s.client||"",allIps,key);if(fake==null){pieces.push(s.value);outLen+=s.value.length;cursor=s.end;continue;}const k=`${s.client||"_"}|${s.kind}|${s.value}`;if(vault.forward[k]!=null)fake=vault.forward[k];else{vault.forward[k]=fake;vault.reverse[fake]=s.value;}}else fake=factory.transform(s.kind,s.value,s.client);pieces.push(fake);ranges.push({start:outLen,end:outLen+fake.length,kind:s.kind});outLen+=fake.length;if(s.kind==="client"){const t=text.slice(s.end).match(/^(?:['’]s|s)?(?:\s+[^\W\d_][\w-]*)?/u)?.[0]||"";if(t)vault.reverse[fake+t]=s.value+t;}counts[s.kind]=(counts[s.kind]||0)+1;preview.push([s.kind,s.value,fake]);cursor=s.end;}
+    pieces.push(text.slice(cursor));return {text:pieces.join(""),report:{counts:Object.entries(counts).sort(),warnings:warningsFor(text,profiles,spans),preview,ranges}};
+  }
+  function unmask(text,vault){const keys=Object.keys(vault.reverse).sort((a,b)=>b.length-a.length);if(!keys.length)return {text,count:0};const re=new RegExp(keys.map(esc).join("|"),"g");let count=0;return {text:text.replace(re,m=>{count++;return vault.reverse[m];}),count};}
+  function commonPrefix(a,b,bits){let n=0;for(let i=bits-1;i>=0;i--){if(((a>>BigInt(i))&1n)!==((b>>BigInt(i))&1n))break;n++;}return n;}
+
+  window.SirrEngine={parseProfiles,newVault,mask,unmask,parseAddress,parseNetwork,formatAddress,findSpans,commonPrefix,b64,unb64};
+})();
+</script>
+<script>
+(() => {"use strict";
+if(top!==self){document.documentElement.textContent="";throw new Error("Framing blocked");}
+const $=id=>document.getElementById(id), STORE="sirr.encrypted.v1", EXAMPLE="name: Example Harbor\ndomain: example-harbor.test\nnetbios: EXAMPLE\nhost_prefix: EX-\npublic_range: 203.0.113.0/24\nuser: alex.example\nword: ExampleSite";
+let state=null,key=null,salt=null,idleTimer=null,pendingBackup=null;
+const exists=()=>localStorage.getItem(STORE)!==null;
+function touch(){clearTimeout(idleTimer);if(key)idleTimer=setTimeout(()=>lock(),30*60*1000);}
+for(const e of ["pointerdown","keydown","input"])addEventListener(e,touch,{passive:true});
+function bytes64(a){return SirrEngine.b64(new Uint8Array(a));} function from64(s){return SirrEngine.unb64(s);}
+async function derive(pass,s){const material=await crypto.subtle.importKey("raw",new TextEncoder().encode(pass),"PBKDF2",false,["deriveKey"]);return crypto.subtle.deriveKey({name:"PBKDF2",hash:"SHA-256",salt:s,iterations:600000},material,{name:"AES-GCM",length:256},false,["encrypt","decrypt"]);}
+async function encryptData(data,k,s){const iv=crypto.getRandomValues(new Uint8Array(12)),plain=new TextEncoder().encode(JSON.stringify(data)),cipher=await crypto.subtle.encrypt({name:"AES-GCM",iv,additionalData:new TextEncoder().encode("Sirr-v1")},k,plain);return {format:"sirr-backup",version:1,kdf:{name:"PBKDF2-SHA256",iterations:600000,salt:bytes64(s)},cipher:{name:"AES-GCM",iv:bytes64(iv),data:bytes64(cipher)}};}
+async function decryptData(env,k){if(env?.format!=="sirr-backup"||env?.version!==1||env?.kdf?.iterations!==600000)throw new Error("Invalid backup format");const plain=await crypto.subtle.decrypt({name:"AES-GCM",iv:from64(env.cipher.iv),additionalData:new TextEncoder().encode("Sirr-v1")},k,from64(env.cipher.data));const data=JSON.parse(new TextDecoder().decode(plain));if(data?.version!==1||!Array.isArray(data.profiles)||typeof data.vaults!=="object")throw new Error("Invalid encrypted data");return data;}
+async function save(){localStorage.setItem(STORE,JSON.stringify(await encryptData(state,key,salt)));}
+function blankState(){return {version:1,profiles:[],vaults:{}};}
+async function unlock(){const pass=$("passphrase").value, first=!exists();$("gateStatus").textContent="Working…";$("gateStatus").className="status";try{if(first){if(pass.length<8)throw new Error("Use at least 8 characters");if(pass!==$("confirmPassphrase").value)throw new Error("Passphrases do not match");salt=crypto.getRandomValues(new Uint8Array(16));key=await derive(pass,salt);state=blankState();await save();}else{const env=JSON.parse(localStorage.getItem(STORE));salt=from64(env.kdf.salt);key=await derive(pass,salt);try{state=await decryptData(env,key);}catch{key=null;throw new Error("Wrong passphrase or damaged encrypted data. No data was changed.");}}$("passphrase").value=$("confirmPassphrase").value="";$("gate").classList.add("hidden");$("app").classList.remove("hidden");renderAll();touch();}catch(e){$("gateStatus").textContent=e.message;$("gateStatus").className="status error";}}
+function lock(){key=null;state=null;salt=null;clearTimeout(idleTimer);$("maskInput").value=$("maskOutput").value=$("unmaskInput").value=$("unmaskOutput").value="";$("preview").textContent="";$("app").classList.add("hidden");$("gate").classList.remove("hidden");$("firstFields").classList.toggle("hidden",exists());$("gateStatus").textContent="Locked";}
+function currentCase(){return $("caseSelect").value;} function vault(){return state.vaults[currentCase()];}
+function renderCases(select){const names=Object.keys(state.vaults).sort();$("caseSelect").replaceChildren(...names.map(n=>new Option(n,n)));if(select&&state.vaults[select])$("caseSelect").value=select;const v=vault();$("allIps").checked=!!v?.settings?.all_ips;const disabled=!v;for(const id of ["forgetCase","maskButton","unmaskButton","maskFiles","allIps"])$(id).disabled=disabled;$("caseStatus").textContent=disabled?"Create a notebook to begin.":"Notebook mappings are encrypted and saved after each mask.";}
+function renderProfiles(){const root=$("profiles");root.replaceChildren();state.profiles.forEach((p,i)=>{const row=document.createElement("div");row.className="profile";const id=document.createElement("input");id.value=p.id;id.setAttribute("aria-label","Client identifier");const ta=document.createElement("textarea");ta.value=p.text;ta.placeholder=EXAMPLE;ta.spellcheck=false;const del=document.createElement("button");del.textContent="Remove";del.onclick=()=>{state.profiles.splice(i,1);renderProfiles();};row.append(id,ta,del);root.append(row);});}
+function readProfiles(){return [...$("profiles").children].map(r=>({id:r.children[0].value.trim(),text:r.children[1].value}));}
+function renderAll(){renderCases();renderProfiles();}
+function profiles(){return SirrEngine.parseProfiles(state.profiles);}
+function newCase(){const n=$("newCaseName").value.trim();if(!/^[A-Za-z0-9][A-Za-z0-9_.-]{0,63}$/.test(n)){setStatus("caseStatus","Use 1–64 letters, numbers, dots, dashes, or underscores.",true);return;}if(state.vaults[n]){setStatus("caseStatus","That notebook already exists.",true);return;}state.vaults[n]=SirrEngine.newVault();$("newCaseName").value="";save().then(()=>renderCases(n));}
+function setStatus(id,text,bad=false){$(id).textContent=text;$(id).className=bad?"status error":"status";}
+function showPreview(text,ranges){const root=$("preview");root.replaceChildren();let p=0;for(const r of ranges){root.append(document.createTextNode(text.slice(p,r.start)));const m=document.createElement("mark");m.textContent=text.slice(r.start,r.end);m.title=r.kind;root.append(m);p=r.end;}root.append(document.createTextNode(text.slice(p)));}
+async function doMask(){try{setStatus("maskStatus","Masking…");const result=await SirrEngine.mask($("maskInput").value,profiles(),vault(),$("allIps").checked);$("maskOutput").value=result.text;showPreview(result.text,result.report.ranges);const counts=result.report.counts.map(x=>`${x[0]}: ${x[1]}`).join(" · ")||"No replacements";const warns=result.report.warnings.length?` · Warnings: ${result.report.warnings.join("; ")}`:"";$("maskStatus").textContent=counts+warns;$("maskStatus").className=result.report.warnings.length?"summary warning":"summary";await save();}catch(e){setStatus("maskStatus",e.message,true);}}
+function doUnmask(){try{const r=SirrEngine.unmask($("unmaskInput").value,vault());$("unmaskOutput").value=r.text;$("unmaskStatus").textContent=`Restored ${r.count} value${r.count===1?"":"s"}.`;}catch(e){setStatus("unmaskStatus",e.message,true);}}
+async function copy(id,status){try{await navigator.clipboard.writeText($(id).value);$(status).textContent="Copied.";}catch{$(id).focus();$(id).select();document.execCommand("copy");$(status).textContent="Copied.";}}
+function download(name,data,type="application/octet-stream"){const a=document.createElement("a"),url=URL.createObjectURL(new Blob([data],{type}));a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);}
+function readFile(file){return new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=()=>reject(new Error("Could not read a selected file."));reader.readAsText(file);});}
+async function maskFiles(){const files=[...$("textFiles").files];if(!files.length)return setStatus("fileStatus","Choose one or more text files.",true);try{for(let i=0;i<files.length;i++){setStatus("fileStatus",`Masking ${i+1} of ${files.length}…`);const source=await readFile(files[i]),r=await SirrEngine.mask(source,profiles(),vault(),$("allIps").checked);download(`sirr-masked-${i+1}.txt`,r.text,"text/plain;charset=utf-8");}await save();setStatus("fileStatus",`Downloaded ${files.length} masked file${files.length===1?"":"s"}.`);}catch(e){setStatus("fileStatus",e.message,true);}}
+async function exportBackup(){const env=await encryptData(state,key,salt);download(`sirr-backup-${new Date().toISOString().slice(0,10)}.sirrbackup`,JSON.stringify(env),"application/json");}
+async function chooseBackup(){const f=$("backupFile").files[0];if(!f)return;try{pendingBackup=JSON.parse(await readFile(f));$("importError").textContent="";$("backupPassphrase").value="";$("importDialog").showModal();}catch{$("importError").textContent="Invalid backup file.";$("importDialog").showModal();}finally{$("backupFile").value="";}}
+async function importBackup(mode,e){e.preventDefault();try{const importSalt=from64(pendingBackup.kdf.salt),importKey=await derive($("backupPassphrase").value,importSalt),imported=await decryptData(pendingBackup,importKey);$("backupPassphrase").value="";if(mode==="replace")state=imported;else{const ps=new Map(state.profiles.map(p=>[p.id,p]));for(const p of imported.profiles)ps.set(p.id,p);state.profiles=[...ps.values()];state.vaults={...state.vaults,...imported.vaults};}await save();$("importDialog").close();renderAll();setStatus("caseStatus",`Backup ${mode} completed.`);}catch{$("importError").textContent="Wrong passphrase, damaged backup, or incompatible file. Nothing was changed.";}}
+$("firstFields").classList.toggle("hidden",exists());$("unlock").onclick=unlock;$("passphrase").onkeydown=e=>{if(e.key==="Enter")unlock();};$("lock").onclick=lock;$("newCase").onclick=newCase;$("caseSelect").onchange=()=>renderCases(currentCase());$("allIps").onchange=async()=>{vault().settings.all_ips=$("allIps").checked;await save();};
+$("forgetCase").onclick=async()=>{const n=currentCase();if(confirm(`Forget notebook “${n}”? Unmask will no longer be possible for it.`)){delete state.vaults[n];await save();renderCases();}};
+$("addProfile").onclick=()=>{state.profiles.push({id:"",text:""});renderProfiles();};$("saveProfiles").onclick=async()=>{try{const p=readProfiles();SirrEngine.parseProfiles(p);state.profiles=p;await save();setStatus("profileStatus","Profiles encrypted and saved.");}catch(e){setStatus("profileStatus",e.message,true);}};
+$("maskButton").onclick=doMask;$("unmaskButton").onclick=doUnmask;$("copyMasked").onclick=()=>copy("maskOutput","maskStatus");$("copyUnmasked").onclick=()=>copy("unmaskOutput","unmaskStatus");$("maskFiles").onclick=maskFiles;$("exportBackup").onclick=exportBackup;$("importBackup").onclick=()=>$("backupFile").click();$("backupFile").onchange=chooseBackup;$("mergeImport").onclick=e=>importBackup("merge",e);$("replaceImport").onclick=e=>importBackup("replace",e);
+})();
+</script></body></html>
