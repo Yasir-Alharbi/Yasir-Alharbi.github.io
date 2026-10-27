@@ -3,3 +3,4 @@ Allow: /
 Disallow: /rme-midterm-2026.html
 Disallow: /cs0610-computer-vision-practice-2026.html
 Disallow: /text-utility.html
+Disallow: /english-range-practice-2026.html
